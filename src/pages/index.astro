@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getPublishedArticles, CATEGORIES } from '../lib/articles';
+import { getPublishedArticles, CATEGORIES, getBadgeClass, getStripClass } from '../lib/articles';
 
 const all = (await getPublishedArticles(Astro.locals)).sort(
   (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
@@ -9,74 +9,144 @@ const all = (await getPublishedArticles(Astro.locals)).sort(
 const featured = all[0];
 const recent   = all.slice(1, 4);
 
-const badge: Record<string, string> = {
-  'world-law':        'bg-amber-100   text-amber-800   border-amber-200',
-  'river-law':        'bg-blue-100    text-blue-800    border-blue-200',
-  'international-law':'bg-emerald-100 text-emerald-800 border-emerald-200',
-};
-const strip: Record<string, string> = {
-  'world-law':        'bg-amber-400',
-  'river-law':        'bg-blue-400',
-  'international-law':'bg-emerald-500',
-};
-const dot: Record<string, string> = {
-  'world-law':        'bg-amber-400',
-  'river-law':        'bg-blue-400',
-  'international-law':'bg-emerald-400',
-};
-
 function fmt(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
+
+const pillars = [
+  {
+    slug: 'world-law',
+    icon: '🌍',
+    title: 'World Law',
+    subtitle: 'Comparative & Constitutional',
+    desc: 'Examine how legal systems across nations converge, diverge, and shape global governance. From constitutional design to comparative private law.',
+    accent: 'amber',
+    hoverBorder: 'hover:border-amber-300',
+    hoverBg: 'hover:bg-amber-50',
+    iconBg: 'bg-amber-100 group-hover:bg-amber-200',
+    arrow: 'group-hover:text-amber-500',
+  },
+  {
+    slug: 'river-law',
+    icon: '🌊',
+    title: 'River & Water Law',
+    subtitle: 'Watercourse & Environmental',
+    desc: 'Explore the legal frameworks governing transboundary rivers, freshwater rights, and the UN Watercourses Convention in an era of climate crisis.',
+    accent: 'sky',
+    hoverBorder: 'hover:border-sky-300',
+    hoverBg: 'hover:bg-sky-50',
+    iconBg: 'bg-sky-100 group-hover:bg-sky-200',
+    arrow: 'group-hover:text-sky-500',
+  },
+  {
+    slug: 'international-law',
+    icon: '🏛️',
+    title: 'International Law',
+    subtitle: 'Treaties & Sovereignty',
+    desc: 'Analyse the architecture of the international legal order — from treaty-making and state responsibility to the jurisprudence of the ICJ.',
+    accent: 'emerald',
+    hoverBorder: 'hover:border-emerald-300',
+    hoverBg: 'hover:bg-emerald-50',
+    iconBg: 'bg-emerald-100 group-hover:bg-emerald-200',
+    arrow: 'group-hover:text-emerald-500',
+  },
+];
+
+const principles = [
+  { icon: '⚖️', title: 'Rigorous Scholarship', desc: 'Every article is peer-reviewed against the highest standards of legal reasoning and academic integrity.' },
+  { icon: '📖', title: 'Open Access', desc: 'Legal knowledge should be free. All research is published without paywalls, forever.' },
+  { icon: '🌐', title: 'Global Perspective', desc: 'We cover 15 specialised fields spanning all major branches of international and comparative law.' },
+];
+
+const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGORIES[keyof typeof CATEGORIES]][];
 ---
 <Base title="Home">
 
 <!-- ═══════════════════════════════════════
-     HERO — full-bleed dark banner
+     LEGAL MAXIM TICKER
 ════════════════════════════════════════ -->
-{featured && (
-<section class="bg-slate-900 text-white">
+<div class="bg-slate-900 border-b border-slate-800">
+  <div class="max-w-5xl mx-auto px-5 py-2.5 flex items-center gap-4 overflow-hidden">
+    <span class="flex-shrink-0 text-amber-500 text-xs font-bold uppercase tracking-widest">Lex</span>
+    <span class="flex-shrink-0 w-px h-3 bg-slate-700"></span>
+    <p class="text-slate-400 text-xs truncate">
+      <em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em>
+      <span class="mx-2 text-slate-600">—</span>
+      <span>Let justice be done though the heavens fall · Open-access legal scholarship since 2026</span>
+    </p>
+  </div>
+</div>
 
-  <!-- thin amber rule at very top -->
-  <div class="h-0.5 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
 
-  <div class="max-w-5xl mx-auto px-5 py-10 md:py-16">
+<!-- ═══════════════════════════════════════
+     HERO — featured article
+════════════════════════════════════════ -->
+{featured ? (
+<section class="bg-slate-900 text-white relative overflow-hidden">
 
-    <!-- label row -->
-    <div class="flex items-center gap-3 mb-6">
+  <!-- Decorative scales watermark -->
+  <div class="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none select-none hidden lg:flex items-center justify-center opacity-[0.04]">
+    <svg viewBox="0 0 200 200" class="w-72 h-72 text-white fill-current" xmlns="http://www.w3.org/2000/svg">
+      <!-- Scales of Justice SVG -->
+      <rect x="97" y="10" width="6" height="160" rx="3"/>
+      <rect x="60" y="10" width="80" height="6" rx="3"/>
+      <!-- Left pan chain -->
+      <line x1="70" y1="16" x2="50" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <line x1="110" y1="16" x2="90" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <!-- Left pan -->
+      <ellipse cx="70" cy="82" rx="22" ry="6" fill="white"/>
+      <!-- Right pan chain -->
+      <line x1="90" y1="16" x2="110" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <line x1="130" y1="16" x2="150" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
+      <!-- Right pan -->
+      <ellipse cx="130" cy="82" rx="22" ry="6" fill="white"/>
+      <!-- Base -->
+      <rect x="80" y="165" width="40" height="8" rx="4"/>
+      <rect x="70" y="170" width="60" height="6" rx="3"/>
+    </svg>
+  </div>
+
+  <!-- top amber rule -->
+  <div class="h-px w-full bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
+
+  <div class="max-w-5xl mx-auto px-5 py-12 md:py-18 relative">
+
+    <!-- label -->
+    <div class="flex items-center gap-3 mb-7">
       <span class="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold uppercase tracking-widest">
-        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
         Featured Research
       </span>
       <span class="flex-1 h-px bg-slate-700 max-w-[60px]"></span>
     </div>
 
-    <div class="md:grid md:grid-cols-5 md:gap-10 md:items-start">
+    <div class="md:grid md:grid-cols-5 md:gap-12 md:items-start">
 
-      <!-- LEFT col: text -->
+      <!-- LEFT: text -->
       <div class="md:col-span-3">
 
-        <!-- category pill -->
-        <span class={`inline-block border text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-5 ${badge[featured.category]}`}>
-          {CATEGORIES[featured.category]?.label}
+        <span class={`inline-block border text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-5 ${getBadgeClass(CATEGORIES[featured.category]?.color)}`}>
+          {CATEGORIES[featured.category]?.icon} {CATEGORIES[featured.category]?.label}
         </span>
 
-        <!-- title -->
-        <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4 text-white">
+        <h1 class="font-serif text-2xl sm:text-3xl md:text-[2.4rem] font-bold leading-tight mb-5 text-white">
           {featured.title}
         </h1>
 
-        <!-- excerpt -->
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-5 line-clamp-3 md:line-clamp-none">
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 line-clamp-3 md:line-clamp-none">
           {featured.excerpt}
         </p>
 
         <!-- byline -->
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400 mb-7">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400 mb-8">
+          <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black flex-shrink-0">
+            {featured.author.charAt(0)}
+          </div>
           <span class="font-medium text-slate-200">{featured.author}</span>
-          <span class="text-slate-600">·</span>
+          {featured.authorTitle && <span class="text-slate-500 text-xs">· {featured.authorTitle}</span>}
+          <span class="text-slate-700">·</span>
           <span>{fmt(featured.publishedAt)}</span>
-          <span class="text-slate-600">·</span>
+          <span class="text-slate-700">·</span>
           <span class="flex items-center gap-1">
             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             {featured.readTime} min read
@@ -86,101 +156,114 @@ function fmt(iso: string) {
         <!-- CTAs -->
         <div class="flex flex-col sm:flex-row gap-3">
           <a href={`/articles/${featured.slug}`}
-             class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-6 py-3.5 rounded-xl text-sm transition-colors">
+             class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-7 py-3.5 rounded-xl text-sm transition-colors">
             Read Article
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
           <a href={`/category/${featured.category}`}
              class="inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 px-5 py-3.5 rounded-xl text-sm transition-all">
-            Browse {CATEGORIES[featured.category]?.label}
+            Browse {CATEGORIES[featured.category]?.shortLabel}
           </a>
         </div>
       </div>
 
-      <!-- RIGHT col: decorative card (desktop only) -->
-      <div class="hidden md:flex md:col-span-2 items-start justify-end pt-2">
-        <div class="w-full max-w-[260px] bg-slate-800 border border-slate-700 rounded-2xl p-5 space-y-4">
-          <div class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Journal Stats</div>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-400">Published Articles</span>
-              <span class="text-white font-bold">{all.length}</span>
-            </div>
-            <div class="h-px bg-slate-700"></div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-400">Research Areas</span>
-              <span class="text-white font-bold">3</span>
-            </div>
-            <div class="h-px bg-slate-700"></div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-400">Peer-Reviewed</span>
-              <span class="text-emerald-400 font-bold text-sm flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                Yes
-              </span>
-            </div>
-            <div class="h-px bg-slate-700"></div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-400">Open Access</span>
-              <span class="text-emerald-400 font-bold text-sm flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                Free
-              </span>
-            </div>
+      <!-- RIGHT: stats card -->
+      <div class="hidden md:flex md:col-span-2 items-start justify-end pt-1">
+        <div class="w-full max-w-[260px] bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4 backdrop-blur-sm">
+          <div class="text-xs uppercase tracking-widest text-slate-500 font-semibold flex items-center gap-2">
+            <span class="w-4 h-4 text-amber-400">⚖️</span> Journal Record
           </div>
-          <div class="pt-1 text-xs text-slate-500">ISSN 2026-LEX · Volume 1</div>
+          <div class="space-y-3">
+            {[
+              { label: 'Published Articles', value: String(all.length), highlight: false },
+              { label: 'Research Fields', value: '15', highlight: false },
+              { label: 'Open Access', value: 'Always Free', highlight: true },
+              { label: 'Peer-Reviewed', value: 'Rigorous', highlight: true },
+            ].map(item => (
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-slate-400">{item.label}</span>
+                  <span class={item.highlight ? 'text-emerald-400 font-semibold text-sm' : 'text-white font-bold'}>{item.value}</span>
+                </div>
+                <div class="h-px bg-white/5 mt-3"></div>
+              </div>
+            ))}
+          </div>
+          <div class="text-xs text-slate-600 pt-1">ISSN 2026-LEX · Volume 1</div>
         </div>
       </div>
 
     </div>
   </div>
 </section>
+) : (
+<section class="bg-slate-900 text-white">
+  <div class="h-px w-full bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
+  <div class="max-w-5xl mx-auto px-5 py-20 text-center">
+    <div class="text-6xl mb-6">⚖️</div>
+    <h1 class="font-serif text-3xl font-bold mb-3">Lex Researcher</h1>
+    <p class="text-slate-400 mb-8">Open-access legal scholarship on world law, river law &amp; international law.</p>
+    <a href="/admin" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">
+      Publish First Article →
+    </a>
+  </div>
+</section>
 )}
 
 
 <!-- ═══════════════════════════════════════
-     RESEARCH AREAS — 3 tappable cards
+     THREE RESEARCH PILLARS
 ════════════════════════════════════════ -->
 <section class="bg-white border-b border-stone-100">
-  <div class="max-w-5xl mx-auto px-5 py-6 md:py-8">
+  <div class="max-w-5xl mx-auto px-5 py-8 md:py-10">
 
-    <p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">Browse by Topic</p>
+    <div class="flex items-baseline gap-3 mb-6">
+      <p class="text-xs font-bold uppercase tracking-widest text-stone-400">Three Research Pillars</p>
+      <span class="flex-1 h-px bg-stone-100 max-w-[80px]"></span>
+    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {pillars.map(p => (
+        <a href={`/category/${p.slug}`}
+           class={`group relative flex flex-col gap-3 p-5 rounded-2xl border border-stone-200 ${p.hoverBorder} ${p.hoverBg} active:scale-[.99] transition-all overflow-hidden`}>
+          <div class={`absolute top-0 left-0 right-0 h-0.5 ${getStripClass(CATEGORIES[p.slug as keyof typeof CATEGORIES]?.color ?? 'stone')} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
 
-      <!-- World Law -->
-      <a href="/category/world-law"
-         class="group flex items-center gap-4 p-4 rounded-2xl border border-stone-200 hover:border-amber-300 hover:bg-amber-50 active:bg-amber-100 transition-all">
-        <div class="w-11 h-11 flex-shrink-0 bg-amber-100 group-hover:bg-amber-200 rounded-xl flex items-center justify-center text-xl transition-colors">🌍</div>
-        <div class="min-w-0 flex-1">
-          <div class="font-semibold text-slate-800 text-sm">World Law</div>
-          <div class="text-xs text-stone-500 mt-0.5 truncate">Comparative &amp; constitutional</div>
+          <div class={`w-12 h-12 flex-shrink-0 ${p.iconBg} rounded-xl flex items-center justify-center text-2xl transition-colors`}>
+            {p.icon}
+          </div>
+          <div>
+            <div class="font-bold text-slate-800 text-base mb-0.5">{p.title}</div>
+            <div class="text-xs text-stone-400 font-medium uppercase tracking-wide mb-2">{p.subtitle}</div>
+            <p class="text-sm text-stone-500 leading-relaxed">{p.desc}</p>
+          </div>
+          <div class={`flex items-center gap-1 text-xs font-semibold text-stone-400 ${p.arrow} transition-colors mt-auto`}>
+            Explore research
+            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PRINCIPLES STRIP
+════════════════════════════════════════ -->
+<section class="bg-stone-50 border-b border-stone-100">
+  <div class="max-w-5xl mx-auto px-5 py-8">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+      {principles.map(p => (
+        <div class="flex gap-4 items-start">
+          <div class="w-10 h-10 flex-shrink-0 bg-white border border-stone-200 rounded-xl flex items-center justify-center text-xl shadow-sm">
+            {p.icon}
+          </div>
+          <div>
+            <div class="font-semibold text-slate-800 text-sm mb-1">{p.title}</div>
+            <p class="text-xs text-stone-500 leading-relaxed">{p.desc}</p>
+          </div>
         </div>
-        <svg class="w-4 h-4 text-stone-300 group-hover:text-amber-500 flex-shrink-0 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </a>
-
-      <!-- River Law -->
-      <a href="/category/river-law"
-         class="group flex items-center gap-4 p-4 rounded-2xl border border-stone-200 hover:border-blue-300 hover:bg-blue-50 active:bg-blue-100 transition-all">
-        <div class="w-11 h-11 flex-shrink-0 bg-blue-100 group-hover:bg-blue-200 rounded-xl flex items-center justify-center text-xl transition-colors">🌊</div>
-        <div class="min-w-0 flex-1">
-          <div class="font-semibold text-slate-800 text-sm">River Law</div>
-          <div class="text-xs text-stone-500 mt-0.5 truncate">Watercourse &amp; environmental</div>
-        </div>
-        <svg class="w-4 h-4 text-stone-300 group-hover:text-blue-500 flex-shrink-0 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </a>
-
-      <!-- International Law -->
-      <a href="/category/international-law"
-         class="group flex items-center gap-4 p-4 rounded-2xl border border-stone-200 hover:border-emerald-300 hover:bg-emerald-50 active:bg-emerald-100 transition-all">
-        <div class="w-11 h-11 flex-shrink-0 bg-emerald-100 group-hover:bg-emerald-200 rounded-xl flex items-center justify-center text-xl transition-colors">🏛️</div>
-        <div class="min-w-0 flex-1">
-          <div class="font-semibold text-slate-800 text-sm">International Law</div>
-          <div class="text-xs text-stone-500 mt-0.5 truncate">Treaties &amp; sovereignty</div>
-        </div>
-        <svg class="w-4 h-4 text-stone-300 group-hover:text-emerald-500 flex-shrink-0 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      </a>
-
+      ))}
     </div>
   </div>
 </section>
@@ -192,46 +275,46 @@ function fmt(iso: string) {
 {recent.length > 0 && (
 <section class="max-w-5xl mx-auto px-5 py-10 md:py-14">
 
-  <!-- section header -->
   <div class="flex items-center justify-between mb-6">
-    <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Recent Research</h2>
-    <a href="/" class="text-xs font-semibold text-stone-500 hover:text-slate-800 flex items-center gap-1 transition-colors">
+    <div>
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Recent Research</h2>
+      <p class="text-xs text-stone-400 mt-1">Latest peer-reviewed publications</p>
+    </div>
+    <a href="/categories" class="text-xs font-semibold text-stone-500 hover:text-slate-800 flex items-center gap-1 transition-colors border border-stone-200 hover:border-stone-300 px-3 py-1.5 rounded-lg">
       All articles
       <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     </a>
   </div>
 
-  <!-- article list — single column on mobile, 2-col on md+ -->
-  <div class="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-5">
+  <div class="space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-5">
     {recent.map((article) => (
       <a href={`/articles/${article.slug}`}
          class="group block bg-white rounded-2xl border border-stone-200 hover:border-stone-300 hover:shadow-lg active:scale-[.99] transition-all overflow-hidden">
-        <div class={`h-1 w-full ${strip[article.category]}`}></div>
-        <div class="p-5">
+        <div class={`h-1 w-full ${getStripClass(CATEGORIES[article.category]?.color)}`}></div>
+        <div class="p-5 flex flex-col h-full">
           <div class="flex items-center justify-between mb-3">
-            <span class={`inline-flex items-center gap-1.5 border text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide ${badge[article.category]}`}>
-              <span class={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot[article.category]}`}></span>
-              {CATEGORIES[article.category]?.label}
+            <span class={`inline-flex items-center gap-1.5 border text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide ${getBadgeClass(CATEGORIES[article.category]?.color)}`}>
+              {CATEGORIES[article.category]?.icon} {CATEGORIES[article.category]?.shortLabel}
             </span>
             <span class="text-xs text-stone-400 tabular-nums">{article.readTime} min</span>
           </div>
-          <h3 class="font-serif font-bold text-base sm:text-lg text-slate-900 leading-snug mb-2 line-clamp-2 group-hover:text-amber-800 transition-colors">
+          <h3 class="font-serif font-bold text-base text-slate-900 leading-snug mb-2 line-clamp-2 group-hover:text-amber-800 transition-colors">
             {article.title}
           </h3>
-          <p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-4">
+          <p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
             {article.excerpt}
           </p>
           <div class="flex items-center justify-between pt-4 border-t border-stone-100">
-            <div class="flex items-center gap-2.5 min-w-0">
+            <div class="flex items-center gap-2 min-w-0">
               <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
-                {article.author.charAt(article.author.lastIndexOf(' ') + 1)}
+                {article.author.charAt(0)}
               </div>
               <div class="min-w-0">
                 <div class="text-xs font-semibold text-slate-700 truncate">{article.author}</div>
                 <div class="text-xs text-stone-400">{fmt(article.publishedAt)}</div>
               </div>
             </div>
-            <span class="flex-shrink-0 ml-3 inline-flex items-center gap-1 text-xs font-semibold text-slate-600 group-hover:text-amber-700 transition-colors">
+            <span class="flex-shrink-0 ml-2 text-xs font-semibold text-stone-400 group-hover:text-amber-700 flex items-center gap-1 transition-colors">
               Read
               <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </span>
@@ -246,34 +329,100 @@ function fmt(iso: string) {
 
 
 <!-- ═══════════════════════════════════════
-     JOURNAL BANNER (CTA strip)
+     LATIN MAXIM PULL-QUOTE
 ════════════════════════════════════════ -->
-<section class="bg-slate-900 text-white">
-  <div class="max-w-5xl mx-auto px-5 py-10 md:py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
-    <div>
-      <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Open Access Journal</div>
-      <h3 class="font-serif text-xl sm:text-2xl font-bold mb-1">Free Legal Scholarship</h3>
-      <p class="text-slate-400 text-sm">Peer-reviewed articles on world law, river law &amp; international law — no paywall, ever.</p>
-    </div>
-    <div class="flex flex-row sm:flex-col gap-3 w-full sm:w-auto flex-shrink-0">
-      <a href="/about" class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-5 py-3 rounded-xl text-sm transition-colors w-full sm:w-auto">
-        About the Journal
-      </a>
-      <a href="/category/international-law" class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white px-5 py-3 rounded-xl text-sm transition-all w-full sm:w-auto">
-        Start Reading
-      </a>
-    </div>
+<section class="bg-amber-50 border-y border-amber-100">
+  <div class="max-w-3xl mx-auto px-5 py-10 text-center">
+    <div class="text-amber-300 text-5xl mb-4 font-serif leading-none select-none">"</div>
+    <blockquote class="font-serif text-xl sm:text-2xl font-bold text-slate-800 italic leading-snug mb-3">
+      Audi alteram partem
+    </blockquote>
+    <p class="text-stone-500 text-sm mb-1">Hear the other side</p>
+    <p class="text-xs text-stone-400 uppercase tracking-widest font-medium">A foundational principle of natural justice</p>
   </div>
 </section>
 
 
-<!-- empty state -->
-{all.length === 0 && (
-<div class="text-center py-24 px-5">
-  <div class="text-5xl mb-4">⚖️</div>
-  <p class="text-stone-500 text-lg mb-2">No articles yet.</p>
-  <a href="/admin" class="text-amber-700 underline underline-offset-4 text-sm">Publish your first article →</a>
-</div>
-)}
+<!-- ═══════════════════════════════════════
+     ALL FIELDS — compact category grid
+════════════════════════════════════════ -->
+<section class="max-w-5xl mx-auto px-5 py-10 md:py-14">
+
+  <div class="flex items-baseline gap-3 mb-6">
+    <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">All Research Fields</h2>
+    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">{allCategoryEntries.length} specialisations</span>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+    {allCategoryEntries.map(([slug, cat]) => (
+      <a href={`/category/${slug}`}
+         class={`group flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-stone-200 hover:border-stone-300 bg-white hover:shadow-sm active:scale-[.99] transition-all`}>
+        <span class="text-lg flex-shrink-0">{cat.icon}</span>
+        <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900 leading-snug transition-colors truncate">{cat.shortLabel}</span>
+      </a>
+    ))}
+  </div>
+
+  <div class="mt-4 text-center">
+    <a href="/categories" class="inline-flex items-center gap-2 text-sm font-semibold text-stone-500 hover:text-slate-800 transition-colors">
+      View all categories with descriptions
+      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     JOURNAL MISSION CTA
+════════════════════════════════════════ -->
+<section class="bg-slate-900 text-white">
+  <!-- decorative top line -->
+  <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
+  <div class="max-w-5xl mx-auto px-5 py-12 md:py-16">
+    <div class="md:grid md:grid-cols-2 md:gap-16 md:items-center">
+
+      <!-- left: mission -->
+      <div>
+        <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-3 flex items-center gap-2">
+          <span>⚖️</span> Our Mission
+        </div>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 leading-tight">
+          Legal knowledge belongs to everyone
+        </h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+          Lex Researcher is an open-access journal dedicated to advancing scholarship in international and comparative law. Founded by Lamia Akhter, every article is peer-reviewed, freely accessible, and written to inform practitioners, scholars, and citizens alike.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/about" class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">
+            About the Journal
+          </a>
+          <a href="/lamia-akhter" class="inline-flex items-center justify-center gap-2 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white px-5 py-3 rounded-xl text-sm transition-all">
+            Meet the Author
+          </a>
+        </div>
+      </div>
+
+      <!-- right: key facts -->
+      <div class="hidden md:block">
+        <div class="grid grid-cols-2 gap-4 mt-8 md:mt-0">
+          {[
+            { num: '15', label: 'Research Fields', sub: 'From IHL to space law' },
+            { num: '100%', label: 'Open Access', sub: 'No paywalls, ever' },
+            { num: '⚖️', label: 'Peer-Reviewed', sub: 'Rigorous scholarship' },
+            { num: '2026', label: 'Est. Volume 1', sub: 'ISSN 2026-LEX' },
+          ].map(f => (
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div class="font-serif text-2xl font-bold text-amber-400 mb-1">{f.num}</div>
+              <div class="text-sm font-semibold text-white">{f.label}</div>
+              <div class="text-xs text-slate-500 mt-0.5">{f.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 </Base>

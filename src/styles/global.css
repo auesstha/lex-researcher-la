@@ -4,4 +4,8 @@
   .serif {
     font-family: 'Playfair Display', Georgia, serif;
   }
+
+  a {
+    text-decoration: none;
+  }
 }
