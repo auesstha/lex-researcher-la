@@ -22,6 +22,23 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Patch dist/server/wrangler.json for Worker deployment
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = 'dist/server/wrangler.json';
+            const cfg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            delete cfg.assets;
+            delete cfg.pages_build_output_dir;
+            delete cfg.rules;
+            delete cfg.previews;
+            delete cfg.no_bundle;
+            cfg.assets = { directory: '../client' };
+            cfg.kv_namespaces = [{ binding: 'SESSION', id: 'a3dbc2f515da4a958ab91ad727a5ef03' }];
+            cfg.d1_databases = [{ binding: 'DB', database_name: 'lex-researcher-db', database_id: '13684dcc-92ad-4ad3-9626-ee5e6fdaf310' }];
+            fs.writeFileSync(path, JSON.stringify(cfg));
+          "
+
       - name: Deploy
         run: npx wrangler deploy
         env:
