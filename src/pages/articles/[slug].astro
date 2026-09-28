@@ -27,16 +27,20 @@ function inlineMd(text: string): string {
 type ArticleImages = Record<string, { src: string; alt: string }>;
 const ARTICLE_IMAGES: Record<string, ArticleImages> = {
   'new-york-polymarket-lawsuit-laws-explained': {
+    '__hero__': {
+      src: '/images/articles/new-york-polymarket-lawsuit-laws-explained/hero.jpg',
+      alt: 'New York State courthouse at dawn — setting for the $4.6B Polymarket prediction market lawsuit',
+    },
     'ny-penal-law-article-225-and-the-contest-of-chance-question': {
-      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/ny-penal-law-225-gambling-statute.jpg',
+      src: '/images/articles/new-york-polymarket-lawsuit-laws-explained/ny-penal-law-225-gambling-statute.jpg',
       alt: 'Open New York Penal Law statute book showing Article 225 gambling provisions alongside scales of justice',
     },
     'the-circuit-split-third-circuit-ninth-circuit-and-sdny-torres': {
-      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/circuit-split-federal-courts-map.jpg',
+      src: '/images/articles/new-york-polymarket-lawsuit-laws-explained/circuit-split-federal-courts-map.jpg',
       alt: 'Federal Court of Appeals building representing the Third Circuit in the CEA preemption circuit split',
     },
     'what-comes-next-supreme-court-and-industry-impact': {
-      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/supreme-court-prediction-markets.jpg',
+      src: '/images/articles/new-york-polymarket-lawsuit-laws-explained/supreme-court-prediction-markets.jpg',
       alt: 'United States Supreme Court building where certiorari on prediction market preemption is expected',
     },
   },
