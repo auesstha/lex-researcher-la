@@ -21,14 +21,44 @@ function inlineMd(text: string): string {
     );
 }
 
-type Block = { tag: 'h2' | 'h3' | 'p'; html: string };
+// ── Section image map ────────────────────────────────────────────────────────
+// Keys are slug-ified h2 text; values come from the image jobs CSV r2_url.
+// Add entries here as images are generated and uploaded.
+type ArticleImages = Record<string, { src: string; alt: string }>;
+const ARTICLE_IMAGES: Record<string, ArticleImages> = {
+  'new-york-polymarket-lawsuit-laws-explained': {
+    'ny-penal-law-article-225-and-the-contest-of-chance-question': {
+      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/ny-penal-law-225-gambling-statute.jpg',
+      alt: 'Open New York Penal Law statute book showing Article 225 gambling provisions alongside scales of justice',
+    },
+    'the-circuit-split-third-circuit-ninth-circuit-and-sdny-torres': {
+      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/circuit-split-federal-courts-map.jpg',
+      alt: 'Federal Court of Appeals building representing the Third Circuit in the CEA preemption circuit split',
+    },
+    'what-comes-next-supreme-court-and-industry-impact': {
+      src: 'https://images.lexresearcher.com/images/articles/new-york-polymarket-lawsuit-laws-explained/supreme-court-prediction-markets.jpg',
+      alt: 'United States Supreme Court building where certiorari on prediction market preemption is expected',
+    },
+  },
+};
+
+const sectionImages: ArticleImages = ARTICLE_IMAGES[article.slug] ?? {};
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+type Block = { tag: 'h2' | 'h3' | 'p'; html: string; id?: string };
 function parseContent(raw: string): Block[] {
   return raw
     .split('\n\n')
     .map(s => s.trim())
     .filter(Boolean)
     .map(block => {
-      if (block.startsWith('## '))  return { tag: 'h2' as const, html: inlineMd(block.slice(3).trim()) };
+      if (block.startsWith('## '))  {
+        const text = block.slice(3).trim();
+        return { tag: 'h2' as const, html: inlineMd(text), id: slugify(text) };
+      }
       if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()) };
       return { tag: 'p' as const, html: inlineMd(block) };
     });
@@ -56,12 +86,17 @@ const related = (await getPublishedArticles(Astro.locals))
 const canonicalURL = new URL(`/articles/${article.slug}`, Astro.url).href;
 const siteURL      = new URL('/', Astro.url).href;
 
+const heroImage = ARTICLE_IMAGES[article.slug]?.['__hero__'];
+const firstSectionImage = Object.values(ARTICLE_IMAGES[article.slug] ?? {})[0];
+const ogImage = heroImage?.src ?? firstSectionImage?.src ?? null;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': ['ScholarlyArticle', 'NewsArticle'],
   headline: article.title,
   description: article.excerpt,
   url: canonicalURL,
+  ...(ogImage ? { image: ogImage } : {}),
   datePublished: isoDate(article.publishedAt),
   dateModified:  isoDate(article.updatedAt),
   author: {
@@ -105,9 +140,13 @@ const jsonLd = {
     <meta property="article:modified_time"  content={isoDate(article.updatedAt)} />
     <meta property="article:author"         content={article.author} />
     <meta property="article:tag"            content={article.tags.join(', ')} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="675" />}
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content={article.title} />
     <meta name="twitter:description" content={article.excerpt} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
@@ -191,12 +230,44 @@ const jsonLd = {
     <!-- Color accent strip -->
     <div class={`h-0.5 w-16 rounded-full mb-8 ${strip}`}></div>
 
+    <!-- Hero image (if available) -->
+    {ARTICLE_IMAGES[article.slug]?.['__hero__'] && (
+      <figure class="mb-10 rounded-2xl overflow-hidden border border-stone-200 shadow-sm">
+        <img
+          src={ARTICLE_IMAGES[article.slug]['__hero__'].src}
+          alt={ARTICLE_IMAGES[article.slug]['__hero__'].alt}
+          width="1200" height="675"
+          class="w-full object-cover"
+          loading="eager"
+        />
+      </figure>
+    )}
+
     <!-- ── Article body ─────────────────────────────────────────────────── -->
     <article class="space-y-5">
       {blocks.map(block => {
-        if (block.tag === 'h2') return (
-          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mt-10 mb-3 pt-8 border-t border-stone-100 first:mt-0 first:pt-0 first:border-0" set:html={block.html} />
-        );
+        if (block.tag === 'h2') {
+          const img = block.id ? sectionImages[block.id] : undefined;
+          return (
+            <>
+              <h2 id={block.id} class="serif text-xl sm:text-2xl font-bold text-slate-900 mt-10 mb-3 pt-8 border-t border-stone-100 first:mt-0 first:pt-0 first:border-0" set:html={block.html} />
+              {img && (
+                <figure class="my-6 rounded-2xl overflow-hidden border border-stone-200 shadow-sm">
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    width="1200" height="675"
+                    class="w-full object-cover"
+                    loading="lazy"
+                  />
+                  <figcaption class="text-xs text-stone-400 text-center px-4 py-2 bg-stone-50 border-t border-stone-100">
+                    {img.alt}
+                  </figcaption>
+                </figure>
+              )}
+            </>
+          );
+        }
         if (block.tag === 'h3') return (
           <h3 class="serif text-lg font-bold text-slate-800 mt-7 mb-2" set:html={block.html} />
         );
