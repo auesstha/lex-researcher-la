@@ -83,6 +83,12 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
       Home
     </a>
 
+    <!-- All articles -->
+    <a href="/articles" onclick="closeDrawer()" class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/articles' ? 'bg-amber-900/40 text-amber-300' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      All Articles
+    </a>
+
     <!-- Browse all -->
     <a href="/categories" onclick="closeDrawer()" class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/categories' ? 'bg-amber-900/40 text-amber-300' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
@@ -178,6 +184,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
         </div>
       </div>
 
+      <a href="/articles" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${path === '/articles' ? 'text-slate-900 bg-stone-100' : 'text-stone-600 hover:text-slate-900 hover:bg-stone-50'}`}>Articles</a>
       <a href="/lamia-akhter" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${path === '/lamia-akhter' ? 'text-amber-700 bg-amber-50' : 'text-stone-600 hover:text-amber-700 hover:bg-amber-50'}`}>Lamia Akhter</a>
       <a href="/about" class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${path === '/about' ? 'text-slate-900 bg-stone-100' : 'text-stone-600 hover:text-slate-900 hover:bg-stone-50'}`}>About</a>
     </nav>

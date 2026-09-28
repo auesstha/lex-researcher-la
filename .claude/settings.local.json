@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Get-Process node | Stop-Process -Force\")",
+      "Bash(powershell:*)"
+    ]
+  }
+}
