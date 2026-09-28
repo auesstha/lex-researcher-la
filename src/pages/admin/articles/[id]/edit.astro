@@ -10,7 +10,7 @@ if (!isAuthenticated(Astro.request)) {
 }
 
 const { id } = Astro.params;
-let article = getArticleById(id!);
+let article = await getArticleById(Astro.locals, id!);
 if (!article) return Astro.redirect('/admin');
 
 let error = '';
@@ -31,7 +31,7 @@ if (Astro.request.method === 'POST') {
   if (!title || !slug || !category || !content || !author) {
     error = 'Please fill in all required fields (Title, Slug, Category, Author, Content).';
   } else {
-    saveArticle({ ...article, title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, updatedAt: new Date().toISOString() });
+    await saveArticle(Astro.locals, { ...article, title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, updatedAt: new Date().toISOString() });
     return Astro.redirect('/admin');
   }
 }

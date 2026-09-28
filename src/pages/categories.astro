@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import { CATEGORIES, CATEGORY_GROUPS, getPublishedArticles, getBadgeClass, getStripClass } from '../lib/articles';
 import type { CategorySlug } from '../lib/articles';
 
-const articles = getPublishedArticles();
+const articles = await getPublishedArticles(Astro.locals);
 
 // Count per category
 const countByCategory: Record<string, number> = {};

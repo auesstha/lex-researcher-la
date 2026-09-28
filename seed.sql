@@ -1,0 +1,46 @@
+INSERT INTO articles (id,title,slug,category,excerpt,content,author,authorTitle,tags,readTime,published,publishedAt,updatedAt) VALUES
+('1','The Doctrine of Sovereignty in Modern International Law','doctrine-of-sovereignty-modern-international-law','international-law','An examination of how sovereignty has evolved from the Westphalian model to contemporary norms shaped by human rights obligations and multilateral treaties.','The concept of sovereignty remains one of the most contested doctrines in international legal scholarship. Since the Peace of Westphalia in 1648, absolute territorial sovereignty has been the bedrock of the modern state system.
+
+The United Nations Charter in 1945 introduced a fundamental tension: Article 2(1) affirms the sovereign equality of all member states, while Article 2(7) prohibits interference in matters of domestic jurisdiction.
+
+The NATO intervention in Kosovo in 1999 gave rise to the Responsibility to Protect (R2P) doctrine, formally adopted at the 2005 World Summit. R2P posits that sovereignty is not merely a right but a responsibility.','Lamia Akhter','LLB Student & Legal Researcher','["sovereignty","international law","R2P","human rights"]',8,1,'2026-08-15T09:00:00Z','2026-08-15T09:00:00Z'),
+('2','Transboundary Water Rights and the Law of International Watercourses','transboundary-water-rights-international-watercourses','river-law','A research analysis of the 1997 UN Watercourses Convention and customary principles governing shared river systems, with focus on the Nile and Mekong basins.','Freshwater scarcity is emerging as one of the defining geopolitical challenges of the 21st century. The 1997 UN Convention on the Law of the Non-Navigational Uses of International Watercourses represents the most comprehensive codification of customary international water law.
+
+The UNWC enshrines two foundational and often competing principles: equitable and reasonable utilization (Article 5) and the obligation not to cause significant harm (Article 7).
+
+The Nile Basin presents a paradigmatic case. Ethiopia construction of the Grand Ethiopian Renaissance Dam (GERD) has challenged the allocation regime, with Egypt invoking prior use and historical rights.','Lamia Akhter','LLB Student & Legal Researcher','["river law","watercourses","Nile","Mekong","transboundary"]',10,1,'2026-08-20T10:30:00Z','2026-08-20T10:30:00Z'),
+('3','Universal Jurisdiction and the Prosecution of International Crimes','universal-jurisdiction-prosecution-international-crimes','world-law','An assessment of how national courts exercise universal jurisdiction over war crimes, crimes against humanity, and genocide.','Universal jurisdiction stands as one of the most ambitious and controversial doctrines in contemporary international law.
+
+The 1984 Convention Against Torture obligated state parties to establish jurisdiction over torture regardless of nationality under the aut dedere aut judicare principle.
+
+The Pinochet case (1998-1999), in which the UK House of Lords held that former Chilean dictator Augusto Pinochet could be extradited to Spain for acts of torture, marked a watershed moment.','Lamia Akhter','LLB Student & Legal Researcher','["universal jurisdiction","war crimes","ICC","international crimes"]',11,1,'2026-09-01T08:00:00Z','2026-09-01T08:00:00Z'),
+('4','The Right to Life Under International Human Rights Law','right-to-life-international-human-rights-law','human-rights-law','A doctrinal analysis of Article 6 of the ICCPR and its interpretation by the Human Rights Committee.','The right to life is the most fundamental of all human rights. Enshrined in Article 3 of the Universal Declaration of Human Rights and Article 6 of the ICCPR, it has generated an enormous body of treaty law and jurisprudence.
+
+The Human Rights Committee General Comment No. 36 (2019) clarifies that the right to life imposes three distinct obligations: the duty to refrain from arbitrary deprivation of life, the duty to protect individuals, and a duty to take positive measures.
+
+The extraterritorial application of Article 6 in situations of armed conflict remains deeply contested in international law.','Lamia Akhter','LLB Student & Legal Researcher','["human rights","ICCPR","right to life","HRC","death penalty"]',9,1,'2026-09-05T09:00:00Z','2026-09-05T09:00:00Z'),
+('5','The Geneva Conventions at 75: IHL Compliance in Modern Warfare','geneva-conventions-ihl-compliance-modern-warfare','humanitarian-law','Examining the enduring relevance and persistent violations of the four Geneva Conventions in contemporary armed conflicts.','The four Geneva Conventions of 1949 and their Additional Protocols of 1977 constitute the cornerstone of international humanitarian law.
+
+Common Article 3 prohibits murder, torture, cruel treatment, and outrages upon personal dignity. Yet the conflicts in Gaza, Sudan, and Myanmar have generated credible allegations of systematic violations.
+
+The distinction principle requiring parties to distinguish at all times between civilians and combatants is arguably the most fundamental rule of IHL.','Lamia Akhter','LLB Student & Legal Researcher','["IHL","Geneva Conventions","armed conflict","civilians","humanitarian law"]',10,1,'2026-09-10T08:00:00Z','2026-09-10T08:00:00Z'),
+('6','UNCLOS and the South China Sea Arbitration: Maritime Law at a Crossroads','unclos-south-china-sea-arbitration-maritime-law','maritime-law','An analysis of the landmark 2016 South China Sea arbitral award under UNCLOS Annex VII.','The United Nations Convention on the Law of the Sea (UNCLOS), often called the constitution of the oceans, entered into force in 1994 with 168 state parties.
+
+The 2016 Award in the South China Sea Arbitration (Philippines v. China) tested the limits of UNCLOS jurisdiction. The tribunal found that China historic rights claims within the nine-dash line were incompatible with UNCLOS.
+
+China rejected the arbitration, raising profound questions about the enforceability of international arbitral awards and the limits of compulsory dispute settlement.','Lamia Akhter','LLB Student & Legal Researcher','["UNCLOS","South China Sea","maritime law","arbitration","law of the sea"]',12,1,'2026-09-12T10:00:00Z','2026-09-12T10:00:00Z'),
+('7','The 1951 Refugee Convention: Protection Gaps and 21st-Century Challenges','1951-refugee-convention-protection-gaps','refugee-law','A critical assessment of the 1951 Refugee Convention and how climate displacement challenges its protective framework.','The 1951 Convention Relating to the Status of Refugees constitutes the cornerstone of the international refugee protection regime.
+
+The most acute contemporary challenge is climate displacement. The IPCC projects that climate change could displace between 200 million and 1 billion people by 2050, yet climate-driven displacement falls outside the Convention definition.
+
+The principle of non-refoulement, the prohibition on returning a person to a territory where they face serious risk of persecution, is widely recognised as a norm of customary international law.','Lamia Akhter','LLB Student & Legal Researcher','["refugee law","1951 Convention","non-refoulement","climate displacement","UNHCR"]',11,1,'2026-09-15T09:00:00Z','2026-09-15T09:00:00Z'),
+('8','WTO Dispute Settlement Reform and the Appellate Body Crisis','wto-dispute-settlement-reform-appellate-body-crisis','international-trade-law','An examination of the US blockade of Appellate Body appointments since 2017 and proposed reforms.','The World Trade Organization dispute settlement system was long regarded as the jewel in the crown of the multilateral trading system.
+
+The system entered crisis in 2017 when the United States began blocking the appointment of new Appellate Body members. By December 2019, the Appellate Body fell below its quorum of three members, effectively suspending operations.
+
+The dysfunction has accelerated fragmentation of international trade governance, with major trading powers turning to bilateral and regional dispute settlement arrangements.','Lamia Akhter','LLB Student & Legal Researcher','["WTO","trade law","Appellate Body","dispute settlement","GATT"]',10,1,'2026-09-18T09:00:00Z','2026-09-18T09:00:00Z'),
+('9','The Paris Agreement and Loss and Damage: A New Frontier in Environmental Law','paris-agreement-loss-damage-environmental-law','international-environmental-law','An analysis of the COP28 Loss and Damage Fund and international environmental liability for climate harm.','The Paris Agreement, adopted in December 2015, marked a paradigm shift in international climate governance, adopting a bottom-up architecture of nationally determined contributions.
+
+COP27 achieved a historic breakthrough with the agreement to establish a dedicated loss and damage fund, operationalised at COP28 in Dubai (2023) with initial pledges of approximately 700 million dollars.
+
+The tension between the Paris Agreement facilitative architecture and the urgent need for enforceable climate obligations reflects a deeper challenge in international environmental law.','Lamia Akhter','LLB Student & Legal Researcher','["Paris Agreement","climate law","loss and damage","environmental law","COP28"]',11,1,'2026-09-20T09:00:00Z','2026-09-20T09:00:00Z');

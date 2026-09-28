@@ -1,0 +1,25 @@
+globalThis.process ??= {};
+globalThis.process.env ??= {};
+import { t as __exportAll } from "./rolldown-runtime_D7vh-g_o.mjs";
+import { d as renderTemplate, f as maybeRenderHead, i as renderComponent } from "./server_BKqYvUrJ.mjs";
+import { t as createComponent } from "./compiler_BzXqPCge.mjs";
+import { t as $$Base } from "./Base_Gr6BRx0i.mjs";
+//#region src/pages/about.astro
+var about_exports = /* @__PURE__ */ __exportAll({
+	default: () => $$About,
+	file: () => $$file,
+	url: () => $$url
+});
+var $$About = createComponent(($$result, $$props, $$slots) => {
+	return renderTemplate`${renderComponent($$result, "Base", $$Base, {
+		"title": "About",
+		"description": "About Lex Researcher Journal — peer-reviewed research in world law, river law, and international law."
+	}, { "default": ($$result) => renderTemplate`${maybeRenderHead($$result)}<div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12 sm:py-20"><div class="max-w-3xl mx-auto px-4 sm:px-6"><div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-4">About the Journal</div><h1 class="serif text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">Lex Researcher</h1><p class="text-base sm:text-xl text-slate-300 leading-relaxed font-light max-w-2xl">A peer-reviewed digital journal advancing rigorous scholarship in world law, river and environmental law, and international legal frameworks.</p></div></div><div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-10 sm:space-y-14"><!-- Mission --><section><h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4">Mission</h2><p class="text-stone-600 leading-8 text-sm sm:text-base">Lex Researcher was founded on the conviction that high-quality legal scholarship should be openly accessible to practitioners, academics, policymakers, and engaged citizens worldwide. We publish original research, analytical essays, and doctrinal analyses across three core research areas.</p></section><!-- Research areas --><section><h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-5">Research Areas</h2><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><div class="border border-amber-200 bg-amber-50 rounded-2xl p-5"><div class="text-2xl sm:text-3xl mb-3">🌍</div><div class="font-bold text-amber-900 mb-2">World Law</div><p class="text-xs sm:text-sm text-amber-800 leading-relaxed">Comparative legal systems, constitutional frameworks, and the convergence of national legal traditions.</p></div><div class="border border-blue-200 bg-blue-50 rounded-2xl p-5"><div class="text-2xl sm:text-3xl mb-3">🌊</div><div class="font-bold text-blue-900 mb-2">River Law</div><p class="text-xs sm:text-sm text-blue-800 leading-relaxed">Transboundary watercourse governance, water rights, and environmental law in an era of climate stress.</p></div><div class="border border-emerald-200 bg-emerald-50 rounded-2xl p-5"><div class="text-2xl sm:text-3xl mb-3">🏛️</div><div class="font-bold text-emerald-900 mb-2">International Law</div><p class="text-xs sm:text-sm text-emerald-800 leading-relaxed">Treaty regimes, sovereignty doctrine, human rights, and the architecture of global governance.</p></div></div></section><!-- Standards --><section><h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4">Editorial Standards</h2><p class="text-stone-600 leading-8 text-sm sm:text-base">All submissions undergo double-blind peer review by subject-matter experts. We hold our authors to the highest standards of scholarly integrity, requiring full citation transparency, disclosure of potential conflicts of interest, and adherence to recognized research ethics protocols.</p></section><!-- CTA --><div class="bg-slate-900 rounded-2xl p-6 sm:p-8 text-center"><div class="text-2xl mb-3">⚖️</div><h3 class="serif text-lg sm:text-xl font-bold text-white mb-2">Explore Our Research</h3><p class="text-slate-400 text-sm mb-5">Dive into peer-reviewed legal scholarship across all three research areas.</p><div class="flex flex-col sm:flex-row gap-3 justify-center"><a href="/category/world-law" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">World Law</a><a href="/category/river-law" class="bg-blue-500 hover:bg-blue-400 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">River Law</a><a href="/category/international-law" class="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">International Law</a></div></div></div>` })}`;
+}, "C:/Users/Esstha/Music/law/lex-researcher-site/src/pages/about.astro", void 0);
+var $$file = "C:/Users/Esstha/Music/law/lex-researcher-site/src/pages/about.astro";
+var $$url = "/about";
+//#endregion
+//#region \0virtual:astro:page:src/pages/about@_@astro
+var page = () => about_exports;
+//#endregion
+export { page };

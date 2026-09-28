@@ -11,12 +11,12 @@ if (!isAuthenticated(Astro.request)) {
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
   if (form.get('action') === 'delete' && form.get('id')) {
-    deleteArticle(form.get('id') as string);
+    await deleteArticle(Astro.locals, form.get('id') as string);
   }
   return Astro.redirect('/admin');
 }
 
-const articles = getArticles().sort(
+const articles = (await getArticles(Astro.locals)).sort(
   (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
 );
 

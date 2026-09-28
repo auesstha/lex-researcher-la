@@ -28,7 +28,7 @@ if (Astro.request.method === 'POST') {
     error = 'Please fill in all required fields (Title, Slug, Category, Author, Content).';
   } else {
     const now = new Date().toISOString();
-    saveArticle({ id: Date.now().toString(), title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, publishedAt: now, updatedAt: now });
+    await saveArticle(Astro.locals, { id: Date.now().toString(), title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, publishedAt: now, updatedAt: now });
     return Astro.redirect('/admin');
   }
 }

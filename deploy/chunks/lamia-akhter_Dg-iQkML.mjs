@@ -1,0 +1,95 @@
+globalThis.process ??= {};
+globalThis.process.env ??= {};
+import { t as __exportAll } from "./rolldown-runtime_D7vh-g_o.mjs";
+import { C as createAstro, d as renderTemplate, f as maybeRenderHead, i as renderComponent, m as addAttribute } from "./server_BKqYvUrJ.mjs";
+import { t as createComponent } from "./compiler_BzXqPCge.mjs";
+import { t as CATEGORIES, u as getPublishedArticles } from "./articles_BDfAGTqd.mjs";
+import { t as $$Base } from "./Base_Gr6BRx0i.mjs";
+//#region src/pages/lamia-akhter.astro
+var lamia_akhter_exports = /* @__PURE__ */ __exportAll({
+	default: () => $$LamiaAkhter,
+	file: () => $$file,
+	url: () => $$url
+});
+createAstro("https://astro.build");
+var $$LamiaAkhter = createComponent(async ($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$LamiaAkhter;
+	const articles = (await getPublishedArticles(Astro.locals)).filter((a) => a.author === "Lamia Akhter").sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+	const badge = {
+		"world-law": "bg-amber-100   text-amber-800   border border-amber-200",
+		"river-law": "bg-blue-100    text-blue-800    border border-blue-200",
+		"international-law": "bg-emerald-100 text-emerald-800 border border-emerald-200"
+	};
+	const strip = {
+		"world-law": "bg-amber-400",
+		"river-law": "bg-blue-400",
+		"international-law": "bg-emerald-500"
+	};
+	function fmt(iso) {
+		return new Date(iso).toLocaleDateString("en-US", {
+			month: "long",
+			day: "numeric",
+			year: "numeric"
+		});
+	}
+	const expertise = [
+		{
+			label: "International Law",
+			icon: "🏛️",
+			desc: "Treaty regimes, sovereignty doctrine, and customary international law."
+		},
+		{
+			label: "River & Water Law",
+			icon: "🌊",
+			desc: "Transboundary watercourse governance, water rights, and environmental law."
+		},
+		{
+			label: "World Law",
+			icon: "🌍",
+			desc: "Comparative legal systems and constitutional frameworks."
+		},
+		{
+			label: "Human Rights",
+			icon: "⚖️",
+			desc: "International human rights standards and accountability mechanisms."
+		}
+	];
+	const timeline = [
+		{
+			year: "Present",
+			title: "Legal Researcher & Founder",
+			org: "Lex Researcher Journal",
+			type: "research",
+			desc: "Established and runs this open-access peer-level research journal covering international law, river law, and world law."
+		},
+		{
+			year: "Present",
+			title: "Legal Research Intern",
+			org: "Law Chambers (Dhaka)",
+			type: "intern",
+			desc: "Conducting legal research, drafting memoranda, and assisting senior advocates on international and constitutional law matters."
+		},
+		{
+			year: "Ongoing",
+			title: "Bachelor of Laws (LLB)",
+			org: "University of Law",
+			type: "education",
+			desc: "Pursuing LLB with focus on international law, environmental law, and comparative constitutional frameworks."
+		}
+	];
+	return renderTemplate`${renderComponent($$result, "Base", $$Base, {
+		"title": "Lamia Akhter — Legal Researcher",
+		"description": "Portfolio of Lamia Akhter — LLB student, legal research intern, and founder of Lex Researcher Journal."
+	}, { "default": ($$result) => renderTemplate`${maybeRenderHead($$result)}<section class="bg-slate-900 text-white"><div class="h-0.5 bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div><div class="max-w-5xl mx-auto px-5 py-12 md:py-20"><div class="flex flex-col md:flex-row md:items-center md:gap-12"><!-- Avatar --><div class="flex-shrink-0 mb-8 md:mb-0 flex md:block justify-center"><div class="relative"><div class="w-32 h-32 md:w-44 md:h-44 rounded-3xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-2xl"><span class="text-slate-900 font-black text-5xl md:text-7xl" style="font-family:'Playfair Display',serif">L</span></div><!-- verified dot --><div class="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full border-4 border-slate-900 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></div></div><!-- Info --><div class="text-center md:text-left"><!-- role pills --><div class="flex flex-wrap justify-center md:justify-start gap-2 mb-5"><span class="inline-flex items-center gap-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>LLB Student</span><span class="inline-flex items-center gap-1.5 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>Legal Intern</span><span class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Researcher</span></div><h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 leading-tight">Lamia Akhter</h1><p class="text-slate-400 text-base sm:text-lg mb-6 max-w-xl mx-auto md:mx-0 leading-relaxed">Founder of <span class="text-amber-400 font-semibold">Lex Researcher Journal</span>. LLB candidate passionate about international law, water rights, and legal accountability. Currently interning at a law chamber in Dhaka while conducting independent legal research.</p><!-- stat chips --><div class="flex flex-wrap justify-center md:justify-start gap-4 mb-7"><div class="text-center"><div class="text-2xl font-bold text-white">${articles.length}</div><div class="text-xs text-slate-500 uppercase tracking-wide">Articles</div></div><div class="w-px bg-slate-700 self-stretch"></div><div class="text-center"><div class="text-2xl font-bold text-white">3</div><div class="text-xs text-slate-500 uppercase tracking-wide">Research Areas</div></div><div class="w-px bg-slate-700 self-stretch"></div><div class="text-center"><div class="text-2xl font-bold text-white">1</div><div class="text-xs text-slate-500 uppercase tracking-wide">Journal Founded</div></div></div><!-- action buttons --><div class="flex flex-col sm:flex-row justify-center md:justify-start gap-3"><a href="#articles" class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">View Research<svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg></a><a href="/about" class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white px-6 py-3 rounded-xl text-sm transition-all">About the Journal</a></div></div></div></div></section><section class="bg-white border-b border-stone-100"><div class="max-w-5xl mx-auto px-5 py-10 md:py-12"><p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-5">Areas of Expertise</p><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">${expertise.map((e) => renderTemplate`<div class="bg-stone-50 border border-stone-200 rounded-2xl p-4"><div class="text-2xl mb-3">${e.icon}</div><div class="font-semibold text-slate-800 text-sm mb-1">${e.label}</div><div class="text-xs text-stone-500 leading-relaxed">${e.desc}</div></div>`)}</div></div></section><section class="max-w-5xl mx-auto px-5 py-10 md:py-14"><p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-6">Education & Experience</p><div class="relative"><!-- vertical line desktop --><div class="hidden md:block absolute left-[140px] top-0 bottom-0 w-px bg-stone-200"></div><div class="space-y-6">${timeline.map((item) => renderTemplate`<div class="md:grid md:grid-cols-[140px_1fr] md:gap-8 md:items-start"><!-- Year / label (desktop left, mobile top) --><div class="flex md:flex-col md:items-end items-center gap-3 mb-3 md:mb-0 md:pt-1"><span${addAttribute(`text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wide flex-shrink-0
+              ${item.type === "education" ? "bg-amber-100 text-amber-700" : item.type === "intern" ? "bg-blue-100   text-blue-700" : "bg-emerald-100 text-emerald-700"}`, "class")}>${item.year}</span></div><!-- Card --><div class="relative bg-white border border-stone-200 rounded-2xl p-5 md:ml-6"><!-- dot on the line --><div${addAttribute(`hidden md:block absolute -left-[29px] top-5 w-3 h-3 rounded-full border-2 border-white ring-2
+              ${item.type === "education" ? "bg-amber-400  ring-amber-200" : item.type === "intern" ? "bg-blue-400   ring-blue-200" : "bg-emerald-400 ring-emerald-200"}`, "class")}></div><div class="flex flex-wrap items-start justify-between gap-2 mb-2"><div><div class="font-bold text-slate-900 text-sm sm:text-base">${item.title}</div><div class="text-xs text-stone-500 mt-0.5 font-medium">${item.org}</div></div><span${addAttribute(`text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0
+                ${item.type === "education" ? "bg-amber-50  text-amber-600" : item.type === "intern" ? "bg-blue-50   text-blue-600" : "bg-emerald-50 text-emerald-600"}`, "class")}>${item.type === "education" ? "🎓 Education" : item.type === "intern" ? "💼 Internship" : "🔬 Research"}</span></div><p class="text-stone-500 text-sm leading-relaxed">${item.desc}</p></div></div>`)}</div></div></section><section id="articles" class="bg-stone-50 border-t border-stone-100 py-10 md:py-14"><div class="max-w-5xl mx-auto px-5"><div class="flex items-center justify-between mb-7"><div><p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-1">Published Work</p><h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Research Articles</h2></div><span class="text-sm text-stone-500">${articles.length} ${articles.length === 1 ? "article" : "articles"}</span></div>${articles.length === 0 ? renderTemplate`<div class="text-center py-16 text-stone-400"><div class="text-4xl mb-3">📝</div><p>No articles published yet.</p></div>` : renderTemplate`<div class="space-y-4">${articles.map((article) => renderTemplate`<a${addAttribute(`/articles/${article.slug}`, "href")} class="group block bg-white rounded-2xl border border-stone-200 hover:border-stone-300 hover:shadow-md active:scale-[.99] transition-all overflow-hidden"><div${addAttribute(`h-1 ${strip[article.category]}`, "class")}></div><div class="p-5 sm:p-6"><div class="flex flex-wrap items-center gap-3 mb-3"><span${addAttribute(`text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide ${badge[article.category]}`, "class")}>${CATEGORIES[article.category]?.label}</span><span class="text-xs text-stone-400">${article.readTime} min read</span><span class="text-xs text-stone-400 ml-auto">${fmt(article.publishedAt)}</span></div><h3 class="font-serif font-bold text-base sm:text-lg text-slate-900 leading-snug mb-2 group-hover:text-amber-800 transition-colors">${article.title}</h3><p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-4">${article.excerpt}</p><div class="flex items-center gap-2 text-xs text-stone-400">${article.tags.map((tag) => renderTemplate`<span class="bg-stone-100 px-2 py-0.5 rounded-full">${tag}</span>`)}<span class="ml-auto font-semibold text-slate-600 group-hover:text-amber-700 transition-colors flex items-center gap-1">Read Article<svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg></span></div></div></a>`)}</div>`}</div></section><section class="bg-slate-900 text-white"><div class="max-w-5xl mx-auto px-5 py-10 md:py-14"><div class="md:grid md:grid-cols-2 md:gap-12 md:items-center"><div><p class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Get in Touch</p><h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">Interested in legal research collaboration?</h2><p class="text-slate-400 leading-relaxed text-sm sm:text-base mb-6">I am open to academic collaboration, research partnerships, and discussion on topics in international law, environmental law, and human rights. Feel free to reach out.</p><div class="space-y-3"><div class="flex items-center gap-3 text-sm text-slate-300"><div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div><span>Available for academic correspondence</span></div><div class="flex items-center gap-3 text-sm text-slate-300"><div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div><span>Dhaka, Bangladesh</span></div><div class="flex items-center gap-3 text-sm text-slate-300"><div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div><span>LLB · International & Environmental Law</span></div></div></div><!-- Highlight card --><div class="mt-8 md:mt-0"><div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 space-y-4"><div class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Quick Profile</div><div class="flex items-center gap-3 py-3 border-b border-slate-700"><div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0"><span class="text-slate-900 font-black text-lg" style="font-family:'Playfair Display',serif">L</span></div><div><div class="font-bold text-white">Lamia Akhter</div><div class="text-xs text-slate-400">Founder, Lex Researcher Journal</div></div></div><div class="space-y-2.5"><div class="flex justify-between text-sm"><span class="text-slate-400">Degree</span><span class="text-white font-medium">LLB (Ongoing)</span></div><div class="flex justify-between text-sm"><span class="text-slate-400">Role</span><span class="text-white font-medium">Intern & Researcher</span></div><div class="flex justify-between text-sm"><span class="text-slate-400">Specialisation</span><span class="text-white font-medium">International Law</span></div><div class="flex justify-between text-sm"><span class="text-slate-400">Articles Published</span><span class="text-amber-400 font-bold">${articles.length}</span></div><div class="flex justify-between text-sm"><span class="text-slate-400">Journal</span><span class="text-emerald-400 font-medium flex items-center gap-1"><svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Lex Researcher</span></div></div><a href="#articles" class="block w-full text-center bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 rounded-xl text-sm transition-colors mt-2">Read Her Research</a></div></div></div></div></section>` })}`;
+}, "C:/Users/Esstha/Music/law/lex-researcher-site/src/pages/lamia-akhter.astro", void 0);
+var $$file = "C:/Users/Esstha/Music/law/lex-researcher-site/src/pages/lamia-akhter.astro";
+var $$url = "/lamia-akhter";
+//#endregion
+//#region \0virtual:astro:page:src/pages/lamia-akhter@_@astro
+var page = () => lamia_akhter_exports;
+//#endregion
+export { page };

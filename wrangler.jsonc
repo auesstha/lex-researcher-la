@@ -1,0 +1,13 @@
+{
+  "name": "lex-researcher",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lex-researcher-db",
+      "database_id": "13684dcc-92ad-4ad3-9626-ee5e6fdaf310"
+    }
+  ]
+}
