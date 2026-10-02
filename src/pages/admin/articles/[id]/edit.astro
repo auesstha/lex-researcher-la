@@ -14,6 +14,8 @@ let article = await getArticleById(Astro.locals, id!);
 if (!article) return Astro.redirect('/admin');
 
 let error = '';
+// Preserve submitted values on validation/save error
+let formValues: Record<string, string> | null = null;
 
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
@@ -28,13 +30,33 @@ if (Astro.request.method === 'POST') {
   const readTime    = parseInt(form.get('readTime') as string) || 5;
   const published   = form.get('published') === '1';
 
+  formValues = { title, slug, category, excerpt, content, author, authorTitle, tags: tags.join(', '), readTime: String(readTime), published: published ? '1' : '0' };
+
   if (!title || !slug || !category || !content || !author) {
     error = 'Please fill in all required fields (Title, Slug, Category, Author, Content).';
   } else {
-    await saveArticle(Astro.locals, { ...article, title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, updatedAt: new Date().toISOString() });
-    return Astro.redirect('/admin');
+    try {
+      await saveArticle(Astro.locals, { ...article, title, slug, category: category as Article['category'], excerpt, content, author, authorTitle, tags, readTime, published, updatedAt: new Date().toISOString() });
+      return Astro.redirect('/admin?saved=1');
+    } catch (e: any) {
+      error = `Save failed: ${e?.message ?? 'Unknown error. Check DB binding.'}`;
+    }
   }
 }
+
+// Use submitted values if available, otherwise original article
+const v = {
+  title:       formValues?.title       ?? article.title,
+  slug:        formValues?.slug        ?? article.slug,
+  category:    formValues?.category    ?? article.category,
+  excerpt:     formValues?.excerpt     ?? article.excerpt,
+  content:     formValues?.content     ?? article.content,
+  author:      formValues?.author      ?? article.author,
+  authorTitle: formValues?.authorTitle ?? article.authorTitle,
+  tags:        formValues?.tags        ?? article.tags.join(', '),
+  readTime:    formValues?.readTime    ?? String(article.readTime),
+  published:   formValues?.published   ?? (article.published ? '1' : '0'),
+};
 ---
 <AdminLayout title={`Edit Article`}>
 
@@ -62,7 +84,7 @@ if (Astro.request.method === 'POST') {
 
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">Title <span class="text-red-500">*</span></label>
-          <input type="text" name="title" required value={article.title}
+          <input type="text" name="title" required value={v.title}
             class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition" />
         </div>
 
@@ -70,7 +92,7 @@ if (Astro.request.method === 'POST') {
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">URL Slug <span class="text-red-500">*</span></label>
           <div class="flex items-stretch border border-stone-300 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-transparent transition">
             <span class="bg-stone-50 border-r border-stone-300 px-3 py-2.5 text-xs text-stone-400 font-mono flex items-center">/articles/</span>
-            <input type="text" name="slug" required value={article.slug}
+            <input type="text" name="slug" required value={v.slug}
               class="flex-1 px-3 py-2.5 text-sm font-mono focus:outline-none bg-white" />
           </div>
         </div>
@@ -78,11 +100,11 @@ if (Astro.request.method === 'POST') {
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Category <span class="text-red-500">*</span></label>
-            <CategorySelect selected={article.category} />
+            <CategorySelect selected={v.category} />
           </div>
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Read Time (minutes)</label>
-            <input type="number" name="readTime" min="1" max="60" value={article.readTime}
+            <input type="number" name="readTime" min="1" max="60" value={v.readTime}
               class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition" />
           </div>
         </div>
@@ -90,7 +112,7 @@ if (Astro.request.method === 'POST') {
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">Abstract / Excerpt</label>
           <textarea name="excerpt" rows="3"
-            class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition resize-none">{article.excerpt}</textarea>
+            class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition resize-none">{v.excerpt}</textarea>
         </div>
       </div>
 
@@ -303,19 +325,19 @@ Answer to the first FAQ question.">{article.content}</textarea>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Author Name <span class="text-red-500">*</span></label>
-            <input type="text" name="author" required value={article.author}
+            <input type="text" name="author" required value={v.author}
               class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition" />
           </div>
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Title / Affiliation</label>
-            <input type="text" name="authorTitle" value={article.authorTitle}
+            <input type="text" name="authorTitle" value={v.authorTitle}
               class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition" />
           </div>
         </div>
 
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tags</label>
-          <input type="text" name="tags" value={article.tags.join(', ')}
+          <input type="text" name="tags" value={v.tags}
             class="w-full px-4 py-2.5 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition" />
         </div>
 
@@ -323,7 +345,7 @@ Answer to the first FAQ question.">{article.content}</textarea>
           <label class="flex items-center gap-4 cursor-pointer select-none">
             <input type="hidden" name="published" value="0" />
             <div class="relative">
-              <input type="checkbox" name="published" value="1" id="pub-toggle" checked={article.published}
+              <input type="checkbox" name="published" value="1" id="pub-toggle" checked={v.published === '1'}
                 class="sr-only peer" />
               <div class="w-11 h-6 bg-stone-300 rounded-full peer-checked:bg-emerald-500 transition-colors"></div>
               <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>

@@ -178,3 +178,14 @@ export async function saveArticle(_locals: App.Locals, article: Article): Promis
 export async function deleteArticle(_locals: App.Locals, id: string): Promise<void> {
   await (getDB()).prepare('DELETE FROM articles WHERE id=?').bind(id).run();
 }
+
+export async function getSettings(_locals: App.Locals): Promise<Record<string, string>> {
+  const { results } = await (getDB()).prepare('SELECT key, value FROM site_settings').all();
+  const map: Record<string, string> = {};
+  for (const row of results as { key: string; value: string }[]) map[row.key] = row.value;
+  return map;
+}
+
+export async function saveSetting(_locals: App.Locals, key: string, value: string): Promise<void> {
+  await (getDB()).prepare('INSERT INTO site_settings (key, value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').bind(key, value).run();
+}
