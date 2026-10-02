@@ -378,6 +378,109 @@ const jsonLd = {
       </div>
     )}
 
+    <!-- ── Author Bio Card ─────────────────────────────────────────────────── -->
+    <div class="mt-10 sm:mt-14 rounded-3xl overflow-hidden border border-stone-200 shadow-sm author-card">
+      <!-- Top gradient bar -->
+      <div class="h-1.5 bg-gradient-to-r from-amber-500 via-amber-400 to-stone-300"></div>
+
+      <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7">
+
+          <!-- Avatar -->
+          <div class="flex-shrink-0 flex sm:block justify-center">
+            <div class="relative">
+              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-xl ring-4 ring-amber-500/20">
+                <span class="text-slate-900 font-black text-4xl sm:text-5xl serif">L</span>
+              </div>
+              <!-- verified -->
+              <div class="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-emerald-500 rounded-full border-3 border-slate-900 flex items-center justify-center shadow-md" style="border-width:3px">
+                <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="flex-1 text-center sm:text-left">
+            <!-- label -->
+            <p class="text-xs font-bold uppercase tracking-widest text-amber-400/80 mb-2">Written by</p>
+
+            <!-- name + pills row -->
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-3">
+              <h3 class="serif text-xl sm:text-2xl font-bold text-white leading-none">{article.author}</h3>
+              <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Verified Researcher
+              </span>
+            </div>
+
+            <!-- role pills -->
+            <div class="flex flex-wrap justify-center sm:justify-start gap-2 mb-4">
+              <span class="inline-flex items-center gap-1.5 bg-amber-500/15 text-amber-300 border border-amber-500/25 text-xs font-semibold px-2.5 py-1 rounded-full">
+                🎓 LLB Candidate
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-blue-500/15 text-blue-300 border border-blue-500/25 text-xs font-semibold px-2.5 py-1 rounded-full">
+                💼 Legal Research Intern
+              </span>
+              <span class="inline-flex items-center gap-1.5 bg-purple-500/15 text-purple-300 border border-purple-500/25 text-xs font-semibold px-2.5 py-1 rounded-full">
+                🔬 Journal Founder
+              </span>
+            </div>
+
+            <!-- bio -->
+            <p class="text-slate-400 text-sm leading-relaxed mb-5 max-w-lg mx-auto sm:mx-0">
+              Founder of <span class="text-amber-400 font-semibold">Lex Researcher Journal</span>. LLB candidate passionate about international law, water rights, and legal accountability. Interning at a law chamber in Dhaka while conducting independent legal research.
+            </p>
+
+            <!-- stats row -->
+            <div class="flex justify-center sm:justify-start gap-5 mb-5 text-center">
+              <div>
+                <div class="text-lg font-bold text-white">2</div>
+                <div class="text-xs text-slate-500 uppercase tracking-wide">Articles</div>
+              </div>
+              <div class="w-px bg-slate-700 self-stretch"></div>
+              <div>
+                <div class="text-lg font-bold text-white">3</div>
+                <div class="text-xs text-slate-500 uppercase tracking-wide">Focus Areas</div>
+              </div>
+              <div class="w-px bg-slate-700 self-stretch"></div>
+              <div>
+                <div class="text-lg font-bold text-white">Dhaka</div>
+                <div class="text-xs text-slate-500 uppercase tracking-wide">Based in</div>
+              </div>
+            </div>
+
+            <!-- action buttons -->
+            <div class="flex flex-col sm:flex-row justify-center sm:justify-start gap-3">
+              <a href="/lamia-akhter"
+                 class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-5 py-2.5 rounded-xl text-sm transition-colors shadow-lg shadow-amber-500/20">
+                View Full Profile
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </a>
+              <a href="/lamia-akhter#articles"
+                 class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 hover:text-white px-5 py-2.5 rounded-xl text-sm transition-all">
+                <svg class="w-4 h-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                All Research
+              </a>
+              <a href="mailto:research@lexresearcher.com"
+                 class="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-emerald-500/50 hover:bg-slate-800 text-slate-300 hover:text-emerald-300 px-5 py-2.5 rounded-xl text-sm transition-all">
+                <svg class="w-4 h-4 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                Contact
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- expertise chips -->
+        <div class="mt-6 pt-6 border-t border-slate-700/60 flex flex-wrap justify-center sm:justify-start gap-2">
+          <span class="text-xs text-slate-500 font-medium self-center mr-1">Expertise:</span>
+          {['International Law','River & Water Law','World Law','Human Rights','Constitutional Law'].map(area => (
+            <span class="text-xs bg-slate-700/60 hover:bg-slate-700 text-slate-300 border border-slate-600/50 px-3 py-1 rounded-full transition-colors">{area}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+
     <!-- Back link mobile -->
     <div class="mt-10 sm:hidden">
       <a href={`/category/${article.category}`} class="inline-flex items-center gap-2 text-sm font-medium text-stone-600 bg-white border border-stone-200 px-4 py-2.5 rounded-xl active:bg-stone-50">
