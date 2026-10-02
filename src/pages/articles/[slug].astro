@@ -233,26 +233,60 @@ const jsonLd = {
       </p>
 
       <!-- Author + meta strip -->
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 bg-stone-50 rounded-2xl p-4 sm:p-5 border border-stone-100">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 flex items-center justify-center text-white serif text-base sm:text-lg font-bold flex-shrink-0">
-            {article.author.charAt(0)}
+      <div class="flex items-center gap-3 sm:gap-4 bg-stone-50 rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5 border border-stone-100">
+
+        <!-- Avatar linking to profile -->
+        <a href="/lamia-akhter" title="View author profile" class="flex-shrink-0 group relative">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+            <span class="text-slate-900 font-black text-base serif">L</span>
           </div>
-          <div>
-            <a href="/lamia-akhter" class="font-semibold text-slate-900 hover:text-amber-700 transition-colors text-sm sm:text-base">{article.author}</a>
-            <div class="text-xs text-stone-500">{article.authorTitle}</div>
+          <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-stone-50 flex items-center justify-center">
+            <svg class="w-2 h-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </a>
+
+        <!-- Role + social icons -->
+        <div class="flex flex-col gap-1 min-w-0">
+          <span class="text-xs text-stone-500 truncate">{article.authorTitle}</span>
+          <div class="flex items-center gap-2">
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/in/lamia-akhter" target="_blank" rel="noopener noreferrer" title="LinkedIn"
+               class="w-6 h-6 flex items-center justify-center rounded-md bg-[#0077B5]/10 hover:bg-[#0077B5] text-[#0077B5] hover:text-white transition-all">
+              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <!-- X / Twitter -->
+            <a href="https://x.com/lamiaakhter_law" target="_blank" rel="noopener noreferrer" title="X (Twitter)"
+               class="w-6 h-6 flex items-center justify-center rounded-md bg-stone-900/8 hover:bg-stone-900 text-stone-700 hover:text-white transition-all">
+              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <!-- Profile link -->
+            <a href="/lamia-akhter"
+               class="flex items-center gap-1 text-xs font-medium text-amber-700 hover:text-amber-900 transition-colors">
+              Profile
+              <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </div>
-        <div class="flex items-center gap-4 sm:gap-6 sm:ml-auto text-xs text-stone-500 flex-wrap">
+
+        <!-- Divider -->
+        <div class="hidden sm:block w-px h-8 bg-stone-200 mx-1"></div>
+
+        <!-- Meta: published + read time -->
+        <div class="flex items-center gap-4 sm:gap-6 ml-auto text-xs text-stone-500">
           <div>
-            <div class="font-medium text-stone-700 text-xs uppercase tracking-wide mb-0.5">Published</div>
-            <time datetime={isoDate(article.publishedAt)}>{formatDate(article.publishedAt)}</time>
+            <div class="font-semibold text-stone-400 uppercase tracking-wider text-[10px] mb-0.5">Published</div>
+            <time datetime={isoDate(article.publishedAt)} class="text-stone-700 font-medium">{formatDate(article.publishedAt)}</time>
           </div>
-          <div>
-            <div class="font-medium text-stone-700 text-xs uppercase tracking-wide mb-0.5">Read time</div>
-            <div>{article.readTime} minutes</div>
+          <div class="hidden sm:block">
+            <div class="font-semibold text-stone-400 uppercase tracking-wider text-[10px] mb-0.5">Read time</div>
+            <div class="text-stone-700 font-medium">{article.readTime} min</div>
           </div>
         </div>
+
       </div>
     </header>
 
