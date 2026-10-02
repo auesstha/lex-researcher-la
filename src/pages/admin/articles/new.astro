@@ -93,15 +93,162 @@ if (Astro.request.method === 'POST') {
       </div>
 
       <!-- Body -->
-      <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xs font-bold text-stone-400 uppercase tracking-widest">Article Body</h2>
-          <span class="text-xs text-stone-400">Separate paragraphs with a blank line</span>
+      <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden">
+
+        <!-- Toolbar -->
+        <div class="border-b border-stone-200 bg-stone-50 px-4 py-2.5 flex flex-wrap items-center gap-1" id="md-toolbar">
+          <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider mr-1">Heading</span>
+          <button type="button" data-action="h1" title="Title (# )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H1</button>
+          <button type="button" data-action="h2" title="Section (## )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H2</button>
+          <button type="button" data-action="h3" title="Subsection (### )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H3</button>
+          <div class="w-px h-5 bg-stone-300 mx-1"></div>
+          <button type="button" data-action="bold" title="Bold (**text**)" class="toolbar-btn font-bold text-sm px-2.5 py-1.5">B</button>
+          <button type="button" data-action="italic" title="Italic (*text*)" class="toolbar-btn italic text-sm px-2.5 py-1.5">I</button>
+          <button type="button" data-action="link" title="Link [text](url)" class="toolbar-btn text-xs px-2.5 py-1.5">🔗 Link</button>
+          <div class="w-px h-5 bg-stone-300 mx-1"></div>
+          <button type="button" data-action="paragraph" title="Insert blank line (new paragraph)" class="toolbar-btn text-xs px-2.5 py-1.5">¶ Para</button>
+          <button type="button" data-action="image" title="Insert image" class="toolbar-btn text-xs px-2.5 py-1.5">🖼 Image</button>
+          <button type="button" data-action="faq-heading" title="Insert FAQ question" class="toolbar-btn text-xs px-2.5 py-1.5">❓ FAQ</button>
+          <div class="w-px h-5 bg-stone-300 mx-1"></div>
+          <button type="button" id="preview-toggle" class="toolbar-btn text-xs px-2.5 py-1.5 ml-auto">👁 Preview</button>
         </div>
-        <textarea name="content" rows="22" required
-          placeholder="Write the full article here…&#10;&#10;Begin each new paragraph with a blank line separating it from the previous one.&#10;&#10;You can include citations, case names, treaty references, and scholarly analysis."
-          class="w-full px-4 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition resize-y font-mono leading-relaxed"></textarea>
+
+        <div class="bg-amber-50 border-b border-amber-100 px-4 py-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-amber-700">
+          <span><code class="bg-amber-100 px-1 rounded">##</code> = Section heading</span>
+          <span><code class="bg-amber-100 px-1 rounded">###</code> = Sub-heading / FAQ question</span>
+          <span><code class="bg-amber-100 px-1 rounded">**text**</code> = Bold</span>
+          <span><code class="bg-amber-100 px-1 rounded">*text*</code> = Italic</span>
+          <span>Blank line = new paragraph</span>
+        </div>
+
+        <div class="relative">
+          <textarea id="md-editor" name="content" rows="28" required
+            class="w-full px-5 py-4 text-sm focus:outline-none resize-y font-mono leading-7 text-slate-800 placeholder-stone-300"
+            placeholder="Start writing your article here...
+
+## Section Heading
+
+Your paragraph text goes here. Leave a blank line between paragraphs.
+
+## Another Section
+
+More content...
+
+## Frequently Asked Questions
+
+### What is this article about?
+
+Answer to the first FAQ question."></textarea>
+          <div id="md-preview" class="hidden w-full min-h-[400px] px-5 py-4 text-sm leading-8 text-slate-800 overflow-auto border-t border-stone-100"></div>
+        </div>
+
+        <div class="border-t border-stone-100 px-5 py-2 flex items-center justify-between bg-stone-50">
+          <span class="text-xs text-stone-400"><span id="word-count">0</span> words · <span id="char-count">0</span> characters</span>
+          <span class="text-xs text-stone-400">Blank line = new paragraph</span>
+        </div>
       </div>
+
+      <style>{`
+        .toolbar-btn { border-radius:6px; border:1px solid transparent; color:#44403c; background:transparent; cursor:pointer; transition:all 0.1s; line-height:1; }
+        .toolbar-btn:hover { background:#e7e5e4; border-color:#d6d3d1; }
+        .toolbar-btn:active { background:#d6d3d1; }
+        #md-preview h1 { font-size:1.5rem; font-weight:700; margin:1.5rem 0 .5rem; font-family:'Playfair Display',serif; }
+        #md-preview h2 { font-size:1.2rem; font-weight:700; margin:1.5rem 0 .5rem; border-top:1px solid #e7e5e4; padding-top:1rem; font-family:'Playfair Display',serif; }
+        #md-preview h3 { font-size:1rem; font-weight:700; margin:1rem 0 .25rem; }
+        #md-preview p  { margin:.75rem 0; color:#374151; }
+        #md-preview strong { font-weight:700; }
+        #md-preview em { font-style:italic; }
+        #md-preview a  { color:#92400e; text-decoration:underline; }
+        #md-preview img { max-width:100%; border-radius:12px; margin:1rem 0; }
+      `}</style>
+
+      <script>{`
+        const editor = document.getElementById('md-editor');
+        const preview = document.getElementById('md-preview');
+        const toggle = document.getElementById('preview-toggle');
+        const wordEl = document.getElementById('word-count');
+        const charEl = document.getElementById('char-count');
+
+        function updateCount() {
+          const txt = editor.value;
+          charEl.textContent = txt.length;
+          wordEl.textContent = txt.trim() ? txt.trim().split(/\\s+/).length : 0;
+        }
+        editor.addEventListener('input', updateCount);
+
+        function insert(before, after = '', placeholder = 'text') {
+          const s = editor.selectionStart, e = editor.selectionEnd;
+          const sel = editor.value.slice(s, e) || placeholder;
+          editor.setRangeText(before + sel + after, s, e, 'select');
+          editor.focus(); updateCount();
+        }
+
+        function insertLine(prefix) {
+          const s = editor.selectionStart;
+          const lineStart = editor.value.lastIndexOf('\\n', s - 1) + 1;
+          const lineEnd = editor.value.indexOf('\\n', s);
+          const end = lineEnd === -1 ? editor.value.length : lineEnd;
+          const stripped = editor.value.slice(lineStart, end).replace(/^#{1,3}\\s?/, '');
+          editor.setRangeText(prefix + stripped, lineStart, end, 'end');
+          editor.focus();
+        }
+
+        document.getElementById('md-toolbar').addEventListener('click', e => {
+          const btn = e.target.closest('[data-action]');
+          if (!btn) return;
+          const action = btn.dataset.action;
+          if      (action === 'h1')        insertLine('# ');
+          else if (action === 'h2')        insertLine('## ');
+          else if (action === 'h3')        insertLine('### ');
+          else if (action === 'bold')      insert('**', '**', 'bold text');
+          else if (action === 'italic')    insert('*', '*', 'italic text');
+          else if (action === 'link')      insert('[', '](https://)', 'link text');
+          else if (action === 'paragraph') insert('\\n\\n', '', '');
+          else if (action === 'image') {
+            const alt = prompt('Image alt text:', 'Image description');
+            const src = prompt('Image URL or path:', '/images/articles/');
+            if (src) insert('', '', '![' + (alt||'image') + '](' + src + ')');
+          }
+          else if (action === 'faq-heading') {
+            const q = prompt('FAQ question:', 'What is…?');
+            if (q) insert('\\n\\n### ' + q + '\\n\\n', '', 'Answer goes here.');
+          }
+        });
+
+        editor.addEventListener('keydown', e => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); insert('**','**','bold text'); }
+          if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); insert('*','*','italic text'); }
+        });
+
+        function renderPreview(md) {
+          return md
+            .replace(/^# (.+)$/gm,  '<h1>$1</h1>')
+            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+            .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+            .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')
+            .replace(/\\*(.+?)\\*/g,   '<em>$1</em>')
+            .replace(/!\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<img src="$2" alt="$1">')
+            .replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g,  '<a href="$2" target="_blank">$1</a>')
+            .split(/\\n\\n+/)
+            .map(b => b.startsWith('<h') || b.startsWith('<img') ? b : '<p>' + b.replace(/\\n/g,' ') + '</p>')
+            .join('\\n');
+        }
+
+        let previewing = false;
+        toggle.addEventListener('click', () => {
+          previewing = !previewing;
+          if (previewing) {
+            preview.innerHTML = renderPreview(editor.value);
+            preview.classList.remove('hidden');
+            editor.classList.add('hidden');
+            toggle.textContent = '✏️ Edit';
+          } else {
+            preview.classList.add('hidden');
+            editor.classList.remove('hidden');
+            toggle.textContent = '👁 Preview';
+          }
+        });
+      `}</script>
 
       <!-- Author & Meta -->
       <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-5">
