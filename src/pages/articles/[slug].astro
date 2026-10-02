@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getPublishedArticles, getArticleBySlug, CATEGORIES, getBadgeClass, getStripClass } from '../../lib/articles';
+import { getPublishedArticles, getArticleBySlug, CATEGORIES, getBadgeClass, getStripClass, getBannerClass } from '../../lib/articles';
 
 const { slug } = Astro.params;
 const article = await getArticleBySlug(Astro.locals, slug!);
@@ -52,19 +52,21 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-type Block = { tag: 'h2' | 'h3' | 'p'; html: string; id?: string };
+type Block = { tag: 'h2' | 'h3' | 'p'; html: string; id?: string; faq?: boolean };
 function parseContent(raw: string): Block[] {
+  let inFaq = false;
   return raw
     .split('\n\n')
     .map(s => s.trim())
     .filter(Boolean)
     .map(block => {
-      if (block.startsWith('## '))  {
+      if (block.startsWith('## ')) {
         const text = block.slice(3).trim();
+        inFaq = /frequently asked questions|faq/i.test(text);
         return { tag: 'h2' as const, html: inlineMd(text), id: slugify(text) };
       }
-      if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()) };
-      return { tag: 'p' as const, html: inlineMd(block) };
+      if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq };
+      return { tag: 'p' as const, html: inlineMd(block), faq: inFaq };
     });
 }
 
@@ -295,6 +297,8 @@ const jsonLd = {
             </>
           );
         }
+        if (block.tag === 'h3' && block.faq) return null;
+        if (block.tag === 'p' && block.faq) return null;
         if (block.tag === 'h3') return (
           <h3 class="serif text-lg font-bold text-slate-800 mt-7 mb-2" set:html={block.html} />
         );
@@ -303,6 +307,66 @@ const jsonLd = {
         );
       })}
     </article>
+
+    <!-- ── FAQ Accordion ──────────────────────────────────────────────────── -->
+    {faqs.length > 0 && (
+      <section class="mt-12 sm:mt-16" id="faq">
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-6 sm:mb-8">
+          <div class={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold ${getBannerClass(cat?.color)}`}>?</div>
+          <div>
+            <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 leading-tight">Frequently Asked Questions</h2>
+            <p class="text-xs text-stone-400 mt-0.5">{faqs.length} questions answered</p>
+          </div>
+        </div>
+
+        <!-- Accordion items -->
+        <div class="space-y-3">
+          {faqs.map((faq, i) => (
+            <details class="faq-item group rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <summary class="flex items-start gap-4 px-5 py-4 sm:px-6 sm:py-5 cursor-pointer list-none select-none">
+                <!-- Number badge -->
+                <span class={`flex-shrink-0 mt-0.5 w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center ${getBannerClass(cat?.color)}`}>
+                  {i + 1}
+                </span>
+                <!-- Question -->
+                <span class="flex-1 serif text-sm sm:text-base font-semibold text-slate-800 group-open:text-slate-900 pr-2 leading-snug" set:html={faq.question} />
+                <!-- Chevron -->
+                <span class="flex-shrink-0 mt-0.5 w-5 h-5 text-stone-400 group-open:text-stone-700 transition-transform group-open:rotate-180">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </summary>
+              <!-- Answer -->
+              <div class="px-5 pb-5 sm:px-6 sm:pb-6 pt-0">
+                <div class="ml-10 pl-0.5 border-l-2 border-stone-100 pl-4">
+                  <p class="text-stone-600 text-sm sm:text-base leading-7" set:html={faq.answer} />
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <style>{`
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item[open] {
+        border-color: rgb(214 211 209);
+        background: linear-gradient(to bottom, #fff 0%, #fafaf9 100%);
+      }
+      .faq-item[open] summary {
+        border-bottom: 1px solid rgb(231 229 228);
+      }
+      details.faq-item > div {
+        animation: faq-open 0.2s ease;
+      }
+      @keyframes faq-open {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    `}</style>
 
     <!-- Tags -->
     {article.tags.length > 0 && (
