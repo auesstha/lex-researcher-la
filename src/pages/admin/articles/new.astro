@@ -96,49 +96,41 @@ if (Astro.request.method === 'POST') {
       <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden">
 
         <!-- Toolbar -->
-        <div class="border-b border-stone-200 bg-stone-50 px-4 py-2.5 flex flex-wrap items-center gap-1" id="md-toolbar">
-          <span class="text-xs text-stone-400 font-semibold uppercase tracking-wider mr-1">Heading</span>
-          <button type="button" data-action="h1" title="Title (# )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H1</button>
-          <button type="button" data-action="h2" title="Section (## )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H2</button>
-          <button type="button" data-action="h3" title="Subsection (### )" class="toolbar-btn font-bold text-xs px-2.5 py-1.5">H3</button>
-          <div class="w-px h-5 bg-stone-300 mx-1"></div>
-          <button type="button" data-action="bold" title="Bold (**text**)" class="toolbar-btn font-bold text-sm px-2.5 py-1.5">B</button>
-          <button type="button" data-action="italic" title="Italic (*text*)" class="toolbar-btn italic text-sm px-2.5 py-1.5">I</button>
-          <button type="button" data-action="link" title="Link [text](url)" class="toolbar-btn text-xs px-2.5 py-1.5">🔗 Link</button>
-          <div class="w-px h-5 bg-stone-300 mx-1"></div>
-          <button type="button" data-action="paragraph" title="Insert blank line (new paragraph)" class="toolbar-btn text-xs px-2.5 py-1.5">¶ Para</button>
-          <button type="button" data-action="image" title="Insert image" class="toolbar-btn text-xs px-2.5 py-1.5">🖼 Image</button>
-          <button type="button" data-action="faq-heading" title="Insert FAQ question" class="toolbar-btn text-xs px-2.5 py-1.5">❓ FAQ</button>
-          <div class="w-px h-5 bg-stone-300 mx-1"></div>
+        <div class="border-b border-stone-200 bg-stone-50 px-3 py-2 flex flex-wrap items-center gap-0.5" id="md-toolbar">
+          <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider mr-0.5">H</span>
+          <button type="button" data-action="h1" title="Heading 1 (Ctrl+1)" class="toolbar-btn font-bold text-xs px-2 py-1.5">H1</button>
+          <button type="button" data-action="h2" title="Heading 2 (Ctrl+2)" class="toolbar-btn font-bold text-xs px-2 py-1.5">H2</button>
+          <button type="button" data-action="h3" title="Heading 3 (Ctrl+3)" class="toolbar-btn font-bold text-xs px-2 py-1.5">H3</button>
+          <div class="w-px h-5 bg-stone-300 mx-1.5"></div>
+          <button type="button" data-action="bold"          title="Bold (Ctrl+B)"      class="toolbar-btn font-bold text-sm px-2 py-1.5">B</button>
+          <button type="button" data-action="italic"        title="Italic (Ctrl+I)"    class="toolbar-btn italic text-sm px-2 py-1.5">I</button>
+          <button type="button" data-action="underline"     title="Underline (Ctrl+U)" class="toolbar-btn underline text-sm px-2 py-1.5">U</button>
+          <button type="button" data-action="strikethrough" title="Strikethrough"      class="toolbar-btn line-through text-xs px-2 py-1.5">S</button>
+          <div class="w-px h-5 bg-stone-300 mx-1.5"></div>
+          <button type="button" data-action="blockquote" title="Blockquote"      class="toolbar-btn text-xs px-2 py-1.5">&ldquo; Quote</button>
+          <button type="button" data-action="code-block" title="Code block"      class="toolbar-btn text-xs font-mono px-2 py-1.5">&lt;/&gt;</button>
+          <button type="button" data-action="ul"         title="Bullet list"     class="toolbar-btn text-xs px-2 py-1.5">• List</button>
+          <button type="button" data-action="ol"         title="Numbered list"   class="toolbar-btn text-xs px-2 py-1.5">1. List</button>
+          <button type="button" data-action="hr"         title="Divider line"    class="toolbar-btn text-xs px-2 py-1.5">— HR</button>
+          <div class="w-px h-5 bg-stone-300 mx-1.5"></div>
+          <button type="button" data-action="link"        title="Insert link"       class="toolbar-btn text-xs px-2 py-1.5">🔗</button>
+          <button type="button" data-action="image"       title="Insert image"      class="toolbar-btn text-xs px-2 py-1.5">🖼</button>
+          <button type="button" data-action="paragraph"   title="Reset to paragraph" class="toolbar-btn text-xs px-2 py-1.5">¶</button>
+          <button type="button" data-action="faq-heading" title="Insert FAQ heading" class="toolbar-btn text-xs px-2 py-1.5">❓</button>
           <button type="button" id="preview-toggle" class="toolbar-btn text-xs px-2.5 py-1.5 ml-auto">👁 Preview</button>
         </div>
 
         <div class="bg-amber-50 border-b border-amber-100 px-4 py-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-amber-700">
-          <span><code class="bg-amber-100 px-1 rounded">##</code> = Section heading</span>
-          <span><code class="bg-amber-100 px-1 rounded">###</code> = Sub-heading / FAQ question</span>
-          <span><code class="bg-amber-100 px-1 rounded">**text**</code> = Bold</span>
-          <span><code class="bg-amber-100 px-1 rounded">*text*</code> = Italic</span>
-          <span>Blank line = new paragraph</span>
+          <span><strong>H1/H2/H3</strong> = Ctrl+1/2/3 · converts current line</span>
+          <span>Select text → <strong>B</strong> / <em>I</em> / <u>U</u> to format</span>
+          <span><strong>¶</strong> resets to body text</span>
+          <span>Ctrl+B / Ctrl+I / Ctrl+U</span>
         </div>
 
         <div class="relative">
-          <textarea id="md-editor" name="content" rows="28" required
-            class="w-full px-5 py-4 text-sm focus:outline-none resize-y font-mono leading-7 text-slate-800 placeholder-stone-300"
-            placeholder="Start writing your article here...
-
-## Section Heading
-
-Your paragraph text goes here. Leave a blank line between paragraphs.
-
-## Another Section
-
-More content...
-
-## Frequently Asked Questions
-
-### What is this article about?
-
-Answer to the first FAQ question."></textarea>
+          <div id="md-editor" contenteditable="true" spellcheck="true"
+            class="wysiwyg-editor w-full px-5 py-4 focus:outline-none leading-8 min-h-[420px] overflow-auto"></div>
+          <input type="hidden" name="content" id="md-content-hidden">
           <div id="md-preview" class="hidden w-full min-h-[400px] px-5 py-4 text-sm leading-8 text-slate-800 overflow-auto border-t border-stone-100"></div>
         </div>
 
@@ -149,106 +141,414 @@ Answer to the first FAQ question."></textarea>
       </div>
 
       <style>{`
+        /* ── Toolbar ─────────────────────────────────────────────── */
         .toolbar-btn { border-radius:6px; border:1px solid transparent; color:#44403c; background:transparent; cursor:pointer; transition:all 0.1s; line-height:1; }
         .toolbar-btn:hover { background:#e7e5e4; border-color:#d6d3d1; }
         .toolbar-btn:active { background:#d6d3d1; }
-        #md-preview h1 { font-size:1.5rem; font-weight:700; margin:1.5rem 0 .5rem; font-family:'Playfair Display',serif; }
-        #md-preview h2 { font-size:1.2rem; font-weight:700; margin:1.5rem 0 .5rem; border-top:1px solid #e7e5e4; padding-top:1rem; font-family:'Playfair Display',serif; }
-        #md-preview h3 { font-size:1rem; font-weight:700; margin:1rem 0 .25rem; }
-        #md-preview p  { margin:.75rem 0; color:#374151; }
-        #md-preview strong { font-weight:700; }
-        #md-preview em { font-style:italic; }
-        #md-preview a  { color:#92400e; text-decoration:underline; }
-        #md-preview img { max-width:100%; border-radius:12px; margin:1rem 0; }
+        .toolbar-btn--active { background:#1e293b !important; color:#fff !important; border-color:#1e293b !important; }
+
+        /* ── Editor — ID selector beats Tailwind preflight ───────── */
+        #md-editor { outline:none !important; font-family:'Georgia',serif !important; font-size:1rem !important; color:#1e293b !important; line-height:1.85 !important; border:none; background:#fff; }
+        #md-editor:empty::before { content:'Start writing your article here\2026'; color:#d6d3d1; pointer-events:none; display:block; }
+        #md-editor ::selection { background:#fef3c7; color:#0f172a; }
+
+        #md-editor h1 { font-family:'Playfair Display',Georgia,serif !important; font-size:1.8rem !important; font-weight:700 !important; color:#0f172a !important; margin:1.5rem 0 0.5rem !important; line-height:1.2 !important; border-bottom:2px solid #e7e5e4 !important; padding-bottom:0.35rem !important; display:block !important; }
+        #md-editor h2 { font-family:'Playfair Display',Georgia,serif !important; font-size:1.35rem !important; font-weight:700 !important; color:#0f172a !important; margin:1.5rem 0 0.4rem !important; line-height:1.3 !important; border-left:3px solid #f59e0b !important; padding-left:0.75rem !important; display:block !important; }
+        #md-editor h3 { font-family:'Playfair Display',Georgia,serif !important; font-size:1.1rem !important; font-weight:700 !important; color:#1e293b !important; margin:1.2rem 0 0.3rem !important; display:block !important; }
+        #md-editor p  { margin:0.6rem 0 !important; color:#374151 !important; line-height:1.9 !important; display:block !important; }
+        #md-editor div { margin:0.4rem 0 !important; color:#374151 !important; line-height:1.9 !important; display:block !important; }
+        #md-editor blockquote { border-left:3px solid #f59e0b !important; margin:1rem 0 !important; padding:0.5rem 0 0.5rem 1rem !important; color:#57534e !important; font-style:italic !important; background:#fffbeb !important; border-radius:0 8px 8px 0 !important; display:block !important; }
+        #md-editor pre { background:#f1f5f9 !important; border:1px solid #e2e8f0 !important; border-radius:8px !important; padding:0.75rem 1rem !important; font-family:monospace !important; font-size:0.85rem !important; margin:0.8rem 0 !important; overflow-x:auto !important; white-space:pre-wrap !important; display:block !important; }
+        #md-editor code { background:#f1f5f9 !important; border-radius:4px !important; padding:0.1em 0.35em !important; font-family:monospace !important; font-size:0.85em !important; color:#be185d !important; }
+        #md-editor ul { list-style:disc !important; margin:0.5rem 0 0.5rem 1.75rem !important; display:block !important; }
+        #md-editor ol { list-style:decimal !important; margin:0.5rem 0 0.5rem 1.75rem !important; display:block !important; }
+        #md-editor li { margin:0.25rem 0 !important; line-height:1.7 !important; color:#374151 !important; }
+        #md-editor hr { border:none !important; border-top:2px solid #e7e5e4 !important; margin:1.5rem 0 !important; display:block !important; }
+        #md-editor strong, #md-editor b { font-weight:700 !important; color:#0f172a !important; }
+        #md-editor em, #md-editor i { font-style:italic !important; }
+        #md-editor u { text-decoration:underline !important; text-decoration-color:#f59e0b !important; }
+        #md-editor del, #md-editor s { text-decoration:line-through !important; color:#78716c !important; }
+        #md-editor a { color:#92400e !important; text-decoration:underline !important; }
+        #md-editor img { max-width:100% !important; border-radius:10px !important; margin:0.75rem 0 !important; display:block !important; border:1px solid #e7e5e4 !important; }
+
+        /* ── Preview pane — article typography ───────────────────── */
+        #md-preview { font-family:'Georgia',serif; font-size:1rem; color:#374151; line-height:1.85; background:#fff; }
+        #md-preview h1 { font-family:'Playfair Display',Georgia,serif; font-size:1.9rem; font-weight:700; color:#0f172a; margin:0 0 1rem; line-height:1.2; border-bottom:2px solid #e7e5e4; padding-bottom:0.5rem; }
+        #md-preview h2 { font-family:'Playfair Display',Georgia,serif; font-size:1.4rem; font-weight:700; color:#0f172a; margin:2.2rem 0 0.6rem; border-left:3px solid #f59e0b; padding-left:0.75rem; line-height:1.3; }
+        #md-preview h3 { font-family:'Playfair Display',Georgia,serif; font-size:1.1rem; font-weight:700; color:#1e293b; margin:1.6rem 0 0.4rem; }
+        #md-preview p  { margin:0.9rem 0; color:#374151; line-height:1.9; }
+        #md-preview blockquote { border-left:3px solid #f59e0b; margin:1.2rem 0; padding:0.6rem 1rem; color:#57534e; font-style:italic; background:#fffbeb; border-radius:0 8px 8px 0; }
+        #md-preview pre { background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:0.75rem 1rem; font-family:monospace; font-size:0.85rem; margin:1rem 0; overflow-x:auto; }
+        #md-preview code { background:#f1f5f9; border-radius:4px; padding:0.1em 0.35em; font-family:monospace; font-size:0.85em; color:#be185d; }
+        #md-preview ul { list-style:disc; margin:0.6rem 0 0.6rem 1.75rem; }
+        #md-preview ol { list-style:decimal; margin:0.6rem 0 0.6rem 1.75rem; }
+        #md-preview li { margin:0.3rem 0; color:#374151; line-height:1.75; }
+        #md-preview hr { border:none; border-top:2px solid #e7e5e4; margin:2rem 0; }
+        #md-preview strong, #md-preview b { font-weight:700; color:#0f172a; }
+        #md-preview em, #md-preview i { font-style:italic; }
+        #md-preview u { text-decoration:underline; text-decoration-color:#f59e0b; }
+        #md-preview del { text-decoration:line-through; color:#78716c; }
+        #md-preview a { color:#92400e; text-decoration:underline; }
+        #md-preview img { max-width:100%; border-radius:12px; margin:1.2rem 0; border:1px solid #e7e5e4; display:block; }
       `}</style>
 
-      <script>{`
-        const editor = document.getElementById('md-editor');
-        const preview = document.getElementById('md-preview');
-        const toggle = document.getElementById('preview-toggle');
-        const wordEl = document.getElementById('word-count');
-        const charEl = document.getElementById('char-count');
+      <script is:inline>
+        (function () {
+          var editor      = document.getElementById('md-editor');
+          var hiddenInput = document.getElementById('md-content-hidden');
+          var preview     = document.getElementById('md-preview');
+          var toggle      = document.getElementById('preview-toggle');
+          var wordEl      = document.getElementById('word-count');
+          var charEl      = document.getElementById('char-count');
+          if (!editor || !hiddenInput) return;
 
-        function updateCount() {
-          const txt = editor.value;
-          charEl.textContent = txt.length;
-          wordEl.textContent = txt.trim() ? txt.trim().split(/\\s+/).length : 0;
-        }
-        editor.addEventListener('input', updateCount);
+          // Use <p> as the default block so Chrome doesn't insert bare <div>s
+          try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch(e){}
 
-        function insert(before, after = '', placeholder = 'text') {
-          const s = editor.selectionStart, e = editor.selectionEnd;
-          const sel = editor.value.slice(s, e) || placeholder;
-          editor.setRangeText(before + sel + after, s, e, 'select');
-          editor.focus(); updateCount();
-        }
-
-        function insertLine(prefix) {
-          const s = editor.selectionStart;
-          const lineStart = editor.value.lastIndexOf('\\n', s - 1) + 1;
-          const lineEnd = editor.value.indexOf('\\n', s);
-          const end = lineEnd === -1 ? editor.value.length : lineEnd;
-          const stripped = editor.value.slice(lineStart, end).replace(/^#{1,3}\\s?/, '');
-          editor.setRangeText(prefix + stripped, lineStart, end, 'end');
-          editor.focus();
-        }
-
-        document.getElementById('md-toolbar').addEventListener('click', e => {
-          const btn = e.target.closest('[data-action]');
-          if (!btn) return;
-          const action = btn.dataset.action;
-          if      (action === 'h1')        insertLine('# ');
-          else if (action === 'h2')        insertLine('## ');
-          else if (action === 'h3')        insertLine('### ');
-          else if (action === 'bold')      insert('**', '**', 'bold text');
-          else if (action === 'italic')    insert('*', '*', 'italic text');
-          else if (action === 'link')      insert('[', '](https://)', 'link text');
-          else if (action === 'paragraph') insert('\\n\\n', '', '');
-          else if (action === 'image') {
-            const alt = prompt('Image alt text:', 'Image description');
-            const src = prompt('Image URL or path:', '/images/articles/');
-            if (src) insert('', '', '![' + (alt||'image') + '](' + src + ')');
+          // ── Saved selection (restored before execCommand calls) ───────────────
+          var savedRange = null;
+          editor.addEventListener('blur', function() {
+            var sel = window.getSelection();
+            if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
+              savedRange = sel.getRangeAt(0).cloneRange();
+            }
+          });
+          function restoreSel() {
+            if (!savedRange) return;
+            var sel = window.getSelection();
+            if (sel) { sel.removeAllRanges(); sel.addRange(savedRange); }
           }
-          else if (action === 'faq-heading') {
-            const q = prompt('FAQ question:', 'What is…?');
-            if (q) insert('\\n\\n### ' + q + '\\n\\n', '', 'Answer goes here.');
+
+          // ── Inline → HTML ─────────────────────────────────────────────────────
+          function inlineToHtml(t) {
+            return t
+              .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+              .replace(/\[([^\]]+)\]\(([^)]+)\)/g,  '<a href="$2">$1</a>')
+              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*(.+?)\*/g,     '<em>$1</em>')
+              .replace(/~~(.+?)~~/g,     '<del>$1</del>')
+              .replace(/`([^`]+)`/g,     '<code>$1</code>');
           }
-        });
 
-        editor.addEventListener('keydown', e => {
-          if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); insert('**','**','bold text'); }
-          if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); insert('*','*','italic text'); }
-        });
-
-        function renderPreview(md) {
-          return md
-            .replace(/^# (.+)$/gm,  '<h1>$1</h1>')
-            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-            .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-            .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')
-            .replace(/\\*(.+?)\\*/g,   '<em>$1</em>')
-            .replace(/!\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<img src="$2" alt="$1">')
-            .replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g,  '<a href="$2" target="_blank">$1</a>')
-            .split(/\\n\\n+/)
-            .map(b => b.startsWith('<h') || b.startsWith('<img') ? b : '<p>' + b.replace(/\\n/g,' ') + '</p>')
-            .join('\\n');
-        }
-
-        let previewing = false;
-        toggle.addEventListener('click', () => {
-          previewing = !previewing;
-          if (previewing) {
-            preview.innerHTML = renderPreview(editor.value);
-            preview.classList.remove('hidden');
-            editor.classList.add('hidden');
-            toggle.textContent = '✏️ Edit';
-          } else {
-            preview.classList.add('hidden');
-            editor.classList.remove('hidden');
-            toggle.textContent = '👁 Preview';
+          // ── Markdown → HTML ───────────────────────────────────────────────────
+          function mdToHtml(md) {
+            var lines = md.split('\n'), html = '', i = 0;
+            while (i < lines.length) {
+              var line = lines[i];
+              if (line.trim() === '```') {
+                var code = ''; i++;
+                while (i < lines.length && lines[i].trim() !== '```') { code += lines[i] + '\n'; i++; }
+                html += '<pre><code>' + code.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</code></pre>';
+                i++; continue;
+              }
+              if (/^---+$/.test(line.trim())) { html += '<hr>'; i++; continue; }
+              if (line.startsWith('### ')) { html += '<h3>' + inlineToHtml(line.slice(4).trim()) + '</h3>'; i++; continue; }
+              if (line.startsWith('## '))  { html += '<h2>' + inlineToHtml(line.slice(3).trim()) + '</h2>'; i++; continue; }
+              if (line.startsWith('# '))   { html += '<h1>' + inlineToHtml(line.slice(2).trim()) + '</h1>'; i++; continue; }
+              if (line.startsWith('> ')) {
+                var bq = '';
+                while (i < lines.length && lines[i].startsWith('> ')) { bq += lines[i].slice(2) + '\n'; i++; }
+                html += '<blockquote>' + inlineToHtml(bq.trim()) + '</blockquote>'; continue;
+              }
+              if (/^[-*] /.test(line)) {
+                html += '<ul>';
+                while (i < lines.length && /^[-*] /.test(lines[i])) { html += '<li>' + inlineToHtml(lines[i].slice(2).trim()) + '</li>'; i++; }
+                html += '</ul>'; continue;
+              }
+              if (/^\d+\. /.test(line)) {
+                html += '<ol>';
+                while (i < lines.length && /^\d+\. /.test(lines[i])) { html += '<li>' + inlineToHtml(lines[i].replace(/^\d+\. /,'').trim()) + '</li>'; i++; }
+                html += '</ol>'; continue;
+              }
+              if (line.trim() === '') { i++; continue; }
+              var para = '';
+              while (i < lines.length && lines[i].trim() !== '' && !/^[#>]/.test(lines[i]) && !/^[-*] /.test(lines[i]) && !/^\d+\. /.test(lines[i]) && !/^---+$/.test(lines[i].trim()) && lines[i].trim() !== '```') {
+                para += (para ? '<br>' : '') + inlineToHtml(lines[i]); i++;
+              }
+              if (para) html += '<p>' + para + '</p>';
+            }
+            return html;
           }
-        });
-      `}</script>
+
+          // ── HTML → Markdown ───────────────────────────────────────────────────
+          function nodeToMd(node) {
+            if (node.nodeType === 3) return node.textContent;
+            if (node.nodeType !== 1) return '';
+            var tag = node.tagName.toLowerCase();
+            var inner = Array.from(node.childNodes).map(nodeToMd).join('');
+            switch (tag) {
+              case 'br':         return '\n';
+              case 'p':          return inner.trim() ? inner.trim() + '\n\n' : '';
+              case 'div':        return inner.trim() ? inner.trim() + '\n\n' : '';
+              case 'h1':         return '# '   + inner.trim() + '\n\n';
+              case 'h2':         return '## '  + inner.trim() + '\n\n';
+              case 'h3':         return '### ' + inner.trim() + '\n\n';
+              case 'blockquote': return '> ' + inner.trim().replace(/\n/g, '\n> ') + '\n\n';
+              case 'pre':        return '```\n' + (node.innerText || inner).trim() + '\n```\n\n';
+              case 'ul':         return inner + '\n';
+              case 'ol':         return inner + '\n';
+              case 'li':         return '- ' + inner.trim() + '\n';
+              case 'hr':         return '---\n\n';
+              case 'strong': case 'b':   return '**' + inner + '**';
+              case 'em':     case 'i':   return '*' + inner + '*';
+              case 'u':          return '__' + inner + '__';
+              case 'del':    case 's':   return '~~' + inner + '~~';
+              case 'code':       return '`' + inner + '`';
+              case 'a':          return '[' + inner + '](' + (node.getAttribute('href') || '') + ')';
+              case 'img':        return '![' + (node.getAttribute('alt') || 'image') + '](' + (node.getAttribute('src') || '') + ')';
+              case 'span': {
+                // Chrome execCommand creates <span style="..."> instead of semantic tags
+                var st = node.getAttribute('style') || '';
+                var r = inner;
+                if (/font-weight\s*:\s*(bold|700)/i.test(st))          r = '**' + r + '**';
+                if (/font-style\s*:\s*italic/i.test(st))               r = '*' + r + '*';
+                if (/text-decoration[^;]*underline/i.test(st))         r = '__' + r + '__';
+                if (/text-decoration[^;]*line-through/i.test(st))      r = '~~' + r + '~~';
+                return r;
+              }
+              default:           return inner;
+            }
+          }
+
+          function htmlToMd() {
+            var tmp = document.createElement('div');
+            tmp.innerHTML = editor.innerHTML;
+            return Array.from(tmp.childNodes).map(nodeToMd).join('').replace(/\n{3,}/g, '\n\n').trim();
+          }
+
+          // ── Apply block format (reliable) ─────────────────────────────────────
+          function applyBlock(tag) {
+            editor.focus();
+            var sel = window.getSelection();
+            if (!sel || !sel.rangeCount || !editor.contains(sel.anchorNode)) {
+              var el = document.createElement(tag);
+              el.innerHTML = '<br>';
+              editor.appendChild(el);
+              var r = document.createRange();
+              r.selectNodeContents(el); r.collapse(false);
+              sel.removeAllRanges(); sel.addRange(r);
+              updateCount(); updateActiveStates(); return;
+            }
+            var node = sel.getRangeAt(0).startContainer;
+            while (node && node !== editor) {
+              if (node.nodeType === 1 && /^(P|H[1-6]|DIV|BLOCKQUOTE|PRE|LI)$/i.test(node.tagName)) break;
+              node = node.parentNode;
+            }
+            if (!node || node === editor) {
+              document.execCommand('formatBlock', false, tag);
+              updateCount(); updateActiveStates(); return;
+            }
+            var newEl = document.createElement(tag);
+            newEl.innerHTML = node.innerHTML || '<br>';
+            node.parentNode.replaceChild(newEl, node);
+            var r2 = document.createRange();
+            r2.selectNodeContents(newEl); r2.collapse(false);
+            sel.removeAllRanges(); sel.addRange(r2);
+            updateCount(); updateActiveStates();
+          }
+
+          // ── Active toolbar states ─────────────────────────────────────────────
+          function updateActiveStates() {
+            var sel = window.getSelection();
+            var toolbar = document.getElementById('md-toolbar');
+            if (!sel || !toolbar) return;
+            var node = sel.anchorNode, blockTag = '';
+            while (node && node !== editor) {
+              if (node.nodeType === 1) { blockTag = node.tagName.toUpperCase(); break; }
+              node = node.parentNode;
+            }
+            toolbar.querySelectorAll('[data-action]').forEach(function (btn) {
+              var a = btn.dataset.action, active = false;
+              if (a === 'h1' && blockTag === 'H1') active = true;
+              if (a === 'h2' && blockTag === 'H2') active = true;
+              if (a === 'h3' && blockTag === 'H3') active = true;
+              if (a === 'blockquote' && blockTag === 'BLOCKQUOTE') active = true;
+              if (a === 'code-block' && blockTag === 'PRE') active = true;
+              try {
+                if (a === 'bold'      && document.queryCommandState('bold'))      active = true;
+                if (a === 'italic'    && document.queryCommandState('italic'))    active = true;
+                if (a === 'underline' && document.queryCommandState('underline')) active = true;
+              } catch(e){}
+              btn.classList.toggle('toolbar-btn--active', active);
+            });
+          }
+
+          // ── Word count ────────────────────────────────────────────────────────
+          function updateCount() {
+            var txt = editor.innerText || '';
+            if (charEl) charEl.textContent = txt.length;
+            if (wordEl) wordEl.textContent = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+          }
+          editor.addEventListener('input', updateCount);
+          editor.addEventListener('keyup', updateActiveStates);
+          editor.addEventListener('mouseup', updateActiveStates);
+          updateCount();
+
+          // ── Sync to hidden input on submit ────────────────────────────────────
+          var form = editor.closest('form');
+          if (form) {
+            form.addEventListener('submit', function (e) {
+              var md = htmlToMd();
+              if (!md) { e.preventDefault(); editor.focus(); alert('Content cannot be empty.'); return; }
+              hiddenInput.value = md;
+            });
+          }
+
+          // ── Toolbar clicks ────────────────────────────────────────────────────
+          var toolbar = document.getElementById('md-toolbar');
+          if (toolbar) {
+            toolbar.addEventListener('mousedown', function (e) { e.preventDefault(); });
+            toolbar.addEventListener('click', function (e) {
+              var btn = e.target.closest('[data-action]');
+              if (!btn) return;
+              var action = btn.dataset.action;
+              editor.focus();
+              restoreSel();
+              switch (action) {
+                case 'h1':         applyBlock('H1'); break;
+                case 'h2':         applyBlock('H2'); break;
+                case 'h3':         applyBlock('H3'); break;
+                case 'paragraph':  applyBlock('P');  break;
+                case 'blockquote': applyBlock('BLOCKQUOTE'); break;
+                case 'code-block': applyBlock('PRE'); break;
+                case 'bold':          document.execCommand('bold');   updateActiveStates(); break;
+                case 'italic':        document.execCommand('italic'); updateActiveStates(); break;
+                case 'underline':     document.execCommand('underline'); updateActiveStates(); break;
+                case 'strikethrough': document.execCommand('strikeThrough'); break;
+                case 'ul': document.execCommand('insertUnorderedList'); break;
+                case 'ol': document.execCommand('insertOrderedList'); break;
+                case 'hr': document.execCommand('insertHTML', false, '<hr><p><br></p>'); break;
+                case 'link': {
+                  var url = prompt('URL:', 'https://');
+                  if (url) document.execCommand('createLink', false, url);
+                  break;
+                }
+                case 'image': {
+                  var alt = prompt('Alt text:', 'Image description');
+                  var src = prompt('Image URL:', '/images/articles/');
+                  if (src) document.execCommand('insertHTML', false, '<img src="' + src + '" alt="' + (alt||'image') + '"><p><br></p>');
+                  break;
+                }
+                case 'faq-heading': {
+                  var q = prompt('FAQ question:', 'What is\u2026?');
+                  if (q) document.execCommand('insertHTML', false, '<h3>' + q + '</h3><p>Answer goes here.</p>');
+                  break;
+                }
+              }
+              updateCount();
+            });
+          }
+
+          // ── Keyboard shortcuts ────────────────────────────────────────────────
+          editor.addEventListener('keydown', function (e) {
+            var mod = e.ctrlKey || e.metaKey;
+            if (mod && e.key === 'b') { e.preventDefault(); document.execCommand('bold');      updateActiveStates(); }
+            if (mod && e.key === 'i') { e.preventDefault(); document.execCommand('italic');    updateActiveStates(); }
+            if (mod && e.key === 'u') { e.preventDefault(); document.execCommand('underline'); updateActiveStates(); }
+            if (mod && e.key === '1') { e.preventDefault(); applyBlock('H1'); }
+            if (mod && e.key === '2') { e.preventDefault(); applyBlock('H2'); }
+            if (mod && e.key === '3') { e.preventDefault(); applyBlock('H3'); }
+          });
+
+          // ── Preview (rendered HTML) ───────────────────────────────────────────
+          var previewing = false;
+          if (toggle) {
+            toggle.addEventListener('click', function () {
+              previewing = !previewing;
+              if (previewing) {
+                preview.innerHTML = mdToHtml(htmlToMd());
+                preview.style.whiteSpace = '';
+                preview.style.fontFamily = '';
+                preview.style.fontSize = '';
+                preview.classList.remove('hidden');
+                editor.style.display = 'none';
+                toggle.textContent = '\u270F\uFE0F Edit';
+              } else {
+                preview.classList.add('hidden');
+                editor.style.display = '';
+                toggle.textContent = '\uD83D\uDC41 Preview';
+              }
+            });
+          }
+
+          // ── Image panel hook ──────────────────────────────────────────────────
+          window.__wysiwyg_insert_image = function (url, alt) {
+            if (!url) return;
+            editor.focus();
+            document.execCommand('insertHTML', false, '<img src="' + url + '" alt="' + (alt||'image') + '"><p><br></p>');
+            updateCount();
+          };
+        })();
+      </script>
+
+      <!-- Article Images -->
+      <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4" id="images-panel">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-bold text-stone-400 uppercase tracking-widest">Article Images</h2>
+          <span class="text-xs text-stone-400">Enter a URL then click Insert to add it to the editor</span>
+        </div>
+
+        <div class="space-y-3" id="img-slots">
+          <!-- slots rendered by JS -->
+        </div>
+
+        <p class="text-xs text-stone-400">
+          Tip: host images in <code class="bg-stone-100 px-1 rounded">/public/images/articles/</code> and reference them as <code class="bg-stone-100 px-1 rounded">/images/articles/filename.jpg</code>
+        </p>
+      </div>
+
+      <script is:inline>
+        (function () {
+          var MAX_SLOTS = 6;
+          var slotsEl = document.getElementById('img-slots');
+          if (!slotsEl) return;
+
+          function insertImageToEditor(url, alt) {
+            if (typeof window.__wysiwyg_insert_image === 'function') {
+              window.__wysiwyg_insert_image(url, alt);
+            }
+          }
+
+          function buildSlot(n) {
+            var row = document.createElement('div');
+            row.className = 'flex flex-col sm:flex-row gap-2 items-start sm:items-center';
+            row.innerHTML =
+              '<span class="text-xs font-semibold text-stone-400 w-6 shrink-0 mt-2.5 sm:mt-0">' + n + '</span>' +
+              '<input type="url" placeholder="https://… or /images/articles/photo.jpg"' +
+              '  class="flex-1 px-3 py-2 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition font-mono" />' +
+              '<input type="text" placeholder="Alt text (description)"' +
+              '  class="w-full sm:w-48 px-3 py-2 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition" />' +
+              '<button type="button"' +
+              '  class="shrink-0 px-3 py-2 bg-slate-900 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition whitespace-nowrap">Insert</button>';
+
+            var urlInput = row.querySelectorAll('input')[0];
+            var altInput = row.querySelectorAll('input')[1];
+            var btn      = row.querySelector('button');
+
+            btn.addEventListener('click', function () {
+              var url = urlInput.value.trim();
+              var alt = altInput.value.trim();
+              if (!url) { urlInput.focus(); return; }
+              insertImageToEditor(url, alt);
+            });
+
+            // pressing Enter in URL field moves to alt
+            urlInput.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter') { e.preventDefault(); altInput.focus(); }
+            });
+            // pressing Enter in alt field inserts
+            altInput.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter') { e.preventDefault(); btn.click(); }
+            });
+
+            return row;
+          }
+
+          for (var i = 1; i <= MAX_SLOTS; i++) {
+            slotsEl.appendChild(buildSlot(i));
+          }
+        })();
+      </script>
 
       <!-- Author & Meta -->
       <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-5">

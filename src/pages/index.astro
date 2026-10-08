@@ -7,7 +7,7 @@ const all = (await getPublishedArticles(Astro.locals)).sort(
 );
 
 const featured = all[0];
-const recent   = all.slice(1, 4);
+const recent   = all.slice(1);
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -60,20 +60,395 @@ const principles = [
 
 const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGORIES[keyof typeof CATEGORIES]][];
 ---
+<style>
+  /* ── Scales balancing sway ── */
+  @keyframes scales-sway {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(4deg); }
+    75%  { transform: rotate(-4deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .animate-scales { animation: scales-sway 5s ease-in-out infinite; transform-origin: 50% 10px; }
+
+  /* ── 3D card tilt (mouse follow via JS) ── */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    will-change: transform;
+  }
+  .tilt-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+
+  /* ── Counter number pop ── */
+  @keyframes num-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+  .counter-num { animation: num-pop 0.6s cubic-bezier(.34,1.56,.64,1) both; }
+  .counter-num-d1 { animation-delay: 0.15s; }
+  .counter-num-d2 { animation-delay: 0.30s; }
+  .counter-num-d3 { animation-delay: 0.45s; }
+  .counter-num-d4 { animation-delay: 0.60s; }
+
+  /* ── Animated wave behind Latin maxim ── */
+  @keyframes wave-move {
+    0%   { transform: translateX(0)    scaleY(1); }
+    50%  { transform: translateX(-4%)  scaleY(1.06); }
+    100% { transform: translateX(0)    scaleY(1); }
+  }
+  .maxim-wave { animation: wave-move 7s ease-in-out infinite; transform-origin: bottom; }
+  .maxim-wave-2 { animation: wave-move 9s 1s ease-in-out infinite reverse; transform-origin: bottom; }
+
+  /* ── Pillar card border glow on hover ── */
+  .pillar-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .pillar-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(251,191,36,0), rgba(251,191,36,0.4), rgba(251,191,36,0));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+  }
+  .pillar-glow:hover::before { opacity: 1; }
+
+  /* ── Category chip float on hover ── */
+  .cat-chip {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .cat-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  /* ── Pulsing amber ring around quote mark ── */
+  @keyframes ring-pulse {
+    0%, 100% { transform: scale(1);   opacity: 0.3; }
+    50%       { transform: scale(1.15); opacity: 0.6; }
+  }
+  .quote-ring { animation: ring-pulse 3s ease-in-out infinite; }
+
+  /* ── Section title underline reveal ── */
+  .home-heading { position: relative; display: inline-block; }
+  .home-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    height: 3px; width: 0%;
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    border-radius: 2px;
+    transition: width 0.7s ease;
+  }
+  .home-heading.h-visible::after { width: 100%; }
+
+  /* ── CTA facts card entrance ── */
+  @keyframes fact-rise {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+  .fact-card { animation: fact-rise 0.5s ease both; }
+  .fact-card-d1 { animation-delay: 0.1s; }
+  .fact-card-d2 { animation-delay: 0.2s; }
+  .fact-card-d3 { animation-delay: 0.3s; }
+  .fact-card-d4 { animation-delay: 0.4s; }
+
+  /* ── Fade up entrance ── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up         { animation: fade-up 0.65s ease both; }
+  .animate-fade-up-d1      { animation: fade-up 0.65s 0.12s ease both; }
+  .animate-fade-up-d2      { animation: fade-up 0.65s 0.24s ease both; }
+  .animate-fade-up-d3      { animation: fade-up 0.65s 0.36s ease both; }
+
+  /* ── Scroll-reveal (JS adds .revealed) ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.18s; }
+  .reveal-d3 { transition-delay: 0.28s; }
+
+  /* ── Ticker marquee ── */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker-track { animation: marquee 28s linear infinite; white-space: nowrap; will-change: transform; }
+  .ticker-track:hover { animation-play-state: paused; }
+
+  /* ── Quote zoom-in ── */
+  @keyframes quote-in {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .reveal-quote.revealed { animation: quote-in 0.6s ease both; opacity: 1; transform: none; }
+
+  /* ── Gavel stamp (decorative ⚖️ in CTA) ── */
+  @keyframes gavel-bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    40%       { transform: translateY(-6px) rotate(-8deg); }
+    60%       { transform: translateY(2px) rotate(2deg); }
+  }
+  .animate-gavel { animation: gavel-bounce 3.5s ease-in-out infinite; display: inline-block; }
+
+  /* ── Amber pulse dot (already exists via Tailwind, this extends it slightly) ── */
+  @keyframes live-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.4); }
+  }
+  .animate-live { animation: live-pulse 1.8s ease-in-out infinite; }
+
+  /* ── Floating legal glyphs ── */
+  @keyframes float-glyph {
+    0%   { opacity: 0;    transform: translateY(0)     rotate(0deg)   scale(0.8); }
+    12%  { opacity: 0.22; }
+    78%  { opacity: 0.13; }
+    100% { opacity: 0;    transform: translateY(-130px) rotate(20deg) scale(1.15); }
+  }
+  .glyph {
+    position: absolute;
+    bottom: -10px;
+    font-family: Georgia, serif;
+    color: rgba(251,191,36,0.18);
+    pointer-events: none;
+    user-select: none;
+    animation: float-glyph linear infinite;
+    will-change: transform, opacity;
+  }
+
+  /* ── Amber line draw-in ── */
+  @keyframes line-draw {
+    from { width: 0; opacity: 0; }
+    to   { width: 100%; opacity: 1; }
+  }
+  .line-draw { animation: line-draw 1.1s 0.1s ease both; }
+
+  /* ── Typewriter cursor blink ── */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  .typewriter-cursor { display: inline-block; width: 2px; height: 0.85em; background: currentColor; vertical-align: middle; margin-left: 1px; animation: blink 0.9s step-end infinite; }
+
+  /* ── Stats card shimmer ── */
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .card-shimmer { position: relative; overflow: hidden; }
+  .card-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(251,191,36,0.07) 50%, transparent 65%);
+    animation: shimmer 3.8s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* ── Verdict stamp ── */
+  @keyframes stamp-in {
+    0%   { opacity: 0; transform: scale(2.4) rotate(-15deg); }
+    60%  { opacity: 1; transform: scale(0.94) rotate(1.5deg); }
+    80%  { transform: scale(1.05) rotate(-0.5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  .stamp-badge { animation: stamp-in 0.55s 0.85s cubic-bezier(.22,.68,0,1.4) both; }
+
+  /* ── Column rise (courthouse pillars) ── */
+  @keyframes col-rise {
+    from { transform: scaleY(0); opacity: 0; }
+    to   { transform: scaleY(1); opacity: 1; }
+  }
+  .col-rise { animation: col-rise 0.9s ease both; transform-origin: bottom center; }
+
+  /* ── Radial ambient glow pulse ── */
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.18; transform: scale(1); }
+    50%       { opacity: 0.32; transform: scale(1.12); }
+  }
+  .hero-glow { animation: glow-pulse 4s ease-in-out infinite; }
+
+  /* ── Scan line sweep ── */
+  @keyframes scan-sweep {
+    0%   { top: -4px; opacity: 0; }
+    5%   { opacity: 1; }
+    95%  { opacity: 0.6; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .scan-line { animation: scan-sweep 2.2s 0.3s ease-in both; }
+
+  /* ── Orbit ring around watermark ── */
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .orbit-ring { animation: orbit 18s linear infinite; transform-origin: center; }
+  .orbit-ring-slow { animation: orbit 28s linear infinite reverse; transform-origin: center; }
+
+  /* ── CTA button pulse glow ── */
+  @keyframes btn-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+    50%       { box-shadow: 0 0 18px 4px rgba(251,191,36,0.35); }
+  }
+  .btn-glow { animation: btn-glow 2.8s ease-in-out infinite; }
+
+  /* ── Mobile stat count-up fade ── */
+  @keyframes stat-pop {
+    from { opacity: 0; transform: scale(0.7) translateY(6px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .stat-pop-1 { animation: stat-pop 0.5s 0.7s cubic-bezier(.34,1.56,.64,1) both; }
+  .stat-pop-2 { animation: stat-pop 0.5s 0.85s cubic-bezier(.34,1.56,.64,1) both; }
+  .stat-pop-3 { animation: stat-pop 0.5s 1.0s cubic-bezier(.34,1.56,.64,1) both; }
+
+  /* ── Parchment horizontal rule draw ── */
+  @keyframes rule-draw {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 1; }
+  }
+  .rule-draw { animation: rule-draw 0.8s ease both; transform-origin: left; }
+
+  /* ── Gavel strike on load ── */
+  @keyframes gavel-strike {
+    0%   { transform: rotate(-55deg) translateY(-8px); }
+    55%  { transform: rotate(8deg) translateY(3px); }
+    70%  { transform: rotate(-4deg); }
+    85%  { transform: rotate(2deg); }
+    100% { transform: rotate(0deg) translateY(0); }
+  }
+  .gavel-strike { animation: gavel-strike 0.7s 0.4s cubic-bezier(.22,.68,0,1.2) both; display: inline-block; transform-origin: bottom right; }
+
+  /* ══════════════════════════════════════
+     LEGAL SCENE — gavel · scales · books
+     ══════════════════════════════════════ */
+
+  /* Books slide up on load, staggered */
+  @keyframes book-rise {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .book-1 { animation: book-rise 0.55s 0.4s ease both; }
+  .book-2 { animation: book-rise 0.55s 0.55s ease both; }
+  .book-3 { animation: book-rise 0.55s 0.7s ease both; }
+  .book-4 { animation: book-rise 0.55s 0.85s ease both; }
+
+  /* Crossbar tips left ↔ right around its own centre */
+  @keyframes scale-tip {
+    0%,100% { transform: rotate(0deg); }
+    30%     { transform: rotate(6deg); }
+    70%     { transform: rotate(-6deg); }
+  }
+  .scale-crossbar {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: scale-tip 5s ease-in-out infinite;
+  }
+
+  /* Pans translate up/down opposite to each other */
+  @keyframes pan-down {
+    0%,100% { transform: translateY(0px); }
+    30%     { transform: translateY(9px); }
+    70%     { transform: translateY(-9px); }
+  }
+  @keyframes pan-up {
+    0%,100% { transform: translateY(0px); }
+    30%     { transform: translateY(-9px); }
+    70%     { transform: translateY(9px); }
+  }
+  .scale-pan-l { animation: pan-down 5s ease-in-out infinite; }
+  .scale-pan-r { animation: pan-up   5s ease-in-out infinite; }
+
+  /* Gavel swings around the base of the handle (pivot = sound block) */
+  @keyframes gavel-swing {
+    0%,18%  { transform: rotate(-44deg); }
+    40%     { transform: rotate(5deg);   }
+    50%     { transform: rotate(-8deg);  }
+    60%     { transform: rotate(2deg);   }
+    72%,100%{ transform: rotate(-44deg); }
+  }
+  .scene-gavel {
+    transform-box: fill-box;
+    transform-origin: 68% 100%;
+    animation: gavel-swing 3.6s 0.8s ease-in-out infinite;
+  }
+
+  /* Sparkle burst synced with impact (38% of 3.6s ≈ 1.37s in) */
+  @keyframes impact-spark {
+    0%,34%  { opacity: 0; transform: scale(0.2); }
+    42%     { opacity: 1; transform: scale(1);   }
+    56%     { opacity: 0; transform: scale(1.8); }
+    100%    { opacity: 0; }
+  }
+  .scene-sparks { animation: impact-spark 3.6s 0.8s ease-in-out infinite; }
+
+  /* Scene fade-in on load */
+  @keyframes scene-enter {
+    from { opacity: 0; transform: translateY(18px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+  .hero-law-scene { animation: scene-enter 1s 0.3s ease both; }
+
+  /* Desk glow breathe */
+  @keyframes desk-glow {
+    0%,100% { opacity: 0.4; }
+    50%     { opacity: 0.9; }
+  }
+  .scene-desk-glow { animation: desk-glow 4s ease-in-out infinite; }
+
+  /* Book page-turn shimmer */
+  @keyframes book-shine {
+    0%,75%,100% { opacity: 0; }
+    82%          { opacity: 0.6; }
+  }
+  .book-shine { animation: book-shine 5s 2s ease-in-out infinite; }
+</style>
+
 <Base title="Home">
 
 <!-- ═══════════════════════════════════════
-     LEGAL MAXIM TICKER
+     LEGAL MAXIM TICKER (scrolling)
 ════════════════════════════════════════ -->
-<div class="bg-slate-900 border-b border-slate-800">
-  <div class="max-w-5xl mx-auto px-5 py-2.5 flex items-center gap-4 overflow-hidden">
-    <span class="flex-shrink-0 text-amber-500 text-xs font-bold uppercase tracking-widest">Lex</span>
-    <span class="flex-shrink-0 w-px h-3 bg-slate-700"></span>
-    <p class="text-slate-400 text-xs truncate">
-      <em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em>
-      <span class="mx-2 text-slate-600">—</span>
-      <span>Let justice be done though the heavens fall · Open-access legal scholarship since 2026</span>
-    </p>
+<div class="bg-slate-900 border-b border-slate-800 overflow-hidden">
+  <div class="flex items-center">
+    <!-- fixed label -->
+    <div class="flex-shrink-0 flex items-center gap-2 bg-slate-900 pl-5 pr-4 py-2.5 z-10 border-r border-slate-800">
+      <span class="text-amber-500 text-xs font-bold uppercase tracking-widest">Lex</span>
+    </div>
+    <!-- scrolling track -->
+    <div class="overflow-hidden flex-1 py-2.5">
+      <div class="ticker-track inline-flex gap-12 text-slate-400 text-xs">
+        <!-- duplicated for seamless loop -->
+        <span><em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em> <span class="text-slate-600 mx-1">—</span> Let justice be done though the heavens fall</span>
+        <span class="text-slate-600">·</span>
+        <span><em class="text-slate-300 not-italic font-medium">"Audi alteram partem"</em> <span class="text-slate-600 mx-1">—</span> Hear the other side</span>
+        <span class="text-slate-600">·</span>
+        <span><em class="text-slate-300 not-italic font-medium">"Pacta sunt servanda"</em> <span class="text-slate-600 mx-1">—</span> Agreements must be kept</span>
+        <span class="text-slate-600">·</span>
+        <span>Open-access legal scholarship since 2026</span>
+        <span class="text-slate-600">·</span>
+        <!-- duplicate -->
+        <span><em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em> <span class="text-slate-600 mx-1">—</span> Let justice be done though the heavens fall</span>
+        <span class="text-slate-600">·</span>
+        <span><em class="text-slate-300 not-italic font-medium">"Audi alteram partem"</em> <span class="text-slate-600 mx-1">—</span> Hear the other side</span>
+        <span class="text-slate-600">·</span>
+        <span><em class="text-slate-300 not-italic font-medium">"Pacta sunt servanda"</em> <span class="text-slate-600 mx-1">—</span> Agreements must be kept</span>
+        <span class="text-slate-600">·</span>
+        <span>Open-access legal scholarship since 2026</span>
+        <span class="text-slate-600">·</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -82,115 +457,293 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
      HERO — featured article
 ════════════════════════════════════════ -->
 {featured ? (
-<section class="bg-slate-900 text-white relative overflow-hidden">
+<section class="bg-slate-900 text-white relative overflow-hidden min-h-[420px]">
 
-  <!-- Decorative scales watermark -->
-  <div class="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none select-none hidden lg:flex items-center justify-center opacity-[0.04]">
-    <svg viewBox="0 0 200 200" class="w-72 h-72 text-white fill-current" xmlns="http://www.w3.org/2000/svg">
-      <!-- Scales of Justice SVG -->
-      <rect x="97" y="10" width="6" height="160" rx="3"/>
-      <rect x="60" y="10" width="80" height="6" rx="3"/>
-      <!-- Left pan chain -->
-      <line x1="70" y1="16" x2="50" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <line x1="110" y1="16" x2="90" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <!-- Left pan -->
-      <ellipse cx="70" cy="82" rx="22" ry="6" fill="white"/>
-      <!-- Right pan chain -->
-      <line x1="90" y1="16" x2="110" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <line x1="130" y1="16" x2="150" y2="80" stroke="white" stroke-width="4" stroke-linecap="round"/>
-      <!-- Right pan -->
-      <ellipse cx="130" cy="82" rx="22" ry="6" fill="white"/>
-      <!-- Base -->
-      <rect x="80" y="165" width="40" height="8" rx="4"/>
-      <rect x="70" y="170" width="60" height="6" rx="3"/>
-    </svg>
+  <!-- ① Radial ambient glow — amber pulse from center-bottom -->
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none select-none hero-glow"
+       style="background: radial-gradient(ellipse at center bottom, rgba(251,191,36,0.13) 0%, transparent 70%); border-radius:50%;">
+  </div>
+  <!-- secondary deep-blue glow top-right -->
+  <div class="absolute -top-16 right-0 w-[400px] h-[400px] pointer-events-none select-none"
+       style="background: radial-gradient(ellipse, rgba(99,102,241,0.07) 0%, transparent 65%); border-radius:50%; animation: glow-pulse 6s 1s ease-in-out infinite;">
   </div>
 
-  <!-- top amber rule -->
-  <div class="h-px w-full bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
+  <!-- ② Floating legal glyphs — shown on all screen sizes -->
+  <div class="absolute inset-0 pointer-events-none select-none overflow-hidden">
+    <span class="glyph" style="left:3%;  font-size:1.0rem; animation-duration:9s;  animation-delay:0s;">§</span>
+    <span class="glyph" style="left:9%;  font-size:1.5rem; animation-duration:12s; animation-delay:2s;">⚖</span>
+    <span class="glyph" style="left:17%; font-size:0.85rem;animation-duration:8s;  animation-delay:5s;">¶</span>
+    <span class="glyph" style="left:25%; font-size:1.2rem; animation-duration:11s; animation-delay:1s;">Lex</span>
+    <span class="glyph" style="left:34%; font-size:0.75rem;animation-duration:7s;  animation-delay:3.5s;">§§</span>
+    <span class="glyph" style="left:43%; font-size:1.4rem; animation-duration:13s; animation-delay:0.5s;">Jus</span>
+    <span class="glyph" style="left:53%; font-size:0.95rem;animation-duration:9s;  animation-delay:4s;">¶</span>
+    <span class="glyph" style="left:61%; font-size:1.7rem; animation-duration:14s; animation-delay:1.5s;">⚖</span>
+    <span class="glyph" style="left:69%; font-size:0.8rem; animation-duration:8s;  animation-delay:6s;">Art.</span>
+    <span class="glyph" style="left:77%; font-size:1.1rem; animation-duration:10s; animation-delay:2.5s;">§</span>
+    <span class="glyph" style="left:85%; font-size:1.3rem; animation-duration:11s; animation-delay:0.2s;">Lex</span>
+    <span class="glyph" style="left:93%; font-size:0.85rem;animation-duration:8s;  animation-delay:3s;">¶</span>
+    <span class="glyph" style="left:7%;  font-size:0.65rem;animation-duration:16s; animation-delay:7s;  bottom:35%;">Pacta</span>
+    <span class="glyph" style="left:30%; font-size:0.65rem;animation-duration:18s; animation-delay:4s;  bottom:42%;">§ 47</span>
+    <span class="glyph" style="left:56%; font-size:0.65rem;animation-duration:15s; animation-delay:9s;  bottom:22%;">Art. II</span>
+    <span class="glyph" style="left:79%; font-size:0.65rem;animation-duration:17s; animation-delay:6s;  bottom:38%;">Jus cogens</span>
+  </div>
 
-  <div class="max-w-5xl mx-auto px-5 py-12 md:py-18 relative">
+  <!-- ③ Scan line — sweeps top→bottom once on load -->
+  <div class="scan-line absolute left-0 right-0 h-px pointer-events-none select-none"
+       style="background: linear-gradient(90deg, transparent 0%, rgba(251,191,36,0.4) 40%, rgba(251,191,36,0.6) 50%, rgba(251,191,36,0.4) 60%, transparent 100%); z-index:2;">
+  </div>
 
-    <!-- label -->
-    <div class="flex items-center gap-3 mb-7">
+  <!-- ④ Courthouse pillars — visible on ALL sizes (smaller on mobile) -->
+  <div class="absolute bottom-0 left-0 right-0 pointer-events-none select-none flex items-end justify-start gap-2 sm:gap-3 px-4 sm:px-8 opacity-[0.04]">
+    {[
+      {h:'40px', hmd:'70px', d:'0s'},
+      {h:'60px', hmd:'95px', d:'0.1s'},
+      {h:'75px', hmd:'115px',d:'0.2s'},
+      {h:'55px', hmd:'85px', d:'0.3s'},
+      {h:'35px', hmd:'55px', d:'0.4s'},
+      {h:'50px', hmd:'75px', d:'0.5s'},
+    ].map(c => (
+      <div class="col-rise flex flex-col items-center" style={`animation-delay:${c.d}`}>
+        <div style="width:10px; height:4px; background:white; border-radius:2px 2px 0 0;"></div>
+        <div class="hidden sm:block" style={`width:6px; height:${c.hmd}; background:white;`}></div>
+        <div class="sm:hidden"       style={`width:5px; height:${c.h};  background:white;`}></div>
+        <div style="width:14px; height:4px; background:white; border-radius:0 0 2px 2px;"></div>
+      </div>
+    ))}
+  </div>
+
+  <!-- ⑥ Amber line draw-in -->
+  <div class="h-px line-draw bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-5 py-10 sm:py-12 md:py-14 relative">
+
+    <!-- Label row -->
+    <div class="flex items-center gap-3 mb-4 animate-fade-up">
       <span class="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold uppercase tracking-widest">
-        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-live"></span>
         Featured Research
       </span>
       <span class="flex-1 h-px bg-slate-700 max-w-[60px]"></span>
+      <span class="gavel-strike text-base ml-auto">⚖️</span>
     </div>
 
-    <div class="md:grid md:grid-cols-5 md:gap-12 md:items-start">
+    <!-- Typewriter cycling legal principle -->
+    <div class="flex items-center gap-2 mb-5 animate-fade-up" style="animation-delay:0.1s">
+      <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase hidden sm:inline">Principle</span>
+      <span class="w-px h-3 bg-slate-700 hidden sm:inline-block"></span>
+      <span id="typewriter-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic"></span><span class="typewriter-cursor text-amber-400/60"></span>
+    </div>
 
-      <!-- LEFT: text -->
-      <div class="md:col-span-3">
+    <!-- Parchment rule -->
+    <div class="rule-draw h-px bg-gradient-to-r from-amber-500/30 via-slate-600 to-transparent mb-6" style="animation-delay:0.3s"></div>
 
-        <span class={`inline-block border text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-5 ${getBadgeClass(CATEGORIES[featured.category]?.color)}`}>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
+
+      <!-- LEFT: article text -->
+      <div>
+        <span class={`stamp-badge inline-block border text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-4 ${getBadgeClass(CATEGORIES[featured.category]?.color)}`}>
           {CATEGORIES[featured.category]?.icon} {CATEGORIES[featured.category]?.label}
         </span>
 
-        <h1 class="font-serif text-2xl sm:text-3xl md:text-[2.4rem] font-bold leading-tight mb-5 text-white">
+        <h1 class="font-serif text-[1.65rem] sm:text-3xl md:text-[2.2rem] font-bold leading-tight mb-4 text-white animate-fade-up-d1">
           {featured.title}
         </h1>
 
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 line-clamp-3 md:line-clamp-none">
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-5 line-clamp-4 animate-fade-up-d2">
           {featured.excerpt}
         </p>
 
         <!-- byline -->
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400 mb-8">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-400 mb-6 animate-fade-up-d3">
           <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black flex-shrink-0">
             {featured.author.charAt(0)}
           </div>
-          <span class="font-medium text-slate-200">{featured.author}</span>
-          {featured.authorTitle && <span class="text-slate-500 text-xs">· {featured.authorTitle}</span>}
+          <span class="font-medium text-slate-200 text-sm">{featured.author}</span>
+          {featured.authorTitle && <span class="text-slate-500 text-xs hidden sm:inline">· {featured.authorTitle}</span>}
           <span class="text-slate-700">·</span>
-          <span>{fmt(featured.publishedAt)}</span>
+          <span class="text-xs">{fmt(featured.publishedAt)}</span>
           <span class="text-slate-700">·</span>
-          <span class="flex items-center gap-1">
+          <span class="flex items-center gap-1 text-xs">
             <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            {featured.readTime} min read
+            {featured.readTime} min
           </span>
         </div>
 
         <!-- CTAs -->
         <div class="flex flex-col sm:flex-row gap-3">
           <a href={`/articles/${featured.slug}`}
-             class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-7 py-3.5 rounded-xl text-sm transition-colors">
+             class="btn-glow inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold px-6 py-3.5 rounded-xl text-sm transition-colors w-full sm:w-auto">
             Read Article
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
           <a href={`/category/${featured.category}`}
-             class="inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 px-5 py-3.5 rounded-xl text-sm transition-all">
+             class="inline-flex items-center justify-center gap-2 text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 px-5 py-3.5 rounded-xl text-sm transition-all w-full sm:w-auto">
             Browse {CATEGORIES[featured.category]?.shortLabel}
           </a>
         </div>
       </div>
 
-      <!-- RIGHT: stats card -->
-      <div class="hidden md:flex md:col-span-2 items-start justify-end pt-1">
-        <div class="w-full max-w-[260px] bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4 backdrop-blur-sm">
-          <div class="text-xs uppercase tracking-widest text-slate-500 font-semibold flex items-center gap-2">
-            <span class="w-4 h-4 text-amber-400">⚖️</span> Journal Record
-          </div>
-          <div class="space-y-3">
-            {[
-              { label: 'Published Articles', value: String(all.length), highlight: false },
-              { label: 'Research Fields', value: '15', highlight: false },
-              { label: 'Open Access', value: 'Always Free', highlight: true },
-              { label: 'Peer-Reviewed', value: 'Rigorous', highlight: true },
-            ].map(item => (
-              <div>
-                <div class="flex items-center justify-between">
-                  <span class="text-sm text-slate-400">{item.label}</span>
-                  <span class={item.highlight ? 'text-emerald-400 font-semibold text-sm' : 'text-white font-bold'}>{item.value}</span>
-                </div>
-                <div class="h-px bg-white/5 mt-3"></div>
-              </div>
-            ))}
-          </div>
-          <div class="text-xs text-slate-600 pt-1">ISSN 2026-LEX · Volume 1</div>
-        </div>
+      <!-- RIGHT: LAW SCENE — full SVG illustration, visible on all sizes -->
+      <div class="flex items-center justify-center hero-law-scene">
+        <svg viewBox="0 0 280 260" xmlns="http://www.w3.org/2000/svg"
+             class="w-full max-w-[340px] md:max-w-none md:w-full h-auto drop-shadow-2xl"
+             aria-hidden="true">
+          <defs>
+            <linearGradient id="woodGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d4952a"/>
+              <stop offset="100%" stop-color="#8b5e1a"/>
+            </linearGradient>
+            <linearGradient id="woodLight" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8b84b"/>
+              <stop offset="100%" stop-color="#a0701f"/>
+            </linearGradient>
+            <linearGradient id="bookRed" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#c0392b"/>
+              <stop offset="100%" stop-color="#7f0d0d"/>
+            </linearGradient>
+            <linearGradient id="bookBlue" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1e3a8a"/>
+              <stop offset="100%" stop-color="#0f2060"/>
+            </linearGradient>
+            <linearGradient id="bookGreen" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#14532d"/>
+              <stop offset="100%" stop-color="#052e16"/>
+            </linearGradient>
+            <linearGradient id="bookBrown" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#92400e"/>
+              <stop offset="100%" stop-color="#5a2d00"/>
+            </linearGradient>
+            <radialGradient id="deskGlow" cx="50%" cy="100%">
+              <stop offset="0%" stop-color="rgba(251,191,36,0.4)"/>
+              <stop offset="100%" stop-color="rgba(251,191,36,0)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- ── ambient floor glow ── -->
+          <ellipse cx="140" cy="250" rx="130" ry="18" fill="url(#deskGlow)" class="scene-desk-glow"/>
+
+          <!-- ── desk surface ── -->
+          <rect x="0" y="228" width="280" height="32" rx="3" fill="rgba(30,35,50,0.6)"/>
+          <rect x="0" y="228" width="280" height="4" rx="2" fill="rgba(251,191,36,0.2)"/>
+
+          <!-- ════════════ BOOKS (left) ════════════ -->
+          <!-- Book 1 — bottom/widest, dark red -->
+          <g class="book-1">
+            <rect x="8" y="205" width="76" height="23" rx="2" fill="url(#bookRed)"/>
+            <rect x="8" y="205" width="9" height="23" rx="2" fill="rgba(255,120,100,0.3)"/>
+            <line x1="21" y1="211" x2="78" y2="211" stroke="rgba(251,191,36,0.7)" stroke-width="1.3"/>
+            <line x1="21" y1="217" x2="68" y2="217" stroke="rgba(251,191,36,0.4)" stroke-width="0.8"/>
+            <line x1="21" y1="221" x2="72" y2="221" stroke="rgba(251,191,36,0.3)" stroke-width="0.8"/>
+            <rect x="82" y="205" width="4" height="23" rx="1" fill="rgba(255,255,255,0.18)"/>
+            <rect x="9" y="205" width="74" height="5" rx="1" fill="rgba(255,255,255,0.07)" class="book-shine"/>
+          </g>
+          <!-- Book 2 — dark blue -->
+          <g class="book-2">
+            <rect x="11" y="185" width="72" height="20" rx="2" fill="url(#bookBlue)"/>
+            <rect x="11" y="185" width="8" height="20" rx="2" fill="rgba(100,150,255,0.25)"/>
+            <line x1="23" y1="191" x2="77" y2="191" stroke="rgba(251,191,36,0.65)" stroke-width="1.2"/>
+            <line x1="23" y1="196" x2="62" y2="196" stroke="rgba(251,191,36,0.35)" stroke-width="0.7"/>
+            <circle cx="50" cy="194" r="5" fill="none" stroke="rgba(251,191,36,0.35)" stroke-width="1"/>
+            <rect x="81" y="185" width="4" height="20" rx="1" fill="rgba(255,255,255,0.15)"/>
+          </g>
+          <!-- Book 3 — dark green -->
+          <g class="book-3">
+            <rect x="14" y="167" width="68" height="18" rx="2" fill="url(#bookGreen)"/>
+            <rect x="14" y="167" width="8" height="18" rx="2" fill="rgba(80,200,100,0.2)"/>
+            <line x1="26" y1="173" x2="75" y2="173" stroke="rgba(251,191,36,0.6)" stroke-width="1.1"/>
+            <line x1="26" y1="178" x2="60" y2="178" stroke="rgba(251,191,36,0.3)" stroke-width="0.7"/>
+            <rect x="80" y="167" width="4" height="18" rx="1" fill="rgba(255,255,255,0.12)"/>
+          </g>
+          <!-- Book 4 — top, amber/brown with LEX title -->
+          <g class="book-4">
+            <rect x="16" y="150" width="64" height="17" rx="2" fill="url(#bookBrown)"/>
+            <rect x="16" y="150" width="8" height="17" rx="2" fill="rgba(220,160,60,0.3)"/>
+            <line x1="28" y1="156" x2="73" y2="156" stroke="rgba(251,191,36,0.75)" stroke-width="1.3"/>
+            <line x1="28" y1="161" x2="58" y2="161" stroke="rgba(251,191,36,0.4)" stroke-width="0.8"/>
+            <text x="32" y="164" font-family="Georgia,serif" font-size="6" fill="rgba(251,191,36,0.65)" letter-spacing="2">LEX</text>
+            <rect x="78" y="150" width="4" height="17" rx="1" fill="rgba(255,255,255,0.14)"/>
+          </g>
+
+          <!-- ════════════ SCALES (centre) ════════════ -->
+          <!-- Pole -->
+          <rect x="133" y="30" width="6" height="197" rx="3" fill="rgba(251,191,36,0.7)"/>
+          <!-- Pole highlight -->
+          <rect x="134" y="30" width="2" height="197" rx="1" fill="rgba(255,255,255,0.15)"/>
+          <!-- Top finial -->
+          <circle cx="136" cy="26" r="8" fill="rgba(251,191,36,0.85)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <circle cx="136" cy="26" r="4" fill="rgba(255,255,255,0.4)"/>
+          <!-- Base pedestal -->
+          <rect x="120" y="224" width="32" height="7" rx="3.5" fill="rgba(251,191,36,0.75)"/>
+          <rect x="112" y="229" width="48" height="5" rx="2.5" fill="rgba(251,191,36,0.5)"/>
+          <rect x="106" y="232" width="60" height="3" rx="1.5" fill="rgba(251,191,36,0.3)"/>
+
+          <!-- Crossbar — rotates around its OWN centre (50% 50%) via transform-box:fill-box -->
+          <rect class="scale-crossbar" x="88" y="62" width="96" height="6" rx="3" fill="rgba(251,191,36,0.85)"/>
+          <!-- Pivot pin (static, on top of crossbar) -->
+          <circle cx="136" cy="65" r="5" fill="rgba(251,191,36,1)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+
+          <!-- Left pan assembly — translates Y -->
+          <g class="scale-pan-l">
+            <line x1="98"  y1="68" x2="84"  y2="128" stroke="rgba(251,191,36,0.6)" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <line x1="112" y1="68" x2="98"  y2="128" stroke="rgba(251,191,36,0.6)" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <ellipse cx="91"  cy="131" rx="26" ry="7" fill="rgba(251,191,36,0.25)" stroke="rgba(251,191,36,0.75)" stroke-width="1.8"/>
+            <ellipse cx="91"  cy="129" rx="20" ry="4" fill="rgba(251,191,36,0.1)"/>
+            <ellipse cx="91"  cy="129" rx="26" ry="3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+          </g>
+
+          <!-- Right pan assembly — translates Y (opposite) -->
+          <g class="scale-pan-r">
+            <line x1="160" y1="68" x2="174" y2="128" stroke="rgba(251,191,36,0.6)" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <line x1="174" y1="68" x2="188" y2="128" stroke="rgba(251,191,36,0.6)" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <ellipse cx="181" cy="131" rx="26" ry="7" fill="rgba(251,191,36,0.25)" stroke="rgba(251,191,36,0.75)" stroke-width="1.8"/>
+            <ellipse cx="181" cy="129" rx="20" ry="4" fill="rgba(251,191,36,0.1)"/>
+            <ellipse cx="181" cy="129" rx="26" ry="3" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+          </g>
+
+          <!-- ════════════ GAVEL (right) ════════════ -->
+          <!-- Sound block — static -->
+          <rect x="208" y="210" width="66" height="18" rx="4" fill="url(#woodGrad)"/>
+          <rect x="208" y="210" width="66" height="6"  rx="4" fill="rgba(255,220,120,0.35)"/>
+          <line x1="218" y1="217" x2="266" y2="217" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+          <line x1="218" y1="222" x2="266" y2="222" stroke="rgba(0,0,0,0.15)" stroke-width="0.8"/>
+          <rect x="210" y="226" width="62" height="3" rx="1.5" fill="rgba(0,0,0,0.3)"/>
+
+          <!-- Gavel (rotates around 68% 100% of its bounding box = base of handle) -->
+          <g class="scene-gavel">
+            <!-- handle -->
+            <rect x="234" y="138" width="11" height="76" rx="5.5" fill="url(#woodGrad)"/>
+            <rect x="235" y="138" width="3"  height="76" rx="1.5" fill="rgba(255,255,255,0.12)"/>
+            <line x1="242" y1="145" x2="242" y2="206" stroke="rgba(0,0,0,0.15)" stroke-width="0.8"/>
+            <!-- collar -->
+            <rect x="228" y="148" width="23" height="7" rx="3.5" fill="rgba(251,191,36,0.9)"/>
+            <rect x="228" y="148" width="23" height="3" rx="2"   fill="rgba(255,255,255,0.25)"/>
+            <!-- head body -->
+            <rect x="210" y="126" width="52" height="26" rx="6" fill="url(#woodLight)"/>
+            <!-- head top highlight -->
+            <rect x="210" y="126" width="52" height="8"  rx="6" fill="rgba(255,240,180,0.35)"/>
+            <!-- head left striking face -->
+            <rect x="210" y="126" width="12" height="26" rx="4" fill="rgba(255,210,100,0.2)"/>
+            <!-- head grain -->
+            <line x1="224" y1="130" x2="256" y2="130" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
+            <line x1="224" y1="138" x2="256" y2="138" stroke="rgba(0,0,0,0.09)" stroke-width="0.7"/>
+            <line x1="224" y1="146" x2="256" y2="146" stroke="rgba(0,0,0,0.08)" stroke-width="0.7"/>
+          </g>
+
+          <!-- Impact sparkles (synced with gavel strike) -->
+          <g class="scene-sparks">
+            <circle cx="221" cy="209" r="4"  fill="rgba(251,191,36,1)"/>
+            <line x1="221" y1="209" x2="234" y2="197" stroke="rgba(255,230,80,0.95)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="221" y1="209" x2="236" y2="209" stroke="rgba(255,230,80,0.85)" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="221" y1="209" x2="234" y2="221" stroke="rgba(255,230,80,0.75)" stroke-width="2"   stroke-linecap="round"/>
+            <line x1="221" y1="209" x2="207" y2="197" stroke="rgba(255,230,80,0.75)" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="221" y1="209" x2="207" y2="221" stroke="rgba(255,230,80,0.55)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="237" cy="195" r="2.5" fill="rgba(255,240,100,0.95)"/>
+            <circle cx="239" cy="210" r="2"   fill="rgba(255,240,100,0.75)"/>
+            <circle cx="234" cy="224" r="1.8" fill="rgba(255,240,100,0.6)"/>
+            <circle cx="206" cy="194" r="2"   fill="rgba(255,240,100,0.6)"/>
+          </g>
+
+        </svg>
       </div>
 
     </div>
@@ -223,9 +776,9 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {pillars.map(p => (
+      {pillars.map((p, i) => (
         <a href={`/category/${p.slug}`}
-           class={`group relative flex flex-col gap-3 p-5 rounded-2xl border border-stone-200 ${p.hoverBorder} ${p.hoverBg} active:scale-[.99] transition-all overflow-hidden`}>
+           class={`pillar-glow group relative flex flex-col gap-3 p-5 rounded-2xl border border-stone-200 ${p.hoverBorder} ${p.hoverBg} active:scale-[.99] transition-all overflow-hidden reveal${i === 1 ? ' reveal-d1' : i === 2 ? ' reveal-d2' : ''}`}>
           <div class={`absolute top-0 left-0 right-0 h-0.5 ${getStripClass(CATEGORIES[p.slug as keyof typeof CATEGORIES]?.color ?? 'stone')} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
 
           <div class={`w-12 h-12 flex-shrink-0 ${p.iconBg} rounded-xl flex items-center justify-center text-2xl transition-colors`}>
@@ -253,8 +806,8 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 <section class="bg-stone-50 border-b border-stone-100">
   <div class="max-w-5xl mx-auto px-5 py-8">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-      {principles.map(p => (
-        <div class="flex gap-4 items-start">
+      {principles.map((p, i) => (
+        <div class={`flex gap-4 items-start reveal${i === 1 ? ' reveal-d1' : i === 2 ? ' reveal-d2' : ''}`}>
           <div class="w-10 h-10 flex-shrink-0 bg-white border border-stone-200 rounded-xl flex items-center justify-center text-xl shadow-sm">
             {p.icon}
           </div>
@@ -277,7 +830,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 
   <div class="flex items-center justify-between mb-6">
     <div>
-      <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Recent Research</h2>
+      <h2 class="home-heading font-serif text-xl sm:text-2xl font-bold text-slate-900">Recent Research</h2>
       <p class="text-xs text-stone-400 mt-1">Latest peer-reviewed publications</p>
     </div>
     <a href="/categories" class="text-xs font-semibold text-stone-500 hover:text-slate-800 flex items-center gap-1 transition-colors border border-stone-200 hover:border-stone-300 px-3 py-1.5 rounded-lg">
@@ -286,10 +839,10 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     </a>
   </div>
 
-  <div class="space-y-4 md:space-y-0 md:grid md:grid-cols-3 md:gap-5">
-    {recent.map((article) => (
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {recent.map((article, i) => (
       <a href={`/articles/${article.slug}`}
-         class="group block bg-white rounded-2xl border border-stone-200 hover:border-stone-300 hover:shadow-lg active:scale-[.99] transition-all overflow-hidden">
+         class={`tilt-card group block bg-white rounded-2xl border border-stone-200 hover:border-stone-300 overflow-hidden reveal${i % 3 === 1 ? ' reveal-d1' : i % 3 === 2 ? ' reveal-d2' : ''}`}>
         <div class={`h-1 w-full ${getStripClass(CATEGORIES[article.category]?.color)}`}></div>
         <div class="p-5 flex flex-col h-full">
           <div class="flex items-center justify-between mb-3">
@@ -329,16 +882,73 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 
 
 <!-- ═══════════════════════════════════════
-     LATIN MAXIM PULL-QUOTE
+     LATIN MAXIM PULL-QUOTE — big animated
 ════════════════════════════════════════ -->
-<section class="bg-amber-50 border-y border-amber-100">
-  <div class="max-w-3xl mx-auto px-5 py-10 text-center">
-    <div class="text-amber-300 text-5xl mb-4 font-serif leading-none select-none">"</div>
-    <blockquote class="font-serif text-xl sm:text-2xl font-bold text-slate-800 italic leading-snug mb-3">
+<section class="relative overflow-hidden bg-gradient-to-br from-amber-50 via-amber-50 to-orange-50 border-y border-amber-100">
+
+  <!-- Animated wave SVG background -->
+  <div class="absolute inset-0 pointer-events-none select-none">
+    <svg class="maxim-wave absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C240,20 480,100 720,60 C960,20 1200,100 1440,60 L1440,120 L0,120 Z" fill="rgba(251,191,36,0.1)"/>
+    </svg>
+    <svg class="maxim-wave-2 absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,45 C360,80 720,10 1080,45 C1260,62 1380,30 1440,45 L1440,90 L0,90 Z" fill="rgba(251,191,36,0.07)"/>
+    </svg>
+  </div>
+
+  <!-- Big decorative scales SVG — left side desktop -->
+  <div class="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none select-none opacity-[0.12]">
+    <svg viewBox="0 0 200 220" class="w-36 h-36 fill-amber-800 animate-scales" xmlns="http://www.w3.org/2000/svg">
+      <rect x="97" y="10" width="6" height="175" rx="3"/>
+      <rect x="58" y="10" width="84" height="6" rx="3"/>
+      <line x1="70" y1="16" x2="48" y2="88" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+      <line x1="112" y1="16" x2="90" y2="88" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="69" cy="90" rx="24" ry="6" fill="#92400e"/>
+      <line x1="88" y1="16" x2="110" y2="88" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+      <line x1="130" y1="16" x2="152" y2="88" stroke="#92400e" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="131" cy="90" rx="24" ry="6" fill="#92400e"/>
+      <rect x="79" y="180" width="42" height="8" rx="4"/>
+      <rect x="69" y="186" width="62" height="6" rx="3"/>
+    </svg>
+  </div>
+  <!-- Right mirror -->
+  <div class="absolute right-6 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none select-none opacity-[0.08] scale-x-[-1]">
+    <svg viewBox="0 0 200 220" class="w-28 h-28 fill-amber-800 animate-scales" style="animation-delay:2.5s" xmlns="http://www.w3.org/2000/svg">
+      <rect x="97" y="10" width="6" height="175" rx="3"/>
+      <rect x="58" y="10" width="84" height="6" rx="3"/>
+      <ellipse cx="69" cy="90" rx="24" ry="6" fill="#92400e"/>
+      <ellipse cx="131" cy="90" rx="24" ry="6" fill="#92400e"/>
+      <rect x="79" y="180" width="42" height="8" rx="4"/>
+    </svg>
+  </div>
+
+  <div class="max-w-3xl mx-auto px-5 py-14 sm:py-18 text-center relative reveal reveal-quote">
+    <!-- Pulsing ring behind the quote mark -->
+    <div class="relative inline-flex items-center justify-center mb-4">
+      <div class="quote-ring absolute w-20 h-20 rounded-full border-2 border-amber-300/40"></div>
+      <div class="quote-ring absolute w-28 h-28 rounded-full border border-amber-200/25" style="animation-delay:0.8s"></div>
+      <span class="text-amber-400 text-6xl font-serif leading-none select-none relative z-10">"</span>
+    </div>
+
+    <blockquote class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 italic leading-snug mb-4">
       Audi alteram partem
     </blockquote>
-    <p class="text-stone-500 text-sm mb-1">Hear the other side</p>
-    <p class="text-xs text-stone-400 uppercase tracking-widest font-medium">A foundational principle of natural justice</p>
+    <p class="text-stone-600 text-base mb-2 font-medium">Hear the other side</p>
+    <p class="text-xs text-stone-400 uppercase tracking-widest font-semibold mb-6">A foundational principle of natural justice</p>
+
+    <!-- Three more maxims row -->
+    <div class="flex flex-wrap justify-center gap-3 mt-2">
+      {[
+        { lat: 'Nemo iudex in sua causa', eng: 'No one a judge in their own case' },
+        { lat: 'Pacta sunt servanda',     eng: 'Agreements must be kept' },
+        { lat: 'Ex injuria jus non oritur', eng: 'Rights cannot arise from a wrong' },
+      ].map(m => (
+        <div class="bg-white/60 backdrop-blur-sm border border-amber-200/60 rounded-xl px-4 py-2.5 text-left max-w-[200px]">
+          <div class="font-serif text-xs font-bold text-slate-700 italic mb-0.5">{m.lat}</div>
+          <div class="text-[10px] text-stone-400 leading-tight">{m.eng}</div>
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
@@ -349,14 +959,14 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 <section class="max-w-5xl mx-auto px-5 py-10 md:py-14">
 
   <div class="flex items-baseline gap-3 mb-6">
-    <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">All Research Fields</h2>
+    <h2 class="home-heading font-serif text-xl sm:text-2xl font-bold text-slate-900">All Research Fields</h2>
     <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">{allCategoryEntries.length} specialisations</span>
   </div>
 
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
     {allCategoryEntries.map(([slug, cat]) => (
       <a href={`/category/${slug}`}
-         class={`group flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-stone-200 hover:border-stone-300 bg-white hover:shadow-sm active:scale-[.99] transition-all`}>
+         class={`cat-chip group flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-stone-200 hover:border-amber-300 bg-white active:scale-[.99]`}>
         <span class="text-lg flex-shrink-0">{cat.icon}</span>
         <span class="text-xs font-medium text-slate-700 group-hover:text-slate-900 leading-snug transition-colors truncate">{cat.shortLabel}</span>
       </a>
@@ -385,7 +995,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
       <!-- left: mission -->
       <div>
         <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-3 flex items-center gap-2">
-          <span>⚖️</span> Our Mission
+          <span class="animate-gavel">⚖️</span> Our Mission
         </div>
         <h3 class="font-serif text-2xl sm:text-3xl font-bold mb-4 leading-tight">
           Legal knowledge belongs to everyone
@@ -407,13 +1017,14 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
       <div class="hidden md:block">
         <div class="grid grid-cols-2 gap-4 mt-8 md:mt-0">
           {[
-            { num: '15', label: 'Research Fields', sub: 'From IHL to space law' },
-            { num: '100%', label: 'Open Access', sub: 'No paywalls, ever' },
-            { num: '⚖️', label: 'Peer-Reviewed', sub: 'Rigorous scholarship' },
-            { num: '2026', label: 'Est. Volume 1', sub: 'ISSN 2026-LEX' },
+            { num: '15',   label: 'Research Fields', sub: 'From IHL to space law',   d: '',    counter: 15 },
+            { num: '100%', label: 'Open Access',      sub: 'No paywalls, ever',       d: 'd1',  counter: null },
+            { num: '⚖️',   label: 'Peer-Reviewed',   sub: 'Rigorous scholarship',    d: 'd2',  counter: null },
+            { num: '2026', label: 'Est. Volume 1',    sub: 'ISSN 2026-LEX',           d: 'd3',  counter: 2026 },
           ].map(f => (
-            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-              <div class="font-serif text-2xl font-bold text-amber-400 mb-1">{f.num}</div>
+            <div class={`fact-card fact-card-${f.d} bg-white/5 border border-white/10 rounded-xl p-4 reveal`}>
+              <div class={`counter-num counter-num-${f.d} font-serif text-2xl font-bold text-amber-400 mb-1`}
+                   data-counter={f.counter ?? undefined}>{f.num}</div>
               <div class="text-sm font-semibold text-white">{f.label}</div>
               <div class="text-xs text-slate-500 mt-0.5">{f.sub}</div>
             </div>
@@ -424,5 +1035,91 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     </div>
   </div>
 </section>
+
+<script>
+  /* ── Scroll-reveal ── */
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── 3D card tilt on mouse move ── */
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  /* ── Section heading underline reveal ── */
+  const hObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('h-visible'); hObs.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.home-heading').forEach(el => hObs.observe(el));
+
+  /* ── Counter animation ── */
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.counter || '0');
+      if (!target) return;
+      countObs.unobserve(el);
+      const duration = 1200, start = performance.now();
+      const from = target > 100 ? target - 80 : 0;
+      const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(from + (target - from) * ease).toString() + (el.dataset.counter === '15' ? '' : '');
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toString();
+      };
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-counter]').forEach(el => countObs.observe(el));
+
+  /* ── Typewriter — cycling legal principles ── */
+  const phrases = [
+    'Nemo iudex in causa sua',
+    'Pacta sunt servanda',
+    'Ubi jus ibi remedium',
+    'Ex injuria jus non oritur',
+    'Good faith · Bona fides',
+    'Erga omnes obligations',
+  ];
+
+  const el = document.getElementById('typewriter-text');
+  if (el) {
+    let pi = 0, ci = 0, deleting = false;
+    const SPEED_TYPE = 55, SPEED_DEL = 28, PAUSE = 2200;
+
+    function tick() {
+      const phrase = phrases[pi];
+      if (!deleting) {
+        el.textContent = phrase.slice(0, ++ci);
+        if (ci === phrase.length) { deleting = true; setTimeout(tick, PAUSE); return; }
+      } else {
+        el.textContent = phrase.slice(0, --ci);
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+      }
+      setTimeout(tick, deleting ? SPEED_DEL : SPEED_TYPE);
+    }
+    setTimeout(tick, 800);
+  }
+</script>
 
 </Base>
