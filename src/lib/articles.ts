@@ -115,7 +115,7 @@ function rowToArticle(row: Record<string, unknown>): Article {
     slug:        String(row.slug),
     category:    row.category as CategorySlug,
     excerpt:     String(row.excerpt ?? ''),
-    content:     String(row.content),
+    content:     String(row.content ?? ''),
     author:      String(row.author),
     authorTitle: String(row.authorTitle ?? ''),
     tags:        JSON.parse(String(row.tags ?? '[]')),
@@ -137,13 +137,15 @@ function getDB(): D1Database {
   return db;
 }
 
+const LIST_COLS = 'id,title,slug,category,excerpt,author,authorTitle,tags,readTime,published,publishedAt,updatedAt';
+
 export async function getArticles(_locals: App.Locals): Promise<Article[]> {
-  const { results } = await (getDB()).prepare('SELECT * FROM articles ORDER BY publishedAt DESC').all();
+  const { results } = await (getDB()).prepare(`SELECT ${LIST_COLS} FROM articles ORDER BY publishedAt DESC`).all();
   return (results as Record<string, unknown>[]).map(rowToArticle);
 }
 
 export async function getPublishedArticles(_locals: App.Locals): Promise<Article[]> {
-  const { results } = await (getDB()).prepare('SELECT * FROM articles WHERE published=1 ORDER BY publishedAt DESC').all();
+  const { results } = await (getDB()).prepare(`SELECT ${LIST_COLS} FROM articles WHERE published=1 ORDER BY publishedAt DESC`).all();
   return (results as Record<string, unknown>[]).map(rowToArticle);
 }
 
@@ -158,7 +160,7 @@ export async function getArticleById(_locals: App.Locals, id: string): Promise<A
 }
 
 export async function getArticlesByCategory(_locals: App.Locals, category: string): Promise<Article[]> {
-  const { results } = await (getDB()).prepare('SELECT * FROM articles WHERE category=? AND published=1 ORDER BY publishedAt DESC').bind(category).all();
+  const { results } = await (getDB()).prepare(`SELECT ${LIST_COLS} FROM articles WHERE category=? AND published=1 ORDER BY publishedAt DESC`).bind(category).all();
   return (results as Record<string, unknown>[]).map(rowToArticle);
 }
 
