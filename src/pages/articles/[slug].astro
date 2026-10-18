@@ -52,7 +52,23 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-type Block = { tag: 'h1' | 'h2' | 'h3' | 'p'; html: string; id?: string; faq?: boolean };
+function renderTable(raw: string): string {
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return `<p>${inlineMd(raw)}</p>`;
+  const parseRow = (line: string) =>
+    line.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+  const headers = parseRow(lines[0]);
+  const body = lines.slice(2); // skip separator row
+  const th = headers.map(h => `<th class="px-3 py-2 text-left text-xs font-bold uppercase tracking-wide text-slate-600 whitespace-nowrap">${inlineMd(h)}</th>`).join('');
+  const rows = body.map(line => {
+    const cells = parseRow(line);
+    const tds = cells.map(c => `<td class="px-3 py-2.5 text-sm text-slate-700 align-top border-t border-stone-100">${inlineMd(c)}</td>`).join('');
+    return `<tr class="hover:bg-stone-50 transition-colors">${tds}</tr>`;
+  }).join('');
+  return `<div class="overflow-x-auto -mx-4 sm:mx-0 my-6 sm:my-8"><div class="min-w-[460px] sm:min-w-0 px-4 sm:px-0"><table class="w-full border-collapse bg-white border border-stone-200 rounded-xl overflow-hidden text-sm shadow-sm"><thead class="bg-stone-50"><tr>${th}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+type Block = { tag: 'h1' | 'h2' | 'h3' | 'p' | 'table'; html: string; id?: string; faq?: boolean };
 function parseContent(raw: string): Block[] {
   let inFaq = false;
   return raw
@@ -60,6 +76,9 @@ function parseContent(raw: string): Block[] {
     .map(s => s.trim())
     .filter(Boolean)
     .map(block => {
+      if (block.startsWith('| ') || block.startsWith('|---')) {
+        return { tag: 'table' as const, html: renderTable(block) };
+      }
       if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq };
       if (block.startsWith('## ')) {
         const text = block.slice(3).trim();
@@ -423,10 +442,10 @@ const jsonLd = {
       <span class={`badge-stamp hidden sm:inline-block text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-4 ${badge}`}>
         {cat?.icon} {cat?.label}
       </span>
-      <h1 class="art-h1 font-serif text-2xl sm:text-3xl md:text-[2.1rem] font-bold text-white leading-tight mb-3">
+      <h1 class="art-h1 font-serif text-xl sm:text-3xl md:text-[2.1rem] font-bold text-white leading-snug sm:leading-tight mb-3">
         {article.title}
       </h1>
-      <p class="art-exc text-slate-300 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl font-light">
+      <p class="art-exc text-slate-300 text-xs sm:text-base leading-relaxed mb-4 max-w-2xl font-light">
         {article.excerpt}
       </p>
       <!-- meta row -->
@@ -468,8 +487,8 @@ const jsonLd = {
       ],
     })} />
 
-    <!-- Header -->
-    <header class="mb-8 sm:mb-10">
+    <!-- Header (hidden on mobile — title/excerpt already shown in hero) -->
+    <header class="hidden sm:block mb-8 sm:mb-10">
       <span class={`hidden sm:inline-block text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-5 ${badge}`}>
         {cat?.icon} {cat?.label}
       </span>
@@ -513,15 +532,15 @@ const jsonLd = {
     )}
 
     <!-- ── Article body ─────────────────────────────────────────────────── -->
-    <article class="space-y-5">
+    <article class="space-y-4 sm:space-y-5">
       {blocks.map((block, bi) => {
         if (block.tag === 'h2') {
           const img = block.id ? sectionImages[block.id] : undefined;
           return (
             <>
-              <h2 id={block.id} class="section-heading serif text-xl sm:text-2xl font-bold text-slate-900 mt-10 mb-3 pt-8 border-t border-stone-100 first:mt-0 first:pt-0 first:border-0 para-reveal" set:html={block.html} />
+              <h2 id={block.id} class="section-heading serif text-[1.2rem] sm:text-2xl font-bold text-slate-900 mt-7 sm:mt-10 mb-2 sm:mb-3 pt-6 sm:pt-8 border-t border-stone-100 first:mt-0 first:pt-0 first:border-0 para-reveal" set:html={block.html} />
               {img && (
-                <figure class="my-6 rounded-2xl overflow-hidden border border-stone-200 shadow-sm para-reveal">
+                <figure class="my-5 sm:my-6 rounded-2xl overflow-hidden border border-stone-200 shadow-sm para-reveal">
                   <img src={img.src} alt={img.alt} width="1200" height="675" class="w-full object-cover" loading="lazy"/>
                   <figcaption class="text-xs text-stone-400 text-center px-4 py-2 bg-stone-50 border-t border-stone-100">{img.alt}</figcaption>
                 </figure>
@@ -530,15 +549,18 @@ const jsonLd = {
           );
         }
         if (block.tag === 'h1') return (
-          <h1 id={block.id} class="section-heading serif text-2xl sm:text-3xl font-bold text-slate-900 mt-10 mb-3 para-reveal" set:html={block.html} />
+          <h1 id={block.id} class="section-heading serif text-xl sm:text-3xl font-bold text-slate-900 mt-7 sm:mt-10 mb-2 para-reveal" set:html={block.html} />
+        );
+        if (block.tag === 'table') return (
+          <Fragment set:html={block.html} />
         );
         if (block.tag === 'h3' && block.faq) return null;
         if (block.tag === 'p'  && block.faq) return null;
         if (block.tag === 'h3') return (
-          <h3 class="section-heading serif text-lg font-bold text-slate-800 mt-7 mb-2 para-reveal" set:html={block.html} />
+          <h3 class="section-heading serif text-base sm:text-lg font-bold text-slate-800 mt-5 sm:mt-7 mb-1 sm:mb-2 para-reveal" set:html={block.html} />
         );
         return (
-          <p class={`text-slate-700 leading-8 text-base sm:text-lg para-reveal${bi % 3 === 1 ? ' para-reveal-d1' : bi % 3 === 2 ? ' para-reveal-d2' : ''}`} set:html={block.html} />
+          <p class={`text-slate-700 leading-7 sm:leading-8 text-[15px] sm:text-lg para-reveal${bi % 3 === 1 ? ' para-reveal-d1' : bi % 3 === 2 ? ' para-reveal-d2' : ''}`} set:html={block.html} />
         );
       })}
     </article>

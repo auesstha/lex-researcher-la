@@ -13,7 +13,8 @@ export type CategorySlug =
   | 'international-labor-law'
   | 'intellectual-property-law'
   | 'river-law'
-  | 'world-law';
+  | 'world-law'
+  | 'property-law';
 
 export interface Article {
   id: string;
@@ -56,12 +57,13 @@ export const CATEGORIES: Record<CategorySlug, CategoryMeta> = {
   'intellectual-property-law':      { label: 'International IP Law',               shortLabel: 'IP Law',          icon: '💡', color: 'purple',  description: 'TRIPS, WIPO treaties, patents, copyright, trademarks.',         group: 'Specialised Fields' },
   'river-law':                      { label: 'River & Water Law',                  shortLabel: 'Water Law',       icon: '🌊', color: 'sky',     description: 'Transboundary watercourses, UN Watercourses Convention.',        group: 'General & Comparative' },
   'world-law':                      { label: 'World Law',                          shortLabel: 'World Law',       icon: '🌍', color: 'stone',   description: 'Comparative law, global governance, emerging legal orders.',    group: 'General & Comparative' },
+  'property-law':                   { label: 'Property & Land Law',                shortLabel: 'Property Law',    icon: '🏠', color: 'lime',    description: 'Immovable property, land transfers, gifts, and personal law.',   group: 'General & Comparative' },
 };
 
 export const CATEGORY_GROUPS: Record<string, CategorySlug[]> = {
   'Public International Law': ['international-law','human-rights-law','humanitarian-law','international-criminal-law','international-trade-law','international-environmental-law','maritime-law'],
   'Specialised Fields':        ['international-investment-law','diplomatic-law','air-space-law','refugee-law','international-labor-law','intellectual-property-law'],
-  'General & Comparative':     ['river-law','world-law'],
+  'General & Comparative':     ['river-law','world-law','property-law'],
 };
 
 export function getBadgeClass(color: string): string {
@@ -81,6 +83,7 @@ export function getBadgeClass(color: string): string {
     purple:  'bg-purple-50 text-purple-700 border-purple-200',
     sky:     'bg-sky-50 text-sky-700 border-sky-200',
     stone:   'bg-stone-100 text-stone-700 border-stone-200',
+    lime:    'bg-lime-50 text-lime-700 border-lime-200',
   };
   return map[color] ?? map.stone;
 }
@@ -90,7 +93,7 @@ export function getStripClass(color: string): string {
     blue:'bg-blue-500',rose:'bg-rose-500',orange:'bg-orange-500',red:'bg-red-500',
     emerald:'bg-emerald-500',green:'bg-green-500',cyan:'bg-cyan-500',violet:'bg-violet-500',
     amber:'bg-amber-500',indigo:'bg-indigo-500',teal:'bg-teal-500',yellow:'bg-yellow-500',
-    purple:'bg-purple-500',sky:'bg-sky-500',stone:'bg-stone-400',
+    purple:'bg-purple-500',sky:'bg-sky-500',stone:'bg-stone-400',lime:'bg-lime-500',
   };
   return map[color] ?? map.stone;
 }
@@ -100,7 +103,7 @@ export function getBannerClass(color: string): string {
     blue:'bg-blue-600',rose:'bg-rose-600',orange:'bg-orange-600',red:'bg-red-600',
     emerald:'bg-emerald-600',green:'bg-green-600',cyan:'bg-cyan-600',violet:'bg-violet-600',
     amber:'bg-amber-600',indigo:'bg-indigo-600',teal:'bg-teal-600',yellow:'bg-yellow-500',
-    purple:'bg-purple-600',sky:'bg-sky-600',stone:'bg-stone-600',
+    purple:'bg-purple-600',sky:'bg-sky-600',stone:'bg-stone-600',lime:'bg-lime-600',
   };
   return map[color] ?? map.stone;
 }
