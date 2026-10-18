@@ -28,7 +28,7 @@ if (Astro.request.method === 'POST') {
   const authorTitle = (form.get('authorTitle') as string || '').trim();
   const tags        = (form.get('tags')        as string || '').split(',').map(t => t.trim()).filter(Boolean);
   const readTime    = parseInt(form.get('readTime') as string) || 5;
-  const published   = form.get('published') === '1';
+  const published   = form.getAll('published').includes('1');
 
   formValues = { title, slug, category, excerpt, content, author, authorTitle, tags: tags.join(', '), readTime: String(readTime), published: published ? '1' : '0' };
 
@@ -223,7 +223,7 @@ const v = {
         #md-preview img { max-width:100%; border-radius:12px; margin:1.2rem 0; border:1px solid #e7e5e4; display:block; }
       `}</style>
 
-      <script id="md-initial" type="application/json" is:inline>{JSON.stringify(v.content)}</script>
+      <textarea id="md-initial" hidden>{v.content}</textarea>
 
       <script is:inline>
         (function () {
@@ -409,10 +409,8 @@ const v = {
           // ── Load existing content ─────────────────────────────────────────────
           var initEl = document.getElementById('md-initial');
           if (initEl) {
-            try {
-              var initMd = JSON.parse(initEl.textContent || '""');
-              if (initMd) editor.innerHTML = mdToHtml(initMd);
-            } catch (e) {}
+            var initMd = initEl.value.trim();
+            if (initMd) editor.innerHTML = mdToHtml(initMd);
           }
 
           // ── Word count ────────────────────────────────────────────────────────
