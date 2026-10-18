@@ -6,7 +6,7 @@ interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'Lex Researcher — Advanced scholarship in world law, river law, and international law.' } = Astro.props;
+const { title, description = 'Lex Researcher — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.' } = Astro.props;
 const path = Astro.url.pathname;
 
 // Group categories for mobile drawer
@@ -215,6 +215,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
           </div>
           <span class="serif text-white text-lg font-bold">Lex Researcher</span>
         </div>
+        <p class="text-amber-400/80 italic text-xs mb-1">The World Through a Legal Lens</p>
         <p class="text-sm leading-relaxed max-w-xs">Open-access peer-reviewed scholarship across 15 areas of international and comparative law.</p>
         <div class="mt-4 text-xs text-slate-600">ISSN 2026-LEX · Volume 1 · 2026</div>
       </div>
