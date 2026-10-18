@@ -52,7 +52,7 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
-type Block = { tag: 'h2' | 'h3' | 'p'; html: string; id?: string; faq?: boolean };
+type Block = { tag: 'h1' | 'h2' | 'h3' | 'p'; html: string; id?: string; faq?: boolean };
 function parseContent(raw: string): Block[] {
   let inFaq = false;
   return raw
@@ -60,12 +60,16 @@ function parseContent(raw: string): Block[] {
     .map(s => s.trim())
     .filter(Boolean)
     .map(block => {
+      if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq };
       if (block.startsWith('## ')) {
         const text = block.slice(3).trim();
         inFaq = /frequently asked questions|faq/i.test(text);
         return { tag: 'h2' as const, html: inlineMd(text), id: slugify(text) };
       }
-      if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq };
+      if (block.startsWith('# ')) {
+        const text = block.slice(2).trim();
+        return { tag: 'h1' as const, html: inlineMd(text), id: slugify(text) };
+      }
       return { tag: 'p' as const, html: inlineMd(block), faq: inFaq };
     });
 }
@@ -525,6 +529,9 @@ const jsonLd = {
             </>
           );
         }
+        if (block.tag === 'h1') return (
+          <h1 id={block.id} class="section-heading serif text-2xl sm:text-3xl font-bold text-slate-900 mt-10 mb-3 para-reveal" set:html={block.html} />
+        );
         if (block.tag === 'h3' && block.faq) return null;
         if (block.tag === 'p'  && block.faq) return null;
         if (block.tag === 'h3') return (

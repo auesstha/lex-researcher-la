@@ -22,7 +22,7 @@ if (Astro.request.method === 'POST') {
   const authorTitle = (form.get('authorTitle') as string || '').trim();
   const tags        = (form.get('tags')        as string || '').split(',').map(t => t.trim()).filter(Boolean);
   const readTime    = parseInt(form.get('readTime') as string) || 5;
-  const published   = form.get('published') === '1';
+  const published   = form.getAll('published').includes('1');
 
   if (!title || !slug || !category || !content || !author) {
     error = 'Please fill in all required fields (Title, Slug, Category, Author, Content).';
