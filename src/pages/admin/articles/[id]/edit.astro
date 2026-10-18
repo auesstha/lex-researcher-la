@@ -349,34 +349,47 @@ const v = {
             return Array.from(tmp.childNodes).map(nodeToMd).join('').replace(/\n{3,}/g, '\n\n').trim();
           }
 
-          // ── Apply block format (reliable) ─────────────────────────────────────
+          // ── Apply block format (pure DOM — no execCommand) ───────────────────
           function applyBlock(tag) {
             editor.focus();
             var sel = window.getSelection();
-            if (!sel || !sel.rangeCount || !editor.contains(sel.anchorNode)) {
+            var targetNode = null;
+
+            if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
+              var node = sel.getRangeAt(0).startContainer;
+              while (node && node !== editor) {
+                if (node.nodeType === 1 && /^(P|H[1-6]|DIV|BLOCKQUOTE|PRE|LI)$/i.test(node.tagName)) { targetNode = node; break; }
+                node = node.parentNode;
+              }
+              // Cursor directly in editor (bare text node) — wrap it
+              if (!targetNode && sel.anchorNode && sel.anchorNode !== editor) {
+                var wrap = document.createElement('p');
+                var anchor = sel.anchorNode.nodeType === 3 ? sel.anchorNode : null;
+                if (anchor && anchor.parentNode === editor) {
+                  anchor.parentNode.insertBefore(wrap, anchor);
+                  wrap.appendChild(anchor);
+                  targetNode = wrap;
+                }
+              }
+            }
+
+            if (!targetNode) {
+              // Nothing to convert — append a new block
               var el = document.createElement(tag);
               el.innerHTML = '<br>';
               editor.appendChild(el);
               var r = document.createRange();
               r.selectNodeContents(el); r.collapse(false);
-              sel.removeAllRanges(); sel.addRange(r);
+              if (sel) { sel.removeAllRanges(); sel.addRange(r); }
               updateCount(); updateActiveStates(); return;
             }
-            var node = sel.getRangeAt(0).startContainer;
-            while (node && node !== editor) {
-              if (node.nodeType === 1 && /^(P|H[1-6]|DIV|BLOCKQUOTE|PRE|LI)$/i.test(node.tagName)) break;
-              node = node.parentNode;
-            }
-            if (!node || node === editor) {
-              document.execCommand('formatBlock', false, tag);
-              updateCount(); updateActiveStates(); return;
-            }
+
             var newEl = document.createElement(tag);
-            newEl.innerHTML = node.innerHTML || '<br>';
-            node.parentNode.replaceChild(newEl, node);
+            newEl.innerHTML = targetNode.innerHTML || '<br>';
+            targetNode.parentNode.replaceChild(newEl, targetNode);
             var r2 = document.createRange();
             r2.selectNodeContents(newEl); r2.collapse(false);
-            sel.removeAllRanges(); sel.addRange(r2);
+            if (sel) { sel.removeAllRanges(); sel.addRange(r2); }
             updateCount(); updateActiveStates();
           }
 
