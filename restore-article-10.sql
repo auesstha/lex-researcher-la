@@ -1,7 +1,5 @@
-UPDATE articles SET
-  category='property-law',
-  excerpt='Bangladesh''s 2026 amendment to the Transfer of Property Act 1882 inserted Sections 122A and 122B, creating a statutory framework for gifts with lifetime usufruct retention. This article examines the corpus-usufruct split mechanism, the irrevocability regime under Section 122B, the classical Heba doctrine and the ayn-manafi distinction, and the savings clause that preserves Muslim personal law alongside the new statutory route.',
-  content='Across Bangladesh, a quiet crisis has been unfolding for decades. Elderly parents, trusting in filial duty, gift their homes and lands to their children only to find themselves dispossessed, evicted, or reduced to dependents in the very houses they built. The law offered no structured mechanism for a parent to transfer property while retaining the right to live in it, collect its rents, or enjoy its income for life.
+DELETE FROM articles WHERE id='10';
+INSERT INTO articles (id,title,slug,category,excerpt,content,author,authorTitle,tags,readTime,published,publishedAt,updatedAt) VALUES ('10','Sections 122A and 122B of the Transfer of Property Act 1882: Bangladesh''s 2026 Amendment on Lifetime Usufruct and Heba','sections-122a-122b-tpa-1882-bangladesh-2026-lifetime-usufruct-heba','property-law','Bangladesh''s 2026 amendment to the Transfer of Property Act 1882 inserted Sections 122A and 122B, creating a statutory framework for gifts with lifetime usufruct retention. This article examines the corpus-usufruct split mechanism, the irrevocability regime under Section 122B, the classical Heba doctrine and the ayn-manafi distinction, and the savings clause that preserves Muslim personal law alongside the new statutory route.','Across Bangladesh, a quiet crisis has been unfolding for decades. Elderly parents, trusting in filial duty, gift their homes and lands to their children only to find themselves dispossessed, evicted, or reduced to dependents in the very houses they built. The law offered no structured mechanism for a parent to transfer property while retaining the right to live in it, collect its rents, or enjoy its income for life.
 
 In 2026, Bangladesh''s Jatiya Sangsad enacted an amendment to the Transfer of Property Act 1882 (TPA) inserting **Sections 122A and 122B of the Transfer of Property Act 1882**, creating a statutory framework for gifts with lifetime usufruct retention. This is a Bangladeshi enactment. Both Bangladesh and India inherited the TPA 1882 from British colonial legislation, but the two countries have diverged substantially in their amendments. India has no equivalent provision.
 
@@ -125,7 +123,4 @@ No. Section 122A governs inter vivos gifts, not testamentary succession. Propert
 
 ### What is the difference between Section 122A and Section 126 TPA?
 
-Section 126 governs general revocability and permits revocation where the gift deed contains an express revocation condition. Section 122B is stricter: it does not permit the donor to reserve a unilateral right of revocation. Revocation requires mutual consent with genuine necessity or a court order.',
-  publishedAt='2026-10-05T09:00:00Z',
-  updatedAt='2026-10-05T09:00:00Z'
-WHERE id='10';
+Section 126 governs general revocability and permits revocation where the gift deed contains an express revocation condition. Section 122B is stricter: it does not permit the donor to reserve a unilateral right of revocation. Revocation requires mutual consent with genuine necessity or a court order.','Lamia Akhter','LLB Student & Legal Researcher','["property law","Bangladesh","TPA 1882","heba","usufruct","Muslim personal law","gift deed"]',13,1,'2026-10-05T09:00:00Z','2026-10-05T09:00:00Z');
