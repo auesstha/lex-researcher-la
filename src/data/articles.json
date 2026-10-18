@@ -208,5 +208,28 @@
     ],
     "readTime": 11,
     "published": true
+  },
+  {
+    "id": "13",
+    "title": "Remedies for Constitutional Crisis: A Comparative Guide to Restoring the Rule of Law",
+    "slug": "remedies-constitutional-crisis-comparative-guide",
+    "category": "world-law",
+    "excerpt": "Most constitutional crises do not arrive with tanks in the streets. They arrive with legislation, judicial appointments, and procedural maneuvers. This comparative guide examines judicial, legislative, electoral, constitutional design, and civil society remedies across India, South Korea, Brazil, Poland, Hungary, and Israel — and explains why no single remedy suffices.",
+    "author": "Lamia Akhter",
+    "authorTitle": "LLB Student & Legal Researcher",
+    "tags": [
+      "constitutional law",
+      "comparative law",
+      "constitutional crisis",
+      "judicial review",
+      "democracy",
+      "rule of law",
+      "world law"
+    ],
+    "readTime": 18,
+    "published": true,
+    "publishedAt": "2026-10-07T09:00:00Z",
+    "updatedAt": "2026-10-07T09:00:00Z",
+    "content": ""
   }
 ]
