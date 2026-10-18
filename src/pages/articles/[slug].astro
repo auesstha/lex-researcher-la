@@ -107,9 +107,11 @@ function isoDate(iso: string) {
   return new Date(iso).toISOString();
 }
 
-const related = (await getPublishedArticles(Astro.locals))
+const allPublished = await getPublishedArticles(Astro.locals);
+const related = allPublished
   .filter(a => a.id !== article.id && a.category === article.category)
   .slice(0, 2);
+const authorArticleCount = allPublished.filter(a => a.author === article.author).length;
 
 // ── SEO / structured data ────────────────────────────────────────────────────
 const canonicalURL = new URL(`/articles/${article.slug}`, Astro.url).href;
@@ -691,7 +693,7 @@ const jsonLd = {
             <!-- stats row -->
             <div class="flex justify-center sm:justify-start gap-5 mb-5 text-center">
               <div>
-                <div class="text-lg font-bold text-white">2</div>
+                <div class="text-lg font-bold text-white">{authorArticleCount}</div>
                 <div class="text-xs text-slate-500 uppercase tracking-wide">Articles</div>
               </div>
               <div class="w-px bg-slate-700 self-stretch"></div>
