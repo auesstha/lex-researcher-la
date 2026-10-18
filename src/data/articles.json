@@ -254,5 +254,29 @@
     "publishedAt": "2026-10-09T09:00:00Z",
     "updatedAt": "2026-10-09T09:00:00Z",
     "content": ""
+  },
+  {
+    "id": "15",
+    "title": "Alternative Dispute Resolution in Common Law Countries: A Legislative Review",
+    "slug": "adr-common-law-countries-legislative-review",
+    "category": "world-law",
+    "excerpt": "The Centre for Effective Dispute Resolution reported a 92% mediation settlement rate in England and Wales. Between Churchill v Merthyr Tydfil [2023], the CPR 2024 amendments, and the Arbitration Act 2025, common law systems have shifted from encouraging ADR to mandating it. This legislative review traces that evolution and examines the tensions between compulsion, access to justice, and norm development.",
+    "author": "Lamia Akhter",
+    "authorTitle": "LLB Student & Legal Researcher",
+    "tags": [
+      "ADR",
+      "mediation",
+      "arbitration",
+      "common law",
+      "civil procedure",
+      "dispute resolution",
+      "Churchill v Merthyr Tydfil",
+      "Arbitration Act 2025"
+    ],
+    "readTime": 16,
+    "published": true,
+    "publishedAt": "2026-10-11T09:00:00Z",
+    "updatedAt": "2026-10-11T09:00:00Z",
+    "content": ""
   }
 ]
