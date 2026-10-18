@@ -231,5 +231,28 @@
     "publishedAt": "2026-10-07T09:00:00Z",
     "updatedAt": "2026-10-07T09:00:00Z",
     "content": ""
+  },
+  {
+    "id": "14",
+    "title": "Arbitration and English Commercial Law: A Student's Guide to the 2025 Reforms and Beyond",
+    "slug": "arbitration-english-commercial-law-2025-reforms-guide",
+    "category": "world-law",
+    "excerpt": "England hosts roughly 5,000 arbitrations per year, contributing an estimated GBP 2.5 billion to the national economy. The Arbitration Act 2025, which came into force on 1 August 2025, is the most significant reform in three decades. This guide covers the statutory framework, separability, Kompetenz-Kompetenz, Section 69 appeals, the AA 2025 reforms, confidentiality, enforcement, and London's global competitive position.",
+    "author": "Lamia Akhter",
+    "authorTitle": "LLB Student & Legal Researcher",
+    "tags": [
+      "arbitration",
+      "English commercial law",
+      "Arbitration Act 2025",
+      "LCIA",
+      "international commercial arbitration",
+      "dispute resolution",
+      "London arbitration"
+    ],
+    "readTime": 13,
+    "published": true,
+    "publishedAt": "2026-10-09T09:00:00Z",
+    "updatedAt": "2026-10-09T09:00:00Z",
+    "content": ""
   }
 ]
