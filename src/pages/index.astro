@@ -515,8 +515,8 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 
         <!-- byline -->
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-400 mb-6 animate-fade-up-d3">
-          <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black flex-shrink-0">
-            {featured.author.charAt(0)}
+          <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
+            {featured.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black">{featured.author.charAt(0)}</span>}
           </div>
           <span class="font-medium text-slate-200 text-sm">{featured.author}</span>
           {featured.authorTitle && <span class="text-slate-500 text-xs hidden sm:inline">· {featured.authorTitle}</span>}
@@ -820,8 +820,8 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
           </p>
           <div class="flex items-center justify-between pt-4 border-t border-stone-100">
             <div class="flex items-center gap-2 min-w-0">
-              <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
-                {article.author.charAt(0)}
+              <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
+                {article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-slate-800 flex items-center justify-center text-white text-[11px] font-bold">{article.author.charAt(0)}</span>}
               </div>
               <div class="min-w-0">
                 <div class="text-xs font-semibold text-slate-700 truncate">{article.author}</div>

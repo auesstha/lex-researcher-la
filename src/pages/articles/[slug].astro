@@ -451,7 +451,7 @@ const jsonLd = {
       <!-- meta row -->
       <div class="art-meta flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-400 text-xs">
         <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 text-[10px] font-black">{article.author.charAt(0)}</div>
+          <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">{article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-[10px] font-black">{article.author.charAt(0)}</span>}</div>
           <span class="font-medium text-slate-200">{article.author}</span>
         </div>
         <span class="text-slate-600">·</span>
@@ -646,8 +646,8 @@ const jsonLd = {
           <!-- Avatar -->
           <div class="flex-shrink-0 flex sm:block justify-center">
             <div class="relative">
-              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-xl ring-4 ring-amber-500/20">
-                <span class="text-slate-900 font-black text-4xl sm:text-5xl serif">L</span>
+              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-xl ring-4 ring-amber-500/20">
+                <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" />
               </div>
               <!-- verified -->
               <div class="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-emerald-500 rounded-full border-3 border-slate-900 flex items-center justify-center shadow-md" style="border-width:3px">

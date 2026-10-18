@@ -80,8 +80,8 @@ function fmt(iso: string) {
 
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
-                      {article.author.charAt(0)}
+                    <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      {article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-slate-800 flex items-center justify-center text-white text-[10px] font-bold">{article.author.charAt(0)}</span>}
                     </div>
                     <span class="text-xs font-medium text-slate-600">{article.author}</span>
                     {article.authorTitle && <span class="text-xs text-stone-400 hidden sm:inline">· {article.authorTitle}</span>}
