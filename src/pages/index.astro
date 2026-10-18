@@ -179,13 +179,6 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   .reveal-d2 { transition-delay: 0.18s; }
   .reveal-d3 { transition-delay: 0.28s; }
 
-  /* ── Ticker marquee ── */
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  .ticker-track { animation: marquee 28s linear infinite; white-space: nowrap; will-change: transform; }
-  .ticker-track:hover { animation-play-state: paused; }
 
   /* ── Quote zoom-in ── */
   @keyframes quote-in {
@@ -417,40 +410,6 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
 
 <Base title="Home">
 
-<!-- ═══════════════════════════════════════
-     LEGAL MAXIM TICKER (scrolling)
-════════════════════════════════════════ -->
-<div class="bg-slate-900 border-b border-slate-800 overflow-hidden">
-  <div class="flex items-center">
-    <!-- fixed label -->
-    <div class="flex-shrink-0 flex items-center gap-2 bg-slate-900 pl-5 pr-4 py-2.5 z-10 border-r border-slate-800">
-      <span class="text-amber-500 text-xs font-bold uppercase tracking-widest">Lex</span>
-    </div>
-    <!-- scrolling track -->
-    <div class="overflow-hidden flex-1 py-2.5">
-      <div class="ticker-track inline-flex gap-12 text-slate-400 text-xs">
-        <!-- duplicated for seamless loop -->
-        <span><em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em> <span class="text-slate-600 mx-1">—</span> Let justice be done though the heavens fall</span>
-        <span class="text-slate-600">·</span>
-        <span><em class="text-slate-300 not-italic font-medium">"Audi alteram partem"</em> <span class="text-slate-600 mx-1">—</span> Hear the other side</span>
-        <span class="text-slate-600">·</span>
-        <span><em class="text-slate-300 not-italic font-medium">"Pacta sunt servanda"</em> <span class="text-slate-600 mx-1">—</span> Agreements must be kept</span>
-        <span class="text-slate-600">·</span>
-        <span>Open-access legal scholarship since 2026</span>
-        <span class="text-slate-600">·</span>
-        <!-- duplicate -->
-        <span><em class="text-slate-300 not-italic font-medium">"Fiat justitia ruat caelum"</em> <span class="text-slate-600 mx-1">—</span> Let justice be done though the heavens fall</span>
-        <span class="text-slate-600">·</span>
-        <span><em class="text-slate-300 not-italic font-medium">"Audi alteram partem"</em> <span class="text-slate-600 mx-1">—</span> Hear the other side</span>
-        <span class="text-slate-600">·</span>
-        <span><em class="text-slate-300 not-italic font-medium">"Pacta sunt servanda"</em> <span class="text-slate-600 mx-1">—</span> Agreements must be kept</span>
-        <span class="text-slate-600">·</span>
-        <span>Open-access legal scholarship since 2026</span>
-        <span class="text-slate-600">·</span>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <!-- ═══════════════════════════════════════
