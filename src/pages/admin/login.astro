@@ -303,8 +303,9 @@ if (Astro.request.method === 'POST') {
       if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
     }
 
-    // On load — show the active tab based on server state
-    switchTab(activeTab);
+    // On load — show register tab if URL hash is #register, else use server state
+    const initTab = window.location.hash === '#register' ? 'register' : activeTab;
+    switchTab(initTab);
 
     window.switchTab = switchTab;
     window.togglePwd = togglePwd;
