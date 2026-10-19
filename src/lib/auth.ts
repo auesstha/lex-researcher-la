@@ -83,6 +83,18 @@ export async function getUserByEmail(email: string): Promise<UserRow | null> {
   return row ? (row as unknown as UserRow) : null;
 }
 
+export async function getUserByUsername(username: string): Promise<UserRow | null> {
+  const row = await getDB().prepare('SELECT * FROM users WHERE username=?').bind(username).first();
+  return row ? (row as unknown as UserRow) : null;
+}
+
+export async function getApprovedAuthors(): Promise<UserRow[]> {
+  const { results } = await getDB()
+    .prepare("SELECT * FROM users WHERE status='approved' AND role='author' ORDER BY created_at ASC")
+    .all();
+  return results as unknown as UserRow[];
+}
+
 export async function getUserById(id: string): Promise<UserRow | null> {
   const row = await getDB().prepare('SELECT * FROM users WHERE id=?').bind(id).first();
   return row ? (row as unknown as UserRow) : null;

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getPublishedArticles, getArticleBySlug, CATEGORIES, getBadgeClass, getStripClass, getBannerClass } from '../../lib/articles';
+import { getApprovedAuthors } from '../../lib/auth';
 
 const { slug } = Astro.params;
 const article = await getArticleBySlug(Astro.locals, slug!);
@@ -8,6 +9,12 @@ const article = await getArticleBySlug(Astro.locals, slug!);
 if (!article || !article.published) {
   return Astro.redirect('/404');
 }
+
+const approvedAuthors = await getApprovedAuthors();
+const authorUser = approvedAuthors.find(u => u.display_name === article.author);
+const authorProfileUrl = article.author === 'Lamia Akhter'
+  ? '/lamia-akhter'
+  : authorUser ? `/author/${authorUser.username}` : null;
 
 // ── Markdown renderer ─────────────────────────────────────────────────────────
 function inlineMd(text: string): string {
@@ -454,7 +461,7 @@ const jsonLd = {
       <div class="art-meta flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-400 text-xs">
         <div class="flex items-center gap-2">
           <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">{article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-[10px] font-black">{article.author.charAt(0)}</span>}</div>
-          {article.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="font-medium text-slate-200 hover:text-amber-400 transition-colors">{article.author}</a> : <span class="font-medium text-slate-200">{article.author}</span>}
+          {authorProfileUrl ? <a href={authorProfileUrl} class="font-medium text-slate-200 hover:text-amber-400 transition-colors">{article.author}</a> : <span class="font-medium text-slate-200">{article.author}</span>}
         </div>
         <span class="text-slate-600">·</span>
         <time datetime={isoDate(article.publishedAt)}>{formatDate(article.publishedAt)}</time>
@@ -665,7 +672,7 @@ const jsonLd = {
 
             <!-- name + pills row -->
             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-3">
-              {article.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="serif text-xl sm:text-2xl font-bold text-white leading-none hover:text-amber-400 transition-colors">{article.author}</a> : <h3 class="serif text-xl sm:text-2xl font-bold text-white leading-none">{article.author}</h3>}
+              {authorProfileUrl ? <a href={authorProfileUrl} class="serif text-xl sm:text-2xl font-bold text-white leading-none hover:text-amber-400 transition-colors">{article.author}</a> : <h3 class="serif text-xl sm:text-2xl font-bold text-white leading-none">{article.author}</h3>}
               <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 Verified Researcher
