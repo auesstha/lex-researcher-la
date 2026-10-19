@@ -10,7 +10,7 @@ function fmt(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 ---
-<Base title="All Articles — Lex Researcher">
+<Base title="All Articles — Lex Researcher" keywords="law articles, legal research, international law, Lex Researcher">
 
 <!-- Header -->
 <section class="bg-slate-900 text-white">
@@ -83,7 +83,7 @@ function fmt(iso: string) {
                     <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       {article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-slate-800 flex items-center justify-center text-white text-[10px] font-bold">{article.author.charAt(0)}</span>}
                     </div>
-                    <span class="text-xs font-medium text-slate-600">{article.author}</span>
+                    {article.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="text-xs font-medium text-slate-600 hover:text-amber-700 transition-colors">{article.author}</a> : <span class="text-xs font-medium text-slate-600">{article.author}</span>}
                     {article.authorTitle && <span class="text-xs text-stone-400 hidden sm:inline">· {article.authorTitle}</span>}
                   </div>
                   <span class="text-xs font-semibold text-stone-400 group-hover:text-amber-700 flex items-center gap-1 transition-colors">

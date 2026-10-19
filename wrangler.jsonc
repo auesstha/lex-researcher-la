@@ -8,6 +8,9 @@
       "id": "a3dbc2f515da4a958ab91ad727a5ef03"
     }
   ],
+  "vars": {
+    // "RESEND_API_KEY": "re_xxxxxxxxxxxxxxxxxxxx"  // Set via: wrangler secret put RESEND_API_KEY
+  },
   "d1_databases": [
     {
       "binding": "DB",

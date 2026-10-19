@@ -2,13 +2,24 @@
 import '../styles/global.css';
 import { CATEGORIES } from '../lib/articles';
 import type { CategorySlug } from '../lib/articles';
+import type { SessionData } from '../lib/auth';
+import { getPendingUsers } from '../lib/auth';
 
 interface Props {
   title: string;
   active?: string;
+  session?: SessionData;
 }
-const { title, active = '' } = Astro.props;
+const { title, active = '', session } = Astro.props;
 const path = Astro.url.pathname;
+const userAdmin = session?.role === 'admin';
+const displayName = session?.displayName ?? 'User';
+const initials = displayName.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+
+let pendingCount = 0;
+if (userAdmin) {
+  try { pendingCount = (await getPendingUsers()).length; } catch (_) {}
+}
 
 const cats = Object.entries(CATEGORIES) as [CategorySlug, typeof CATEGORIES[CategorySlug]][];
 ---
@@ -83,25 +94,43 @@ const cats = Object.entries(CATEGORIES) as [CategorySlug, typeof CATEGORIES[Cate
         <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
         View Live Site
       </a>
-      <a href="/admin/author"
-         class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/admin/author' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
-        <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Edit Author Profile
-      </a>
-      <a href="/lamia-akhter" target="_blank"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
-        <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        View Live Profile ↗
-      </a>
+
+      {userAdmin && (
+        <>
+          <a href="/admin/users"
+             class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/admin/users' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="flex-1">Users</span>
+            {pendingCount > 0 && (
+              <span class="bg-amber-500 text-slate-900 text-[10px] font-black px-1.5 py-0.5 rounded-full leading-none">{pendingCount}</span>
+            )}
+          </a>
+          <a href="/admin/author"
+             class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/admin/author' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Edit Author Profile
+          </a>
+          <a href="/lamia-akhter" target="_blank"
+             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+            <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            View Live Profile ↗
+          </a>
+        </>
+      )}
     </nav>
 
     <!-- User footer -->
     <div class="flex-shrink-0 border-t border-slate-800 px-4 py-4">
       <div class="flex items-center gap-3 mb-3">
-        <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-black text-sm flex-shrink-0" style="font-family:'Playfair Display',serif">L</div>
-        <div class="min-w-0">
-          <div class="text-sm font-semibold text-white truncate">Lamia Akhter</div>
-          <div class="text-xs text-slate-500">Editor</div>
+        <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 font-black text-sm flex-shrink-0" style="font-family:'Playfair Display',serif">{initials}</div>
+        <div class="min-w-0 flex-1">
+          <div class="text-sm font-semibold text-white truncate">{displayName}</div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            {userAdmin
+              ? <span class="text-[10px] font-bold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-1.5 py-0.5 rounded">Admin</span>
+              : <span class="text-[10px] font-bold text-slate-400 bg-slate-700 border border-slate-600 px-1.5 py-0.5 rounded">Author</span>
+            }
+          </div>
         </div>
       </div>
       <form method="POST" action="/admin/logout">

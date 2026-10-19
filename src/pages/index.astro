@@ -408,7 +408,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   .book-shine { animation: book-shine 5s 2s ease-in-out infinite; }
 </style>
 
-<Base title="Lex Researcher — International Law & Legal Research Journal">
+<Base title="Lex Researcher — International Law & Legal Research Journal" keywords="international law, legal research journal, world law, river law, comparative law, open access law, Lex Researcher">
 
 
 
@@ -518,7 +518,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
           <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
             {featured.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black">{featured.author.charAt(0)}</span>}
           </div>
-          <span class="font-medium text-slate-200 text-sm">{featured.author}</span>
+          {featured.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="font-medium text-slate-200 text-sm hover:text-amber-400 transition-colors">{featured.author}</a> : <span class="font-medium text-slate-200 text-sm">{featured.author}</span>}
           {featured.authorTitle && <span class="text-slate-500 text-xs hidden sm:inline">· {featured.authorTitle}</span>}
           <span class="text-slate-700">·</span>
           <span class="text-xs">{fmt(featured.publishedAt)}</span>
@@ -824,7 +824,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
                 {article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-slate-800 flex items-center justify-center text-white text-[11px] font-bold">{article.author.charAt(0)}</span>}
               </div>
               <div class="min-w-0">
-                <div class="text-xs font-semibold text-slate-700 truncate">{article.author}</div>
+                {article.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="text-xs font-semibold text-slate-700 truncate hover:text-amber-700 transition-colors">{article.author}</a> : <div class="text-xs font-semibold text-slate-700 truncate">{article.author}</div>}
                 <div class="text-xs text-stone-400">{fmt(article.publishedAt)}</div>
               </div>
             </div>
@@ -962,7 +962,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
           Legal knowledge belongs to everyone
         </h3>
         <p class="text-slate-400 text-sm leading-relaxed mb-6">
-          Lex Researcher is an open-access journal dedicated to advancing scholarship in international and comparative law. Founded by Lamia Akhter, every article is peer-reviewed, freely accessible, and written to inform practitioners, scholars, and citizens alike.
+          Lex Researcher is an open-access journal dedicated to advancing scholarship in international and comparative law. Founded by <a href="/lamia-akhter" class="text-amber-400 hover:text-amber-300 transition-colors">Lamia Akhter</a>, every article is peer-reviewed, freely accessible, and written to inform practitioners, scholars, and citizens alike.
         </p>
         <div class="flex flex-wrap gap-3">
           <a href="/about" class="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">

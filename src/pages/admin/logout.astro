@@ -1,11 +1,17 @@
 ---
-import { clearSessionCookie } from '../../lib/auth';
+import { clearSession } from '../../lib/auth';
+
+// @ts-ignore
+import { env as cfEnv } from 'cloudflare:workers';
+const kv = (cfEnv as any).SESSION;
+
+const clearCookie = await clearSession(Astro.request, kv);
 
 return new Response(null, {
   status: 302,
   headers: {
     'Location': '/admin/login',
-    'Set-Cookie': clearSessionCookie(),
+    'Set-Cookie': clearCookie,
   },
 });
 ---

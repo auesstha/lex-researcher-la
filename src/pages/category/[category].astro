@@ -22,7 +22,7 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 ---
-<Base title={cat.label} description={cat.description}>
+<Base title={cat.label} description={cat.description} keywords={`${cat.label}, legal research, international law, Lex Researcher`}>
 
   <!-- Banner -->
   <div class={`bg-gradient-to-br ${bannerClass} text-white relative overflow-hidden`}>

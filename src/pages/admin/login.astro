@@ -1,26 +1,79 @@
 ---
 import '../../styles/global.css';
-import { checkPassword, createSessionCookie, isAuthenticated } from '../../lib/auth';
+import { getSession, getUserByEmail, verifyPassword, createSession, createUser, hashPassword } from '../../lib/auth';
 
-if (isAuthenticated(Astro.request)) {
-  return Astro.redirect('/admin');
-}
+
+// @ts-ignore
+import { env as cfEnv } from 'cloudflare:workers';
+const kv = (cfEnv as any).SESSION;
+
+// Already logged in → go to admin
+const existing = await getSession(Astro.request, kv);
+if (existing) return Astro.redirect('/admin');
 
 let error = '';
+let success = '';
+let activeTab = 'login'; // or 'register'
 
 if (Astro.request.method === 'POST') {
   const form = await Astro.request.formData();
-  const password = form.get('password') as string;
-  if (checkPassword(password)) {
-    return new Response(null, {
-      status: 302,
-      headers: {
-        'Location': '/admin',
-        'Set-Cookie': createSessionCookie(),
-      },
-    });
+  const action = form.get('action') as string;
+
+  if (action === 'login') {
+    activeTab = 'login';
+    const email    = (form.get('email')    as string || '').trim().toLowerCase();
+    const password =  form.get('password') as string || '';
+
+    if (!email || !password) {
+      error = 'Please enter your email and password.';
+    } else {
+      const user = await getUserByEmail(email);
+      if (!user) {
+        error = 'No account found with that email address.';
+      } else {
+        const ok = await verifyPassword(password, user.password_hash);
+        if (!ok) {
+          error = 'Incorrect password. Please try again.';
+        } else if (user.status === 'pending') {
+          error = 'Your account is pending approval by the admin. You will receive an email once approved.';
+        } else if (user.status === 'rejected') {
+          error = 'Your registration was not approved. Please contact the admin.';
+        } else {
+          const cookie = await createSession(user.id, user.role, user.display_name, kv);
+          return new Response(null, {
+            status: 302,
+            headers: { Location: '/admin', 'Set-Cookie': cookie },
+          });
+        }
+      }
+    }
+  } else if (action === 'register') {
+    activeTab = 'register';
+    const displayName       = (form.get('display_name')      as string || '').trim();
+    const email             = (form.get('email')             as string || '').trim().toLowerCase();
+    const password          =  form.get('password')          as string || '';
+    const confirmPassword   =  form.get('confirm_password')  as string || '';
+
+    if (!displayName || !email || !password) {
+      error = 'Please fill in all fields.';
+    } else if (password !== confirmPassword) {
+      error = 'Passwords do not match.';
+    } else if (password.length < 8) {
+      error = 'Password must be at least 8 characters.';
+    } else {
+      const existing = await getUserByEmail(email);
+      if (existing) {
+        error = 'An account with that email already exists.';
+      } else {
+        const id           = Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2,'0')).join('');
+        const username     = email.split('@')[0].replace(/[^a-z0-9]/gi, '').toLowerCase() || id.slice(0, 8);
+        const passwordHash = await hashPassword(password);
+        await createUser({ id, username, email, password_hash: passwordHash, role: 'author', display_name: displayName, status: 'pending' });
+        activeTab = 'login';
+        success = `Account created for ${displayName}. Your registration is pending approval by the admin. You will receive an email once your account is approved.`;
+      }
+    }
   }
-  error = 'Incorrect password. Please try again.';
 }
 ---
 <!DOCTYPE html>
@@ -57,51 +110,150 @@ if (Astro.request.method === 'POST') {
     <!-- Card -->
     <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
 
-      <!-- Card header -->
-      <div class="px-7 pt-7 pb-5 border-b border-slate-700">
-        <h1 class="text-white font-bold text-lg leading-none" style="font-family:'Playfair Display',serif">Sign in to Admin</h1>
-        <p class="text-slate-400 text-sm mt-1.5">Manage articles and content for Lex Researcher.</p>
+      <!-- Tabs -->
+      <div class="flex border-b border-slate-700">
+        <button id="tab-login" type="button"
+          onclick="switchTab('login')"
+          class="flex-1 py-4 text-sm font-semibold transition-colors tab-btn"
+          data-active={activeTab === 'login'}>
+          Sign In
+        </button>
+        <button id="tab-register" type="button"
+          onclick="switchTab('register')"
+          class="flex-1 py-4 text-sm font-semibold transition-colors tab-btn"
+          data-active={activeTab === 'register'}>
+          Register
+        </button>
       </div>
 
-      <!-- Form -->
-      <div class="px-7 py-6">
+      <!-- Success banner -->
+      {success && (
+        <div class="bg-emerald-500/10 border-b border-emerald-500/20 text-emerald-400 text-sm px-5 py-3 flex items-start gap-2.5">
+          <svg class="w-4 h-4 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          {success}
+        </div>
+      )}
 
-        {error && (
-          <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-xl mb-5 flex items-center gap-2.5">
-            <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            {error}
-          </div>
-        )}
+      <!-- Error banner -->
+      {error && (
+        <div class="bg-red-500/10 border-b border-red-500/20 text-red-400 text-sm px-5 py-3 flex items-center gap-2.5">
+          <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          {error}
+        </div>
+      )}
 
+      <!-- Sign In Panel -->
+      <div id="panel-login" class="px-7 py-6">
         <form method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="login" />
+
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              required
+              autofocus={activeTab === 'login'}
+              placeholder="you@example.com"
+              class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
+            />
+          </div>
+
           <div>
             <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
             <div class="relative">
               <input
                 type="password"
                 name="password"
-                id="password"
+                id="login-password"
                 required
-                autofocus
-                placeholder="Enter admin password"
-                class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
+                placeholder="Enter your password"
+                class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition pr-10"
               />
-              <button type="button" onclick="togglePwd()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1">
-                <svg id="eye-icon" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <button type="button" onclick="togglePwd('login-password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </button>
             </div>
           </div>
 
           <button
             type="submit"
-            class="w-full bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+            class="w-full bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2 mt-2"
           >
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            Sign In to Editorial Panel
+            Sign In
           </button>
         </form>
-
       </div>
+
+      <!-- Register Panel -->
+      <div id="panel-register" class="px-7 py-6" style="display:none">
+        <form method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="register" />
+
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+            <input
+              type="text"
+              name="display_name"
+              required
+              placeholder="e.g. Ahmed Hassan"
+              class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="you@example.com"
+              class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <div class="relative">
+              <input
+                type="password"
+                name="password"
+                id="reg-password"
+                required
+                minlength="8"
+                placeholder="At least 8 characters"
+                class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition pr-10"
+              />
+              <button type="button" onclick="togglePwd('reg-password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
+            <input
+              type="password"
+              name="confirm_password"
+              required
+              placeholder="Re-enter your password"
+              class="w-full bg-slate-900 border border-slate-600 text-white placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
+            />
+          </div>
+
+          <p class="text-xs text-slate-500">New accounts are created as <strong class="text-slate-400">Author</strong> role. An admin can adjust permissions.</p>
+
+          <button
+            type="submit"
+            class="w-full bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2 mt-2"
+          >
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            Create Account
+          </button>
+        </form>
+      </div>
+
     </div>
 
     <div class="text-center mt-5">
@@ -112,12 +264,50 @@ if (Astro.request.method === 'POST') {
     </div>
   </div>
 
-  <script>
-    function togglePwd() {
-      const inp = document.getElementById('password') as HTMLInputElement;
-      inp.type = inp.type === 'password' ? 'text' : 'password';
+  <style>
+    .tab-btn[data-active="true"] {
+      color: #f59e0b;
+      border-bottom: 2px solid #f59e0b;
     }
-    (window as any).togglePwd = togglePwd;
+    .tab-btn[data-active="false"] {
+      color: #64748b;
+    }
+    .tab-btn:hover {
+      color: #e2e8f0;
+    }
+  </style>
+
+  <script define:vars={{ activeTab }}>
+    function switchTab(tab) {
+      var loginBtn  = document.getElementById('tab-login');
+      var regBtn    = document.getElementById('tab-register');
+      var loginPnl  = document.getElementById('panel-login');
+      var regPnl    = document.getElementById('panel-register');
+      if (!loginBtn || !regBtn || !loginPnl || !regPnl) return;
+
+      if (tab === 'login') {
+        loginBtn.setAttribute('data-active', 'true');
+        regBtn.setAttribute('data-active', 'false');
+        loginPnl.style.display = '';
+        regPnl.style.display = 'none';
+      } else {
+        regBtn.setAttribute('data-active', 'true');
+        loginBtn.setAttribute('data-active', 'false');
+        regPnl.style.display = '';
+        loginPnl.style.display = 'none';
+      }
+    }
+
+    function togglePwd(id) {
+      var inp = document.getElementById(id);
+      if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    // On load — show the active tab based on server state
+    switchTab(activeTab);
+
+    window.switchTab = switchTab;
+    window.togglePwd = togglePwd;
   </script>
 
 </body>

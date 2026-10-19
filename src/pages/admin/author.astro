@@ -1,11 +1,15 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
-import { isAuthenticated } from '../../lib/auth';
+import { getSession, isAdmin } from '../../lib/auth';
 import { getSettings, saveSetting } from '../../lib/articles';
 
-if (!isAuthenticated(Astro.request)) {
-  return Astro.redirect('/admin/login');
-}
+// @ts-ignore
+import { env as cfEnv } from 'cloudflare:workers';
+const kv = (cfEnv as any).SESSION;
+
+const session = await getSession(Astro.request, kv);
+if (!session) return Astro.redirect('/admin/login');
+if (!isAdmin(session.role)) return Astro.redirect('/admin');
 
 let success = false;
 let error = '';
@@ -30,7 +34,7 @@ if (Astro.request.method === 'POST') {
 
 const s = await getSettings(Astro.locals);
 ---
-<AdminLayout title="Edit Author Profile">
+<AdminLayout title="Edit Author Profile" session={session}>
 
   <div class="max-w-2xl">
 
