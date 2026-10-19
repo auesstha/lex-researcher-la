@@ -4,10 +4,6 @@ import { getUserByUsername, getSession } from '../../lib/auth';
 import { getPublishedArticles, CATEGORIES, getBadgeClass } from '../../lib/articles';
 import type { CategorySlug } from '../../lib/articles';
 
-// @ts-ignore
-import { env as cfEnv } from 'cloudflare:workers';
-const kv = (cfEnv as any).SESSION;
-
 const { username } = Astro.params;
 const author = await getUserByUsername(username!);
 
@@ -16,8 +12,13 @@ if (!author || author.status !== 'approved') {
 }
 
 // Check if the logged-in user is viewing their own profile
-const session = await getSession(Astro.request, kv);
-const isOwnProfile = session != null && String(session.userId) === String(author.id);
+const kv = (Astro.locals as any).runtime?.env?.SESSION;
+let session = null;
+try { session = await getSession(Astro.request, kv); } catch (_) {}
+const isOwnProfile = session != null && (
+  String(session.userId) === String(author.id) ||
+  session.displayName === author.display_name
+);
 
 const allArticles = await getPublishedArticles(Astro.locals);
 const articles = allArticles
