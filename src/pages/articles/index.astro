@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getPublishedArticles, CATEGORIES, getBadgeClass } from '../../lib/articles';
+import { getPublishedArticles, CATEGORIES } from '../../lib/articles';
 import { getApprovedAuthors } from '../../lib/auth';
 
 const all = (await getPublishedArticles(Astro.locals)).sort(
@@ -8,125 +8,121 @@ const all = (await getPublishedArticles(Astro.locals)).sort(
 );
 
 const approvedAuthors = await getApprovedAuthors();
-const authorUrlMap = Object.fromEntries(
+const authorUrlMap: Record<string, string> = Object.fromEntries(
   approvedAuthors.map(u => [u.display_name, `/author/${u.username}`])
 );
 authorUrlMap['Lamia Akhter'] = '/lamia-akhter';
 
-const authorAvatarMap = Object.fromEntries(
+const authorAvatarMap: Record<string, string> = Object.fromEntries(
   approvedAuthors.map(u => [u.display_name, u.avatar || ''])
 );
 
-function getInitials(name: string) {
-  return name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+function initials(name: string) {
+  return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+function fmt(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-function fmt(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
+const COLORS: Record<string, { bg: string; text: string; border: string; bar: string }> = {
+  amber:       { bg: 'bg-amber-50',       text: 'text-amber-700',       border: 'border-amber-200',       bar: 'bg-amber-500' },
+  blue:        { bg: 'bg-blue-50',        text: 'text-blue-700',        border: 'border-blue-200',        bar: 'bg-blue-500' },
+  green:       { bg: 'bg-green-50',       text: 'text-green-700',       border: 'border-green-200',       bar: 'bg-green-500' },
+  red:         { bg: 'bg-red-50',         text: 'text-red-700',         border: 'border-red-200',         bar: 'bg-red-500' },
+  purple:      { bg: 'bg-purple-50',      text: 'text-purple-700',      border: 'border-purple-200',      bar: 'bg-purple-500' },
+  teal:        { bg: 'bg-teal-50',        text: 'text-teal-700',        border: 'border-teal-200',        bar: 'bg-teal-500' },
+  cyan:        { bg: 'bg-cyan-50',        text: 'text-cyan-700',        border: 'border-cyan-200',        bar: 'bg-cyan-500' },
+  indigo:      { bg: 'bg-indigo-50',      text: 'text-indigo-700',      border: 'border-indigo-200',      bar: 'bg-indigo-500' },
+  emerald:     { bg: 'bg-emerald-50',     text: 'text-emerald-700',     border: 'border-emerald-200',     bar: 'bg-emerald-500' },
+  stone:       { bg: 'bg-stone-50',       text: 'text-stone-600',       border: 'border-stone-200',       bar: 'bg-stone-400' },
+};
+function c(color?: string) { return COLORS[color ?? ''] ?? COLORS.stone; }
 ---
 <Base title="All Articles — Lex Researcher" keywords="law articles, legal research, international law, Lex Researcher">
 
 <!-- Hero -->
 <section class="bg-slate-900 text-white">
   <div class="h-0.5 bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
-  <div class="max-w-4xl mx-auto px-5 py-12 md:py-16">
-    <div class="flex items-center gap-2 mb-5">
-      <span class="text-amber-400 text-xs font-bold uppercase tracking-widest">Lex Researcher</span>
-      <span class="w-px h-3 bg-slate-700"></span>
-      <span class="text-slate-500 text-xs">Open-Access Journal</span>
-    </div>
-    <h1 class="font-serif text-4xl sm:text-5xl font-bold mb-4 leading-tight">All Articles</h1>
-    <p class="text-slate-400 text-base max-w-lg leading-relaxed">
-      {all.length} peer-reviewed article{all.length !== 1 ? 's' : ''} on international law, human rights, humanitarian law, and more.
+  <div class="max-w-3xl mx-auto px-5 py-12 md:py-16">
+    <p class="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">Lex Researcher · Open-Access Journal</p>
+    <h1 class="font-serif text-4xl sm:text-5xl font-bold mb-3 leading-tight">All Articles</h1>
+    <p class="text-slate-400 text-base leading-relaxed">
+      {all.length} peer-reviewed article{all.length !== 1 ? 's' : ''} on international &amp; comparative law.
     </p>
   </div>
 </section>
 
-<!-- List -->
-<section class="max-w-4xl mx-auto px-4 sm:px-5 py-10 md:py-14">
-
+<!-- Articles -->
+<section class="max-w-3xl mx-auto px-4 sm:px-5 py-10 md:py-14">
   {all.length === 0 ? (
-    <div class="text-center py-24 text-stone-400">
-      <p class="font-serif text-xl">No articles published yet.</p>
-    </div>
+    <p class="text-center py-20 text-stone-400 font-serif text-xl">No articles published yet.</p>
   ) : (
-    <div class="space-y-4">
+    <div class="space-y-5">
       {all.map((article, i) => {
         const cat = CATEGORIES[article.category];
+        const col = c(cat?.color);
         const authorUrl = authorUrlMap[article.author];
-        const authorAvatar = authorAvatarMap[article.author] || '';
+        const avatar = authorAvatarMap[article.author] || '';
         return (
           <a href={`/articles/${article.slug}`}
-             class="group block bg-white rounded-2xl border border-stone-200 hover:border-amber-300 hover:shadow-xl transition-all duration-200 overflow-hidden active:scale-[.998]">
+             class="group block bg-white rounded-2xl border border-stone-200 hover:border-stone-300 hover:shadow-lg transition-all duration-200 overflow-hidden">
 
-            <div class="flex">
-              <!-- Left accent bar -->
-              <div class={`w-1 flex-shrink-0 ${cat ? `bg-${cat.color}-500` : 'bg-amber-500'}`}></div>
+            <!-- top colour bar -->
+            <div class={`h-1 w-full ${col.bar}`}></div>
 
-              <div class="flex-1 p-5 sm:p-6 min-w-0">
+            <div class="p-5 sm:p-6">
 
-                <!-- Top row: number + badge + meta -->
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                  <span class="text-xs font-bold text-stone-300 tabular-nums mr-1 select-none">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span class={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${getBadgeClass(cat?.color ?? 'stone')}`}>
-                    {cat?.icon} <span class="hidden sm:inline">{cat?.label ?? article.category}</span><span class="sm:hidden">{cat?.shortLabel ?? article.category}</span>
-                  </span>
-                  <span class="text-xs text-stone-400">{fmt(article.publishedAt)}</span>
-                  <span class="flex items-center gap-1 text-xs text-stone-400 ml-auto">
-                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    {article.readTime} min
-                  </span>
-                </div>
+              <!-- meta row -->
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${col.bg} ${col.text} ${col.border}`}>
+                  {cat?.shortLabel ?? article.category}
+                </span>
+                <span class="text-xs text-stone-400">{fmt(article.publishedAt)}</span>
+                <span class="text-xs text-stone-300">·</span>
+                <span class="text-xs text-stone-400">{article.readTime} min read</span>
+                <span class="ml-auto text-xs font-bold text-stone-300 tabular-nums select-none">{String(i + 1).padStart(2, '0')}</span>
+              </div>
 
-                <!-- Title -->
-                <h2 class="font-serif font-bold text-xl sm:text-2xl text-slate-900 leading-snug mb-2 group-hover:text-amber-800 transition-colors">
-                  {article.title}
-                </h2>
+              <!-- title -->
+              <h2 class="font-serif font-bold text-xl sm:text-2xl text-slate-900 leading-snug mb-2 group-hover:text-amber-800 transition-colors">
+                {article.title}
+              </h2>
 
-                <!-- Excerpt -->
-                <p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-4">
-                  {article.excerpt}
-                </p>
+              <!-- excerpt -->
+              <p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-5">
+                {article.excerpt}
+              </p>
 
-                <!-- Footer row: author + read link -->
-                <div class="flex items-center justify-between gap-3 pt-3 border-t border-stone-100">
-                  <div class="flex items-center gap-2.5 min-w-0">
-                    <!-- Avatar -->
-                    <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden ring-2 ring-white">
-                      {authorAvatar
-                        ? <img src={authorAvatar} class="w-full h-full object-cover" alt={article.author} />
-                        : <span class="text-white text-[10px] font-bold leading-none">{getInitials(article.author)}</span>
-                      }
-                    </div>
-                    <div class="min-w-0">
-                      {authorUrl
-                        ? <span class="text-sm font-semibold text-slate-700 group-hover:text-amber-700 transition-colors truncate block" onclick="event.stopPropagation()">{article.author}</span>
-                        : <span class="text-sm font-semibold text-slate-700 truncate block">{article.author}</span>
-                      }
-                      {article.authorTitle && (
-                        <span class="text-xs text-stone-400 truncate hidden sm:block">{article.authorTitle}</span>
-                      )}
-                    </div>
+              <!-- footer -->
+              <div class="flex items-center justify-between gap-4 pt-4 border-t border-stone-100">
+
+                <!-- author -->
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-8 h-8 rounded-full bg-slate-800 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                    {avatar
+                      ? <img src={avatar} class="w-full h-full object-cover" alt={article.author} />
+                      : <span class="text-white text-[11px] font-bold">{initials(article.author)}</span>
+                    }
                   </div>
-
-                  <span class="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-stone-400 group-hover:text-amber-700 transition-colors bg-stone-50 group-hover:bg-amber-50 px-3 py-1.5 rounded-full border border-stone-200 group-hover:border-amber-200">
-                    Read
-                    <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                  </span>
+                  <div class="min-w-0">
+                    <p class="text-sm font-semibold text-slate-700 truncate leading-tight">{article.author}</p>
+                    {article.authorTitle && <p class="text-xs text-stone-400 truncate leading-tight">{article.authorTitle}</p>}
+                  </div>
                 </div>
+
+                <!-- read button -->
+                <span class="flex-shrink-0 flex items-center gap-1.5 text-xs font-bold text-stone-500 group-hover:text-amber-700 transition-colors">
+                  Read article
+                  <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </span>
 
               </div>
             </div>
-
           </a>
         );
       })}
     </div>
   )}
-
 </section>
 
 </Base>
