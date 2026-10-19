@@ -14,6 +14,10 @@ const authorUrlMap = Object.fromEntries(
 // Lamia Akhter has a dedicated vanity URL
 authorUrlMap['Lamia Akhter'] = '/lamia-akhter';
 
+const authorAvatarMap = Object.fromEntries(
+  approvedAuthors.map(u => [u.display_name, u.avatar || ''])
+);
+
 function getInitials(name: string) {
   return name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
 }
@@ -92,8 +96,11 @@ function fmt(iso: string) {
 
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
-                      <span class="text-white text-[9px] font-bold leading-none">{getInitials(article.author)}</span>
+                    <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {authorAvatarMap[article.author]
+                        ? <img src={authorAvatarMap[article.author]} class="w-full h-full object-cover" alt={article.author} />
+                        : <span class="text-white text-[9px] font-bold leading-none">{getInitials(article.author)}</span>
+                      }
                     </div>
                     {authorUrlMap[article.author]
                       ? <a href={authorUrlMap[article.author]} class="text-xs font-medium text-slate-600 hover:text-amber-700 transition-colors" onclick="event.stopPropagation()">{article.author}</a>

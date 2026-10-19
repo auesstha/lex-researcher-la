@@ -4,6 +4,9 @@ import { getUserByUsername, getSession } from '../../lib/auth';
 import { getPublishedArticles, CATEGORIES, getBadgeClass } from '../../lib/articles';
 import type { CategorySlug } from '../../lib/articles';
 
+// @ts-ignore
+import { env as cfEnv } from 'cloudflare:workers';
+
 const { username } = Astro.params;
 const author = await getUserByUsername(username!);
 
@@ -12,7 +15,7 @@ if (!author || author.status !== 'approved') {
 }
 
 // Check if the logged-in user is viewing their own profile
-const kv = (Astro.locals as any).runtime?.env?.SESSION;
+const kv = (cfEnv as any).SESSION ?? (Astro.locals as any).runtime?.env?.SESSION;
 let session = null;
 try { session = await getSession(Astro.request, kv); } catch (_) {}
 const isOwnProfile = session != null && (
@@ -48,7 +51,10 @@ const initials = author.display_name.split(' ').map((w: string) => w[0]).join(''
       <div class="flex-shrink-0 mb-8 md:mb-0 flex md:block justify-center">
         <div class="relative">
           <div class="w-32 h-32 md:w-44 md:h-44 rounded-3xl overflow-hidden shadow-2xl bg-amber-500 flex items-center justify-center">
-            <span class="text-slate-900 font-black text-5xl md:text-6xl" style="font-family:'Playfair Display',Georgia,serif">{initials}</span>
+            {author.avatar
+              ? <img src={author.avatar} class="w-full h-full object-cover" alt={author.display_name} />
+              : <span class="text-slate-900 font-black text-5xl md:text-6xl" style="font-family:'Playfair Display',Georgia,serif">{initials}</span>
+            }
           </div>
           <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full border-4 border-slate-900 flex items-center justify-center">
             <svg class="w-3.5 h-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>

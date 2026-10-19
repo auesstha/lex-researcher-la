@@ -29,12 +29,27 @@ if (Astro.request.method === 'POST') {
     const linkedin       = (form.get('linkedin')       as string || '').trim();
     const public_email   = (form.get('public_email')   as string || '').trim();
 
-    if (!display_name) {
+    const avatarFile = form.get('avatar_file') as File | null;
+    let avatar: string | undefined;
+    if (avatarFile && avatarFile.size > 0) {
+      if (avatarFile.size > 512000) {
+        error = 'Profile picture must be under 500 KB.';
+      } else {
+        const buf = await avatarFile.arrayBuffer();
+        const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+        avatar = `data:${avatarFile.type};base64,${b64}`;
+      }
+    }
+
+    if (!display_name && !error) {
       error = 'Full name is required.';
-    } else {
+    }
+
+    if (!error) {
       await updateUserProfile(session.userId, {
         display_name, title, bio, location, degree,
         specialisation, facebook, instagram, linkedin, public_email,
+        avatar,
       });
       // Refresh user data
       user = await getUserById(session.userId);
@@ -70,11 +85,32 @@ const p = user!;
       </div>
     )}
 
-    <form method="POST" class="space-y-5">
+    <form method="POST" enctype="multipart/form-data" class="space-y-5">
 
       <!-- Basic Info -->
       <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-5">
         <h2 class="text-xs font-bold text-stone-400 uppercase tracking-widest">Basic Information</h2>
+
+        <!-- Profile Picture -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Profile Picture</label>
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-amber-500 flex items-center justify-center flex-shrink-0 border border-stone-200">
+              <img id="avatar-preview" src={p.avatar || ''} class={`w-full h-full object-cover${p.avatar ? '' : ' hidden'}`} alt={p.display_name} />
+              <span id="avatar-initials" class={`text-slate-900 font-black text-2xl${p.avatar ? ' hidden' : ''}`} style="font-family:'Playfair Display',Georgia,serif">
+                {p.display_name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
+              </span>
+            </div>
+            <div class="flex-1">
+              <label for="avatar_file" class="cursor-pointer inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 border border-stone-300 text-slate-700 text-sm font-medium px-4 py-2 rounded-xl transition-colors">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Choose image
+              </label>
+              <input type="file" id="avatar_file" name="avatar_file" accept="image/*" class="sr-only" />
+              <p class="text-xs text-stone-400 mt-1.5">Max 500 KB. JPG, PNG, or WebP.</p>
+            </div>
+          </div>
+        </div>
 
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
@@ -205,3 +241,22 @@ const p = user!;
   </div>
 
 </AdminLayout>
+
+<script>
+  document.getElementById('avatar_file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 512000) {
+      alert('Image must be under 500 KB. Please choose a smaller file.');
+      this.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById('avatar-preview').src = ev.target.result;
+      document.getElementById('avatar-preview').classList.remove('hidden');
+      document.getElementById('avatar-initials').classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+</script>

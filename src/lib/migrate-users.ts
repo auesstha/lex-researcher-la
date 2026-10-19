@@ -39,6 +39,7 @@ const ALTER_COLUMNS = [
   `ALTER TABLE users ADD COLUMN instagram TEXT NOT NULL DEFAULT ''`,
   `ALTER TABLE users ADD COLUMN linkedin TEXT NOT NULL DEFAULT ''`,
   `ALTER TABLE users ADD COLUMN public_email TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN avatar TEXT NOT NULL DEFAULT ''`,
 ];
 
 export async function runUsersMigration(): Promise<void> {
