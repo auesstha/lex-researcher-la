@@ -1,8 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getUserByUsername } from '../../lib/auth';
+import { getUserByUsername, getSession } from '../../lib/auth';
 import { getPublishedArticles, CATEGORIES, getBadgeClass } from '../../lib/articles';
 import type { CategorySlug } from '../../lib/articles';
+
+// @ts-ignore
+import { env as cfEnv } from 'cloudflare:workers';
+const kv = (cfEnv as any).SESSION;
 
 const { username } = Astro.params;
 const author = await getUserByUsername(username!);
@@ -10,6 +14,10 @@ const author = await getUserByUsername(username!);
 if (!author || author.status !== 'approved') {
   return Astro.redirect('/404');
 }
+
+// Check if the logged-in user is viewing their own profile
+const session = await getSession(Astro.request, kv);
+const isOwnProfile = session?.userId === author.id;
 
 const allArticles = await getPublishedArticles(Astro.locals);
 const articles = allArticles
@@ -136,6 +144,17 @@ const initials = author.display_name.split(' ').map((w: string) => w[0]).join(''
             </a>
           )}
         </div>
+
+        {isOwnProfile && (
+          <div class="mt-6">
+            <a href="/admin/profile"
+               class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm px-5 py-2.5 rounded-xl transition-colors">
+              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Edit Profile
+            </a>
+          </div>
+        )}
+
       </div>
     </div>
   </div>
