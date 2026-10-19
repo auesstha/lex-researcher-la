@@ -17,7 +17,7 @@ if (!author || author.status !== 'approved') {
 
 // Check if the logged-in user is viewing their own profile
 const session = await getSession(Astro.request, kv);
-const isOwnProfile = session?.userId === author.id;
+const isOwnProfile = session != null && String(session.userId) === String(author.id);
 
 const allArticles = await getPublishedArticles(Astro.locals);
 const articles = allArticles
