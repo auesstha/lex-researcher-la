@@ -27,8 +27,19 @@ CREATE TABLE IF NOT EXISTS users (
 );
 `;
 
-// Adds status column to existing deployments that were created before this field existed
-const ADD_STATUS_COLUMN = `ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'approved'`;
+// Adds columns to existing deployments (silently ignored if already exist)
+const ALTER_COLUMNS = [
+  `ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'approved'`,
+  `ALTER TABLE users ADD COLUMN bio TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN title TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN location TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN degree TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN specialisation TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN facebook TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN instagram TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN linkedin TEXT NOT NULL DEFAULT ''`,
+  `ALTER TABLE users ADD COLUMN public_email TEXT NOT NULL DEFAULT ''`,
+];
 
 export async function runUsersMigration(): Promise<void> {
   const db = getDB();
@@ -36,8 +47,10 @@ export async function runUsersMigration(): Promise<void> {
   // Create table (idempotent)
   await db.prepare(CREATE_USERS_TABLE).run();
 
-  // Add status column to existing tables (silently ignore if already exists)
-  try { await db.prepare(ADD_STATUS_COLUMN).run(); } catch (_) { /* column already exists */ }
+  // Add new columns to existing tables (silently ignore if already exist)
+  for (const sql of ALTER_COLUMNS) {
+    try { await db.prepare(sql).run(); } catch (_) { /* column already exists */ }
+  }
 
   // Seed default admin user if none exists
   const existing = await db.prepare("SELECT id FROM users WHERE role='admin' LIMIT 1").first();

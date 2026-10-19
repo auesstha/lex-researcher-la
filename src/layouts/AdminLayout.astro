@@ -60,6 +60,13 @@ const cats = Object.entries(CATEGORIES) as [CategorySlug, typeof CATEGORIES[Cate
         All Articles
       </a>
 
+      <!-- My Profile -->
+      <a href="/admin/profile"
+         class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/admin/profile' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+        <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        My Profile
+      </a>
+
       <!-- New Article -->
       <a href="/admin/articles/new"
          class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${path === '/admin/articles/new' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>

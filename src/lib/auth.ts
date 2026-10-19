@@ -66,6 +66,15 @@ export interface UserRow {
   role: string;
   display_name: string;
   status: string; // 'pending' | 'approved' | 'rejected'
+  bio: string;
+  title: string;
+  location: string;
+  degree: string;
+  specialisation: string;
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+  public_email: string;
   created_at: string;
 }
 
@@ -116,6 +125,31 @@ export async function updateUserStatus(id: string, status: string): Promise<void
   await getDB()
     .prepare("UPDATE users SET status=? WHERE id=?")
     .bind(status, id)
+    .run();
+}
+
+export async function updateUserProfile(id: string, data: {
+  display_name: string;
+  title: string;
+  bio: string;
+  location: string;
+  degree: string;
+  specialisation: string;
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+  public_email: string;
+}): Promise<void> {
+  await getDB()
+    .prepare(`UPDATE users SET
+      display_name=?, title=?, bio=?, location=?, degree=?,
+      specialisation=?, facebook=?, instagram=?, linkedin=?, public_email=?
+      WHERE id=?`)
+    .bind(
+      data.display_name, data.title, data.bio, data.location, data.degree,
+      data.specialisation, data.facebook, data.instagram, data.linkedin, data.public_email,
+      id
+    )
     .run();
 }
 
