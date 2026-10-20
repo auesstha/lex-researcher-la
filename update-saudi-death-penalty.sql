@@ -1,11 +1,9 @@
 UPDATE articles SET
-  title='Can a Country Carry the Death Penalty Against a Foreign National? How Saudi Arabia Weaponizes Its Legal System Against Migrant Workers',
-  excerpt='In October 2026, Saudi Arabia executed two Bangladeshi nationals in Mecca. Their embassy found out from the news. This article examines how Saudi Arabia systematically violates VCCR Article 36, CAT Article 15, and Arab Charter Article 6 in capital cases involving migrant workers — and why the international legal system has largely failed to stop it.',
   content='In October 2026, Saudi Arabia executed two Bangladeshi nationals in Mecca without notifying the Bangladeshi embassy. Their families learned of the executions from the news. Under Article 36 of the Vienna Convention on Consular Relations, Saudi Arabia was legally obligated to inform the embassy at the moment of detention. It did not do so at arrest, at trial, at sentencing, or at execution.
 
 In 2025, the Kingdom executed 356 people. 188 were foreign nationals, the first time foreigners constituted the majority of those executed in a single year, and 240 executions were for drug offenses. The most executed nationalities were Pakistani, Syrian, Jordanian, Yemeni, Egyptian, and Nigerian: migrant workers from countries with large labor export populations and limited diplomatic leverage over Riyadh. [Amnesty International''s annual death penalty data](https://www.amnesty.org/en/what-we-do/death-penalty/) records that Western nationals and wealthy Gulf citizens are virtually absent from these statistics, a disparity that reflects the structural inequalities examined below.
 
-## Yes, Countries Can Execute Foreign Nationals — But Within Legal Limits
+## Yes, Countries Can Execute Foreign Nationals, But Within Legal Limits
 
 Territorial jurisdiction is a foundational principle of international law. A state may apply its criminal law to any person on its soil, regardless of nationality. Saudi Arabia''s Basic Law of Governance (Royal Decree A/90, 1992) establishes Sharia as supreme law applicable to all persons present in the Kingdom, and that jurisdictional authority is not legally disputed. For analysis of how sovereignty interacts with international human rights obligations, see [The Doctrine of Sovereignty in Modern International Law](/articles/doctrine-of-sovereignty-modern-international-law).
 
@@ -19,7 +17,7 @@ The Vienna Convention on Consular Relations (1963), to which Saudi Arabia is a p
 
 The ICJ in *LaGrand v. United States* (2001) confirmed this creates **individual rights**, not merely state-to-state diplomatic courtesies. In *Avena* (2004), the Court held that VCCR violations can invalidate convictions and require sentences to be reconsidered. In *Jadhav v. Pakistan* (2019), the ICJ ordered Pakistan to halt an execution and provide consular access, ruling the obligation is binding and non-negotiable. Saudi Arabia is bound by the same provisions.
 
-In the October 2026 Bangladesh case, there was no consular notification at any stage. The two men executed in Mecca were denied the one procedural protection — consular access — that the Sri Lanka case discussed below demonstrates can produce a commutation. The absence of notification was not an administrative oversight; it is the documented standard practice.
+In the October 2026 Bangladesh case, there was no consular notification at any stage. The two men executed in Mecca were denied the one procedural protection (consular access) that the Sri Lanka case discussed below demonstrates can produce a commutation. The absence of notification was not an administrative oversight; it is the documented standard practice.
 
 ### CAT Article 15: Confessions Obtained Under Duress
 
@@ -31,7 +29,7 @@ The prohibition on torture carries **jus cogens** status, a peremptory norm from
 
 ### Arab Charter on Human Rights, Article 6: Saudi Arabia''s Own Regional Commitment
 
-Saudi Arabia ratified the Arab Charter on Human Rights in 2004. Article 6 restricts the death penalty to "the most serious crimes," language that mirrors the [UN Human Rights Committee General Comment No. 36](https://www.ohchr.org/en/documents/general-comments-and-recommendations/general-comment-no-36-article-6-right-life) (2019), which defines this threshold as crimes involving intentional killing. Drug offenses fall outside that definition. The doctrinal scope of the right to life and the most serious crimes standard under international law is examined in [The Right to Life Under International Human Rights Law](/articles/right-to-life-international-human-rights-law).
+Saudi Arabia ratified the Arab Charter on Human Rights in 2004. Article 6 restricts the death penalty to \"the most serious crimes,\" language that mirrors the [UN Human Rights Committee General Comment No. 36](https://www.ohchr.org/en/documents/general-comments-and-recommendations/general-comment-no-36-article-6-right-life) (2019), which defines this threshold as crimes involving intentional killing. Drug offenses fall outside that definition. The doctrinal scope of the right to life and the most serious crimes standard under international law is examined in [The Right to Life Under International Human Rights Law](/articles/right-to-life-international-human-rights-law).
 
 In 2025, Saudi Arabia executed 240 people for drug offenses, in direct contravention of Article 6 of the instrument it signed. Saudi Arabia''s courts cite religious law as authority for these sentences, but Hudud penalties do not apply to drug offenses under Sharia; drug cases fall under Taazir, which gives judges full discretion not to impose death. The executions are a judicial choice, not a Quranic mandate, and they breach Saudi Arabia''s own regional treaty obligations.
 
@@ -45,13 +43,13 @@ The October 2026 executions of two Bangladeshi nationals in Mecca illustrate how
 
 **At trial:** Proceedings documented by [Reprieve](https://reprieve.org/uk/case-studies/saudi-arabia/) show capital trials completed in a single session, measured in minutes, with defendants who cannot follow the charges being read in Arabic. The confession, obtained in a language the defendant does not speak, serves as the primary evidence.
 
-**At sentencing:** Death, for a drug offense that Article 6 of the Arab Charter — ratified by Saudi Arabia — does not permit to attract a capital sentence.
+**At sentencing:** Death, for a drug offense that Article 6 of the Arab Charter, which Saudi Arabia ratified, does not permit to attract a capital sentence.
 
 **After execution:** The Bangladesh embassy learns from the press. Families are notified after burial. No appeal mechanism was available; no review was conducted.
 
 | What International Law Required | Saudi Arabia Did |
 |---|---|
-| Notify Bangladesh embassy immediately (VCCR Art. 36) | Nothing — embassy found out from news |
+| Notify Bangladesh embassy immediately (VCCR Art. 36) | Nothing; embassy found out from news |
 | Allow consular access (VCCR Art. 36) | Denied |
 | Exclude tortured confessions (CAT Art. 15) | Used as primary evidence |
 | Restrict death penalty to intentional killing (Arab Charter Art. 6) | Applied to drug offense |
@@ -59,7 +57,7 @@ The October 2026 executions of two Bangladeshi nationals in Mecca illustrate how
 
 ## The Consequences: Why Saudi Arabia Faces So Little Legal Accountability
 
-Saudi Arabia faces almost no direct legal consequences under current international law architecture. Without ratification of the ICCPR''s Optional Protocol, individuals cannot file complaints with the UN Human Rights Committee. No international criminal court holds jurisdiction over state execution practices. The ICJ can only act if a state such as Bangladesh or Ethiopia chooses to file an inter-state case — and labor-exporting governments whose national economies depend on Gulf remittances have strong structural incentives to avoid diplomatic confrontation with Riyadh.
+Saudi Arabia faces almost no direct legal consequences under current international law architecture. Without ratification of the ICCPR''s Optional Protocol, individuals cannot file complaints with the UN Human Rights Committee. No international criminal court holds jurisdiction over state execution practices. The ICJ can only act if a state such as Bangladesh or Ethiopia chooses to file an inter-state case, and labor-exporting governments whose national economies depend on Gulf remittances have strong structural incentives to avoid diplomatic confrontation with Riyadh.
 
 Saudi Arabia has calculated that executing large numbers of foreign nationals imposes lower costs than reforming the conditions that produce these prosecutions. The primary pressure points are reputational rather than legal. The Kingdom''s Vision 2030 program requires sustained international legitimacy, and it is hosting the 2034 FIFA World Cup while spending sovereign wealth fund capital on global image management through sports acquisitions, cultural events, and investment forums. The execution of migrant workers by the hundreds sits in direct tension with the international partnerships that Vision 2030 depends on.
 
@@ -112,5 +110,5 @@ Under the current international law architecture, direct legal consequences are 
 ### Is the death penalty for drug offenses illegal under international law?
 
 Under the Arab Charter on Human Rights Article 6, which Saudi Arabia ratified, and under UN Human Rights Committee General Comment No. 36 (2019), the death penalty is restricted to crimes involving intentional killing. Drug offenses do not meet that threshold. Saudi Arabia executed 240 people for drug offenses in 2025, in breach of its own regional treaty obligations.',
-  updatedAt='2026-10-20T16:00:00Z'
+  updatedAt='2026-10-20T16:30:00Z'
 WHERE id='17';
