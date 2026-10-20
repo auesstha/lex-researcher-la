@@ -16,6 +16,7 @@ authorUrlMap['Lamia Akhter'] = '/lamia-akhter';
 const authorAvatarMap: Record<string, string> = Object.fromEntries(
   approvedAuthors.map(u => [u.display_name, u.avatar || ''])
 );
+authorAvatarMap['Lamia Akhter'] = authorAvatarMap['Lamia Akhter'] || '/lamia-akhter.jpg';
 
 function initials(name: string) {
   return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
