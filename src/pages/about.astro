@@ -1,68 +1,169 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="About" description="About Lex Researcher Journal — peer-reviewed research in world law, river law, and international law.">
+<Base title="About — Lex Researcher" description="About Lex Researcher Journal — open-access legal scholarship in international law, world law, human rights law, and river law.">
 
   <!-- Hero -->
-  <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12 sm:py-20">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6">
-      <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-4">About the Journal</div>
-      <h1 class="serif text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">Lex Researcher</h1>
-      <p class="text-base sm:text-xl text-slate-300 leading-relaxed font-light max-w-2xl">
-        A peer-reviewed digital journal advancing rigorous scholarship in world law, river and environmental law, and international legal frameworks.
+  <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+        About the Journal
+      </div>
+      <h1 class="serif text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+        Lex Researcher
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-light max-w-2xl mx-auto">
+        Open-access legal scholarship for practitioners, students, and policymakers — analysing international law, human rights, and comparative legal systems with precision and depth.
       </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+        <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span> Open Access</div>
+        <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span> Peer Reviewed</div>
+        <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span> Fully Cited</div>
+        <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span> No Paywall</div>
+      </div>
     </div>
   </div>
 
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-10 sm:space-y-14">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20 space-y-14 sm:space-y-20">
 
     <!-- Mission -->
-    <section>
-      <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4">Mission</h2>
+    <section class="text-center sm:text-left">
+      <div class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Our Mission</div>
+      <h2 class="serif text-2xl sm:text-3xl font-bold text-slate-900 mb-5">Legal scholarship that earns its place on your desk</h2>
+      <p class="text-stone-600 leading-8 text-sm sm:text-base mb-4">
+        Lex Researcher was founded on the conviction that rigorous legal analysis should not sit behind a paywall or inside a university library that most of the world cannot access. International law shapes the lives of billions of people — through trade rules, refugee protections, environmental agreements, human rights obligations, and the criminal accountability of states and individuals. The people affected by those rules deserve scholarship that explains them clearly, cites its sources, and takes the hard questions seriously.
+      </p>
       <p class="text-stone-600 leading-8 text-sm sm:text-base">
-        Lex Researcher was founded on the conviction that high-quality legal scholarship should be openly accessible to practitioners, academics, policymakers, and engaged citizens worldwide. We publish original research, analytical essays, and doctrinal analyses across three core research areas.
+        Every article published on this journal is fully cited, openly accessible, and written to meet the standards of legal scholarship rather than legal commentary. We do not publish opinions dressed as analysis. We publish analysis that acknowledges where the law is disputed, where the evidence is incomplete, and where reasonable scholars disagree.
       </p>
     </section>
 
-    <!-- Research areas -->
+    <!-- What we cover -->
     <section>
-      <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-5">Research Areas</h2>
+      <div class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3 text-center sm:text-left">What We Cover</div>
+      <h2 class="serif text-2xl sm:text-3xl font-bold text-slate-900 mb-8 text-center sm:text-left">Fifteen fields. One standard.</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="border border-amber-200 bg-amber-50 rounded-2xl p-5">
-          <div class="text-2xl sm:text-3xl mb-3">🌍</div>
+        <div class="border border-amber-200 bg-amber-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">🌍</div>
           <div class="font-bold text-amber-900 mb-2">World Law</div>
-          <p class="text-xs sm:text-sm text-amber-800 leading-relaxed">Comparative legal systems, constitutional frameworks, and the convergence of national legal traditions.</p>
+          <p class="text-xs text-amber-800 leading-relaxed">Comparative legal systems, constitutional frameworks, and the convergence of national legal traditions across jurisdictions.</p>
         </div>
-        <div class="border border-blue-200 bg-blue-50 rounded-2xl p-5">
-          <div class="text-2xl sm:text-3xl mb-3">🌊</div>
+        <div class="border border-blue-200 bg-blue-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">🌊</div>
           <div class="font-bold text-blue-900 mb-2">River Law</div>
-          <p class="text-xs sm:text-sm text-blue-800 leading-relaxed">Transboundary watercourse governance, water rights, and environmental law in an era of climate stress.</p>
+          <p class="text-xs text-blue-800 leading-relaxed">Transboundary watercourse governance, freshwater rights, and the UN Watercourses Convention in an era of climate crisis.</p>
         </div>
-        <div class="border border-emerald-200 bg-emerald-50 rounded-2xl p-5">
-          <div class="text-2xl sm:text-3xl mb-3">🏛️</div>
+        <div class="border border-emerald-200 bg-emerald-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">🏛️</div>
           <div class="font-bold text-emerald-900 mb-2">International Law</div>
-          <p class="text-xs sm:text-sm text-emerald-800 leading-relaxed">Treaty regimes, sovereignty doctrine, human rights, and the architecture of global governance.</p>
+          <p class="text-xs text-emerald-800 leading-relaxed">Treaty regimes, sovereignty doctrine, customary international law, and the architecture of the UN system.</p>
+        </div>
+        <div class="border border-rose-200 bg-rose-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">✊</div>
+          <div class="font-bold text-rose-900 mb-2">Human Rights Law</div>
+          <p class="text-xs text-rose-800 leading-relaxed">ICCPR, ICESCR, CAT, regional human rights instruments, and their application in capital cases, detention, and migration.</p>
+        </div>
+        <div class="border border-orange-200 bg-orange-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">🕊️</div>
+          <div class="font-bold text-orange-900 mb-2">Humanitarian Law</div>
+          <p class="text-xs text-orange-800 leading-relaxed">Geneva Conventions, Additional Protocols, the laws of armed conflict, and IHL compliance in modern warfare.</p>
+        </div>
+        <div class="border border-red-200 bg-red-50 rounded-2xl p-5 text-center sm:text-left">
+          <div class="text-3xl mb-3">⚖️</div>
+          <div class="font-bold text-red-900 mb-2">International Criminal Law</div>
+          <p class="text-xs text-red-800 leading-relaxed">ICC jurisdiction, universal jurisdiction, war crimes prosecution, and the accountability of state and non-state actors.</p>
+        </div>
+      </div>
+      <p class="text-xs text-stone-500 mt-4 text-center sm:text-left">Also covering: Trade Law · Environmental Law · Maritime Law · Investment Law · Diplomatic Law · Refugee Law · Labour Law · Intellectual Property Law · Property Law</p>
+    </section>
+
+    <!-- Who we write for -->
+    <section class="text-center sm:text-left">
+      <div class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Readership</div>
+      <h2 class="serif text-2xl sm:text-3xl font-bold text-slate-900 mb-8">Written for people who need it to be right</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex gap-4 items-start p-4 rounded-xl bg-stone-50 border border-stone-200">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-slate-900 text-sm mb-1">Law Students</div>
+            <p class="text-xs text-stone-500 leading-relaxed">Doctrinal analysis with full citations, case law references, and treaty text — structured to support research and coursework in international and comparative law.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 items-start p-4 rounded-xl bg-stone-50 border border-stone-200">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-slate-900 text-sm mb-1">Legal Practitioners</div>
+            <p class="text-xs text-stone-500 leading-relaxed">Concise analysis of treaty obligations, ICJ jurisprudence, and state practice — for practitioners working across international mandates, human rights advocacy, and cross-border litigation.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 items-start p-4 rounded-xl bg-stone-50 border border-stone-200">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-slate-900 text-sm mb-1">Academics & Researchers</div>
+            <p class="text-xs text-stone-500 leading-relaxed">Peer-reviewed doctrinal and comparative analysis with full source transparency, suitable for citation and further academic development.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 items-start p-4 rounded-xl bg-stone-50 border border-stone-200">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-slate-900 text-sm mb-1">Policymakers & Advocates</div>
+            <p class="text-xs text-stone-500 leading-relaxed">Accessible but rigorous analysis of international legal obligations, state compliance records, and available accountability mechanisms — grounded in treaty text and judicial decisions.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Standards -->
-    <section>
-      <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4">Editorial Standards</h2>
+    <!-- Editorial standards -->
+    <section class="text-center sm:text-left">
+      <div class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Editorial Standards</div>
+      <h2 class="serif text-2xl sm:text-3xl font-bold text-slate-900 mb-6">What we require before publication</h2>
+      <div class="space-y-4">
+        {[
+          { n: '01', title: 'Primary Sources', body: 'Every legal claim must be grounded in treaty text, ICJ or regional court decisions, UN instruments, or peer-reviewed scholarship. Secondary sources are used to contextualise, not to substitute for primary authority.' },
+          { n: '02', title: 'Accurate Citations', body: 'Full citations are provided in-text and verifiable. Case names, treaty references, UN document numbers, and article-specific provisions are cited precisely. We do not permit vague attribution.' },
+          { n: '03', title: 'Acknowledged Uncertainty', body: 'Where the law is genuinely disputed, where state practice diverges from treaty text, or where judicial decisions conflict, we say so. Authoritative-sounding writing that conceals legal uncertainty is not scholarship.' },
+          { n: '04', title: 'No Undisclosed Conflicts', body: 'Authors disclose any personal, institutional, or financial interest in the subject matter of their work. We do not publish advocacy presented as neutral analysis without disclosure.' },
+          { n: '05', title: 'Open Access, No Exceptions', body: 'All published articles are freely accessible to every reader, anywhere in the world, without a subscription, institutional login, or payment. Legal knowledge does not serve justice behind a paywall.' },
+        ].map(item => (
+          <div class="flex gap-5 items-start">
+            <div class="text-2xl font-black text-stone-200 flex-shrink-0 leading-none mt-1 w-8 text-center sm:text-left">{item.n}</div>
+            <div>
+              <div class="font-semibold text-slate-900 text-sm mb-1">{item.title}</div>
+              <p class="text-xs sm:text-sm text-stone-500 leading-relaxed">{item.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Our approach -->
+    <section class="bg-slate-50 border border-stone-200 rounded-3xl p-6 sm:p-10 text-center sm:text-left">
+      <div class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Our Approach</div>
+      <h2 class="serif text-2xl sm:text-3xl font-bold text-slate-900 mb-5">Analysis over opinion. Precision over breadth.</h2>
+      <p class="text-stone-600 leading-8 text-sm sm:text-base mb-4">
+        Lex Researcher does not publish hot takes on legal news. We publish considered analysis of how the law actually operates: what the treaty says, what the court held, what state practice shows, and where the gaps and contradictions lie. An article on Saudi Arabia's execution of foreign nationals is grounded in VCCR Article 36, CAT Article 15, Arab Charter Article 6, and the ICJ's decisions in LaGrand, Avena, and Jadhav. An article on transboundary water rights starts with the 1997 UN Watercourses Convention and works outward from there.
+      </p>
       <p class="text-stone-600 leading-8 text-sm sm:text-base">
-        All submissions undergo double-blind peer review by subject-matter experts. We hold our authors to the highest standards of scholarly integrity, requiring full citation transparency, disclosure of potential conflicts of interest, and adherence to recognized research ethics protocols.
+        Where the law is unsettled, we say so. Where state practice contradicts treaty obligations, we document the gap. Where judicial decisions conflict, we map the divergence. Legal scholarship that only tells readers what they want to hear is not useful. Legal scholarship that earns trust through precision, citation, and intellectual honesty is.
       </p>
     </section>
 
     <!-- CTA -->
-    <div class="bg-slate-900 rounded-2xl p-6 sm:p-8 text-center">
-      <div class="text-2xl mb-3">⚖️</div>
-      <h3 class="serif text-lg sm:text-xl font-bold text-white mb-2">Explore Our Research</h3>
-      <p class="text-slate-400 text-sm mb-5">Dive into peer-reviewed legal scholarship across all three research areas.</p>
+    <div class="bg-slate-900 rounded-3xl p-8 sm:p-10 text-center">
+      <div class="text-3xl mb-4">⚖️</div>
+      <h3 class="serif text-2xl sm:text-3xl font-bold text-white mb-3">Start Reading</h3>
+      <p class="text-slate-400 text-sm sm:text-base mb-8 max-w-md mx-auto">Browse peer-reviewed scholarship across fifteen fields of international and comparative law — all freely accessible, fully cited, and updated continuously.</p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/category/world-law" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">World Law</a>
-        <a href="/category/river-law" class="bg-blue-500 hover:bg-blue-400 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">River Law</a>
-        <a href="/category/international-law" class="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">International Law</a>
+        <a href="/articles" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">All Articles</a>
+        <a href="/categories" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors border border-slate-700">Browse by Category</a>
       </div>
     </div>
 
