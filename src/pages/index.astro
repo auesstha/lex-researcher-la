@@ -543,8 +543,8 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
         </div>
       </div>
 
-      <!-- RIGHT: LAW SCENE — full SVG illustration, visible on all sizes -->
-      <div class="flex items-center justify-center hero-law-scene">
+      <!-- RIGHT: LAW SCENE — full SVG illustration, hidden on mobile -->
+      <div class="hidden sm:flex items-center justify-center hero-law-scene">
         <svg viewBox="0 0 280 260" xmlns="http://www.w3.org/2000/svg"
              class="w-full max-w-[340px] md:max-w-none md:w-full h-auto drop-shadow-2xl"
              aria-hidden="true">
