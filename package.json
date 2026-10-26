@@ -28,6 +28,6 @@
     "workerd@1.20260926.1": true
   },
   "devDependencies": {
-    "wrangler": "^4.151.1"
+    "wrangler": "^4.153.0"
   }
 }
