@@ -1,26 +1,5 @@
 [
   {
-    "id": "2",
-    "title": "Transboundary Water Rights and the Law of International Watercourses",
-    "slug": "transboundary-water-rights-international-watercourses",
-    "category": "river-law",
-    "excerpt": "A research analysis of the 1997 UN Watercourses Convention and customary principles governing shared river systems, with focus on the Nile and Mekong basins.",
-    "content": "Freshwater scarcity is emerging as one of the defining geopolitical challenges of the 21st century. With over 310 international river basins shared by two or more states, the legal frameworks governing transboundary watercourses have never been more critical. The 1997 UN Convention on the Law of the Non-Navigational Uses of International Watercourses (UNWC), which entered into force in 2014, represents the most comprehensive codification of customary international water law, though significant gaps and implementation challenges persist.\n\nThe UNWC enshrines two foundational and often competing principles: equitable and reasonable utilization (Article 5) and the obligation not to cause significant harm (Article 7). The tension between upstream development rights and downstream protection interests has generated substantial controversy, particularly in the Nile and Mekong river basins.\n\nThe Nile Basin presents a paradigmatic case. The 1959 Nile Waters Agreement between Egypt and Sudan, which allocated virtually the entire flow between the two states, was concluded without the participation of upstream riparians including Ethiopia and Uganda. Ethiopia's construction of the Grand Ethiopian Renaissance Dam (GERD) has challenged this allocation regime, with Egypt invoking prior use and historical rights while Ethiopia asserts equitable entitlement as the source of over 85% of the Blue Nile's flow.\n\nIn the Mekong basin, the 1995 Mekong Agreement established the Mekong River Commission (MRC) as a basin-wide governance body. However, China and Myanmar, as upper riparians, are not full members. Chinese dam construction on the upper Lancang-Mekong has dramatically altered seasonal flow patterns, generating downstream impacts in Thailand, Laos, Cambodia, and Vietnam that raise serious questions under the no-harm principle.",
-    "author": "Lamia Akhter",
-    "authorTitle": "LLB Student & Legal Researcher",
-    "publishedAt": "2026-08-20T10:30:00Z",
-    "updatedAt": "2026-08-20T10:30:00Z",
-    "tags": [
-      "river law",
-      "watercourses",
-      "Nile",
-      "Mekong",
-      "transboundary"
-    ],
-    "readTime": 10,
-    "published": true
-  },
-  {
     "id": "3",
     "title": "Universal Jurisdiction and the Prosecution of International Crimes",
     "slug": "universal-jurisdiction-prosecution-international-crimes",
