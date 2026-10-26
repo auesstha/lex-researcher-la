@@ -739,7 +739,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {pillars.map((p, i) => (
         <a href={`/category/${p.slug}`}
-           class={`pillar-glow group relative flex flex-col gap-3 p-5 rounded-2xl border border-stone-200 ${p.hoverBorder} ${p.hoverBg} active:scale-[.99] transition-all overflow-hidden reveal${i === 1 ? ' reveal-d1' : i === 2 ? ' reveal-d2' : ''}`}>
+           class={`pillar-glow group relative flex flex-col items-center text-center gap-3 p-5 rounded-2xl border border-stone-200 ${p.hoverBorder} ${p.hoverBg} active:scale-[.99] transition-all overflow-hidden reveal${i === 1 ? ' reveal-d1' : i === 2 ? ' reveal-d2' : ''}`}>
           <div class={`absolute top-0 left-0 right-0 h-0.5 ${getStripClass(CATEGORIES[p.slug as keyof typeof CATEGORIES]?.color ?? 'stone')} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
 
           <div class={`w-12 h-12 flex-shrink-0 ${p.iconBg} rounded-xl flex items-center justify-center text-2xl transition-colors`}>
