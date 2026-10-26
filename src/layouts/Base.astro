@@ -7,7 +7,7 @@ interface Props {
   description?: string;
   keywords?: string;
 }
-const { title, description = 'Lex Researcher — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Researcher' } = Astro.props;
+const { title, description = 'Lex Research — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Research' } = Astro.props;
 const path = Astro.url.pathname;
 
 // Group categories for mobile drawer
@@ -23,13 +23,18 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content={description} />
   <meta name="robots" content="index, follow" />
   <meta name="keywords" content={keywords} />
   <meta name="theme-color" content="#0f172a" />
-  <title>{title.includes('Lex Researcher') ? title : `${title} | Lex Researcher`}</title>
+  <title>{title.includes('Lex Research') ? title : `${title} | Lex Research`}</title>
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site ?? Astro.url).href} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -74,7 +79,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
       <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
         <span class="text-slate-900 font-black text-sm serif">L</span>
       </div>
-      <span class="text-white font-bold serif text-lg">Lex Researcher</span>
+      <span class="text-white font-bold serif text-lg">Lex Research</span>
     </a>
     <button onclick="closeDrawer()" class="text-slate-400 hover:text-white p-1.5 rounded-lg transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -147,7 +152,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
         <span class="text-white font-bold text-sm serif">L</span>
       </div>
       <div class="hidden sm:block">
-        <div class="serif font-bold text-lg sm:text-xl text-slate-900 leading-none">Lex Researcher</div>
+        <div class="serif font-bold text-lg sm:text-xl text-slate-900 leading-none">Lex Research</div>
         <div class="text-xs text-stone-400 mt-0.5">International Legal Studies</div>
       </div>
       <span class="sm:hidden serif font-bold text-lg text-slate-900">Lex</span>
@@ -224,7 +229,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
           <div class="w-7 h-7 bg-amber-500 rounded-md flex items-center justify-center">
             <span class="text-slate-900 font-black text-xs serif">L</span>
           </div>
-          <span class="serif text-white text-lg font-bold">Lex Researcher</span>
+          <span class="serif text-white text-lg font-bold">Lex Research</span>
         </div>
         <p class="text-amber-400/80 italic text-xs mb-1">The World Through a Legal Lens</p>
         <p class="text-sm leading-relaxed max-w-xs">Open-access peer-reviewed scholarship across 15 areas of international and comparative law.</p>
@@ -267,7 +272,7 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
     </div>
   </div>
   <div class="border-t border-slate-800 py-4 px-4 sm:px-6 text-center text-xs text-slate-600">
-    © 2026 Lex Researcher Journal · Founded by <a href="/lamia-akhter" class="hover:text-slate-400 transition-colors">Lamia Akhter</a> · All rights reserved.
+    © 2026 Lex Research Journal · Founded by <a href="/lamia-akhter" class="hover:text-slate-400 transition-colors">Lamia Akhter</a> · All rights reserved.
   </div>
 </footer>
 

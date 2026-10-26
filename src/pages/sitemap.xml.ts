@@ -1,15 +1,24 @@
 import type { APIRoute } from 'astro';
-import { getPublishedArticles } from '../lib/articles';
+import { getPublishedArticles, CATEGORIES } from '../lib/articles';
 
 export const GET: APIRoute = async ({ locals, url }) => {
   const articles = await getPublishedArticles(locals);
   const base = url.origin;
 
   const staticPages = [
-    { loc: `${base}/`, priority: '1.0', changefreq: 'daily' },
-    { loc: `${base}/articles/`, priority: '0.9', changefreq: 'daily' },
-    { loc: `${base}/about`, priority: '0.5', changefreq: 'monthly' },
+    { loc: `${base}/`,            priority: '1.0', changefreq: 'daily' },
+    { loc: `${base}/articles/`,   priority: '0.9', changefreq: 'daily' },
+    { loc: `${base}/categories`,  priority: '0.8', changefreq: 'weekly' },
+    { loc: `${base}/about`,       priority: '0.6', changefreq: 'monthly' },
+    { loc: `${base}/contact`,     priority: '0.5', changefreq: 'monthly' },
+    { loc: `${base}/lamia-akhter`,priority: '0.7', changefreq: 'monthly' },
   ];
+
+  const categoryPages = Object.keys(CATEGORIES).map(slug => ({
+    loc: `${base}/category/${slug}`,
+    priority: '0.7',
+    changefreq: 'weekly',
+  }));
 
   const articlePages = articles.map(a => ({
     loc: `${base}/articles/${a.slug}`,
@@ -18,7 +27,7 @@ export const GET: APIRoute = async ({ locals, url }) => {
     changefreq: 'weekly',
   }));
 
-  const allPages = [...staticPages, ...articlePages];
+  const allPages = [...staticPages, ...categoryPages, ...articlePages];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

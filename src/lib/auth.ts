@@ -189,21 +189,21 @@ export async function sendApprovalEmail(email: string, displayName: string): Pro
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'Lex Researcher <noreply@lexresearcher.com>',
+      from: 'Lex Research <noreply@lexresearcher.com>',
       to: email,
-      subject: 'Your Lex Researcher account has been approved',
+      subject: 'Your Lex Research account has been approved',
       html: `
         <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#f8f6f1;border-radius:12px">
           <div style="text-align:center;margin-bottom:28px">
             <div style="display:inline-flex;width:52px;height:52px;background:#f59e0b;border-radius:12px;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:900;font-size:22px;color:#0f172a">L</div>
-            <div style="margin-top:10px;font-family:Georgia,serif;font-size:20px;font-weight:700;color:#0f172a">Lex Researcher</div>
+            <div style="margin-top:10px;font-family:Georgia,serif;font-size:20px;font-weight:700;color:#0f172a">Lex Research</div>
           </div>
           <h2 style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 12px">Welcome, ${displayName}!</h2>
           <p style="color:#475569;font-size:15px;line-height:1.6;margin:0 0 20px">
-            Your account on <strong>Lex Researcher Journal</strong> has been approved by the admin. You can now sign in and start publishing your legal research.
+            Your account on <strong>Lex Research Journal</strong> has been approved by the admin. You can now sign in and start publishing your legal research.
           </p>
           <a href="https://lexresearcher.com/admin/login" style="display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:14px;padding:12px 28px;border-radius:10px;text-decoration:none">Sign In Now →</a>
-          <p style="color:#94a3b8;font-size:12px;margin-top:28px">Lex Researcher · Open-access legal scholarship</p>
+          <p style="color:#94a3b8;font-size:12px;margin-top:28px">Lex Research · Open-access legal scholarship</p>
         </div>
       `,
     }),
