@@ -1,25 +1,5 @@
 [
   {
-    "id": "1",
-    "title": "The Doctrine of Sovereignty in Modern International Law",
-    "slug": "doctrine-of-sovereignty-modern-international-law",
-    "category": "international-law",
-    "excerpt": "An examination of how sovereignty has evolved from the Westphalian model to contemporary norms shaped by human rights obligations and multilateral treaties.",
-    "content": "The concept of sovereignty remains one of the most contested and evolving doctrines in international legal scholarship. Since the Peace of Westphalia in 1648, the notion of absolute territorial sovereignty has been the bedrock upon which the modern state system was built. However, the latter half of the twentieth century witnessed a dramatic reinterpretation of what sovereignty entails and what obligations accompany it.\n\nThe emergence of the United Nations Charter in 1945 introduced a fundamental tension: Article 2(1) affirms the sovereign equality of all member states, while Article 2(7) prohibits interference in matters of domestic jurisdiction. Yet the same Charter empowers the Security Council under Chapter VII to authorize measures that directly impinge upon a state's internal affairs in the name of international peace and security.\n\nThis tension came into sharp relief during the NATO intervention in Kosovo in 1999, conducted without explicit Security Council authorization. The subsequent debate gave rise to the 'Responsibility to Protect' (R2P) doctrine, formally adopted at the 2005 World Summit. R2P posits that sovereignty is not merely a right but a responsibility — when a state manifestly fails to protect its population from atrocity crimes, the international community bears a residual duty to act.\n\nScholars such as Anne-Marie Slaughter and Louis Henkin have argued that this shift represents a 'disaggregation' of sovereignty, where functional competencies rather than absolute territorial control define the modern state. Critics, including China and Russia, contend that R2P provides a pretext for powerful states to intervene in weaker nations under humanitarian guise.\n\nThe jurisprudence of the International Court of Justice has navigated these tensions cautiously. In the Nicaragua case (1986), the Court reaffirmed strong non-intervention principles, while in the Genocide Convention cases, it acknowledged that sovereignty cannot shield a state from responsibility for jus cogens violations.\n\nAs climate change, pandemics, and transnational terrorism increasingly demand collective responses, the sovereignty doctrine will continue to be reshaped by the practical exigencies of global governance.",
-    "author": "Lamia Akhter",
-    "authorTitle": "LLB Student & Legal Researcher",
-    "publishedAt": "2026-08-15T09:00:00Z",
-    "updatedAt": "2026-08-15T09:00:00Z",
-    "tags": [
-      "sovereignty",
-      "international law",
-      "R2P",
-      "human rights"
-    ],
-    "readTime": 8,
-    "published": true
-  },
-  {
     "id": "2",
     "title": "Transboundary Water Rights and the Law of International Watercourses",
     "slug": "transboundary-water-rights-international-watercourses",
