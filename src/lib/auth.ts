@@ -189,7 +189,7 @@ export async function sendApprovalEmail(email: string, displayName: string): Pro
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'Lex Research <noreply@lexresearcher.com>',
+      from: 'Lex Research <info@lexresearch.org>',
       to: email,
       subject: 'Your Lex Research account has been approved',
       html: `
