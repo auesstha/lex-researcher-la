@@ -118,7 +118,7 @@ function rowToArticle(row: Record<string, unknown>): Article {
     content:     String(row.content ?? ''),
     author:      String(row.author),
     authorTitle: String(row.authorTitle ?? ''),
-    tags:        JSON.parse(String(row.tags ?? '[]')),
+    tags:        (() => { const t = String(row.tags ?? '[]'); try { return JSON.parse(t); } catch { return t.split(',').map(s => s.trim()).filter(Boolean); } })(),
     readTime:    Number(row.readTime ?? 5),
     published:   Number(row.published) === 1,
     publishedAt: String(row.publishedAt),
