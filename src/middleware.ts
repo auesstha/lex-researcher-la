@@ -1,17 +1,24 @@
 import { defineMiddleware } from 'astro:middleware';
 import { runUsersMigration } from './lib/migrate-users';
 
-const CANONICAL_HOST = 'lexresearcher.com';
+const CANONICAL_ORIGIN = 'https://www.lexresearch.org';
+const CANONICAL_HOST   = 'www.lexresearch.org';
 
 export const onRequest = defineMiddleware(async (ctx, next) => {
-  // 301 www → non-www. Must run before anything else so crawlers never index www.
-  const host = ctx.request.headers.get('host') ?? '';
-  if (host === `www.${CANONICAL_HOST}`) {
-    const url = new URL(ctx.request.url);
-    url.hostname = CANONICAL_HOST;
+  // 301 redirect every non-canonical origin to https://www.lexresearch.org.
+  // Covers: http→https, lexresearcher.com→lexresearch.org, lexresearch.org→www.lexresearch.org.
+  const url  = new URL(ctx.request.url);
+  const host = (ctx.request.headers.get('host') ?? url.hostname).replace(/:.*$/, '');
+  const isCanonical = url.protocol === 'https:' && host === CANONICAL_HOST;
+
+  if (!isCanonical) {
+    const target = new URL(ctx.request.url);
+    target.protocol = 'https:';
+    target.hostname = CANONICAL_HOST;
+    target.port     = '';
     return new Response(null, {
       status: 301,
-      headers: { Location: url.toString() },
+      headers: { Location: target.toString() },
     });
   }
 

@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://lexresearch.org/sitemap.xml
+Sitemap: https://www.lexresearch.org/sitemap.xml

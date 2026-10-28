@@ -202,7 +202,7 @@ export async function sendApprovalEmail(email: string, displayName: string): Pro
           <p style="color:#475569;font-size:15px;line-height:1.6;margin:0 0 20px">
             Your account on <strong>Lex Research Journal</strong> has been approved by the admin. You can now sign in and start publishing your legal research.
           </p>
-          <a href="https://lexresearcher.com/admin/login" style="display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:14px;padding:12px 28px;border-radius:10px;text-decoration:none">Sign In Now →</a>
+          <a href="https://www.lexresearch.org/admin/login" style="display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:14px;padding:12px 28px;border-radius:10px;text-decoration:none">Sign In Now →</a>
           <p style="color:#94a3b8;font-size:12px;margin-top:28px">Lex Research · Open-access legal scholarship</p>
         </div>
       `,

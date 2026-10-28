@@ -1,9 +1,9 @@
 import type { APIRoute } from 'astro';
 import { getPublishedArticles, CATEGORIES } from '../lib/articles';
 
-export const GET: APIRoute = async ({ locals, url }) => {
+export const GET: APIRoute = async ({ locals }) => {
   const articles = await getPublishedArticles(locals);
-  const base = url.origin;
+  const base = 'https://www.lexresearch.org';
 
   const staticPages = [
     { loc: `${base}/`,            priority: '1.0', changefreq: 'daily' },
