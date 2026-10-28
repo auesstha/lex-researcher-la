@@ -178,15 +178,41 @@ const strip   = getStripClass(cat?.color);
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
-function isoDate(iso: string) {
-  return new Date(iso).toISOString();
+function isoDate(iso: string | null | undefined, fallback?: string) {
+  const d = new Date(iso ?? '');
+  if (isNaN(d.getTime())) return fallback ? new Date(fallback).toISOString() : new Date(article.publishedAt).toISOString();
+  return d.toISOString();
 }
 
 const allPublished = await getPublishedArticles(Astro.locals);
-const related = allPublished
-  .filter(a => a.id !== article.id && a.category === article.category)
-  .slice(0, 2);
+
+// Same-category articles first, then cross-category to fill up to 4
+const sameCategory = allPublished.filter(a => a.id !== article.id && a.category === article.category);
+const crossCategory = allPublished.filter(a => a.id !== article.id && a.category !== article.category);
+const related = [...sameCategory, ...crossCategory].slice(0, 4);
+
 const authorArticleCount = allPublished.filter(a => a.author === article.author).length;
+
+// Related category slugs — contextually adjacent fields for each category
+const RELATED_CATS: Record<string, string[]> = {
+  'international-law':               ['human-rights-law','humanitarian-law','international-criminal-law','diplomatic-law'],
+  'human-rights-law':                ['humanitarian-law','international-criminal-law','refugee-law','international-law'],
+  'humanitarian-law':                ['human-rights-law','international-criminal-law','refugee-law','international-law'],
+  'international-criminal-law':      ['humanitarian-law','human-rights-law','international-law','diplomatic-law'],
+  'international-trade-law':         ['international-investment-law','intellectual-property-law','international-environmental-law','world-law'],
+  'international-environmental-law': ['river-law','maritime-law','international-trade-law','international-law'],
+  'maritime-law':                    ['international-environmental-law','river-law','international-law','international-trade-law'],
+  'international-investment-law':    ['international-trade-law','diplomatic-law','international-law','world-law'],
+  'diplomatic-law':                  ['international-law','international-criminal-law','international-investment-law','world-law'],
+  'air-space-law':                   ['international-law','international-environmental-law','maritime-law','world-law'],
+  'refugee-law':                     ['human-rights-law','humanitarian-law','international-criminal-law','international-law'],
+  'international-labor-law':         ['human-rights-law','international-trade-law','world-law','international-law'],
+  'intellectual-property-law':       ['international-trade-law','world-law','international-investment-law','international-law'],
+  'river-law':                       ['international-environmental-law','maritime-law','world-law','international-law'],
+  'world-law':                       ['international-law','human-rights-law','river-law','international-criminal-law'],
+  'property-law':                    ['world-law','international-law','human-rights-law','international-investment-law'],
+};
+const relatedCatSlugs = (RELATED_CATS[article.category] ?? []).slice(0, 4);
 
 // ── SEO / structured data ────────────────────────────────────────────────────
 const canonicalURL = new URL(`/articles/${article.slug}`, Astro.url).href;
@@ -226,7 +252,7 @@ const jsonLd = {
   url: canonicalURL,
   ...(ogImage ? { image: ogImage } : {}),
   datePublished: isoDate(article.publishedAt),
-  dateModified:  isoDate(article.updatedAt),
+  dateModified:  isoDate(article.updatedAt, article.publishedAt),
   author: {
     '@type': 'Person',
     name: article.author,
@@ -456,7 +482,7 @@ const jsonLd = {
     <meta property="og:url"         content={canonicalURL} />
     <meta property="og:site_name"   content="Lex Research" />
     <meta property="article:published_time" content={isoDate(article.publishedAt)} />
-    <meta property="article:modified_time"  content={isoDate(article.updatedAt)} />
+    <meta property="article:modified_time"  content={isoDate(article.updatedAt, article.publishedAt)} />
     <meta property="article:author"         content={article.author} />
     <meta property="article:tag"            content={article.tags.join(', ')} />
     {ogImage && <meta property="og:image" content={ogImage} />}
@@ -528,7 +554,7 @@ const jsonLd = {
       <!-- meta row -->
       <div class="art-meta flex flex-wrap items-center gap-x-4 gap-y-2 text-slate-400 text-xs">
         <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">{article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-[10px] font-black">{article.author.charAt(0)}</span>}</div>
+          <div class="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">{article.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-[10px] font-black">{article.author.charAt(0)}</span>}</div>
           {authorProfileUrl ? <a href={authorProfileUrl} class="font-medium text-slate-200 hover:text-amber-400 transition-colors">{article.author}</a> : <span class="font-medium text-slate-200">{article.author}</span>}
         </div>
         <span class="text-slate-600">·</span>
@@ -702,9 +728,22 @@ const jsonLd = {
       }
     `}</style>
 
+    <!-- Last updated notice -->
+    <div class="flex items-center gap-2 mt-10 sm:mt-12 pt-8 border-t border-stone-200 text-xs text-stone-400">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span>
+        First published <time datetime={isoDate(article.publishedAt)}>{formatDate(article.publishedAt)}</time>
+        {article.updatedAt !== article.publishedAt && (
+          <> · Last updated <time datetime={isoDate(article.updatedAt, article.publishedAt)}>{formatDate(article.updatedAt)}</time></>
+        )}
+      </span>
+    </div>
+
     <!-- Tags -->
     {article.tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mt-10 sm:mt-12 pt-8 border-t border-stone-200">
+      <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-stone-200">
         <span class="text-xs text-stone-400 font-medium mr-1 self-center">Tags:</span>
         {article.tags.map(tag => (
           <span class="text-xs bg-white text-stone-600 px-3 py-1.5 rounded-full border border-stone-200">{tag}</span>
@@ -724,7 +763,7 @@ const jsonLd = {
           <div class="flex-shrink-0 flex sm:block justify-center">
             <div class="relative">
               <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-xl ring-4 ring-amber-500/20">
-                <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" />
+                <img src="/lamia-akhter.jpg" alt="Lamia Akhter — international law researcher and founder of Lex Research" class="w-full h-full object-cover object-top" />
               </div>
               <!-- verified -->
               <div class="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-emerald-500 rounded-full border-3 border-slate-900 flex items-center justify-center shadow-md" style="border-width:3px">
@@ -844,10 +883,11 @@ const jsonLd = {
   {related.length > 0 && (
     <section class="border-t border-stone-200 bg-white py-10 sm:py-14">
       <div class="max-w-3xl mx-auto px-4 sm:px-6">
-        <h2 class="serif text-lg sm:text-xl font-bold text-slate-900 mb-5 sm:mb-6">More in {cat?.label}</h2>
+        <h2 class="serif text-lg sm:text-xl font-bold text-slate-900 mb-5 sm:mb-6">Further Reading</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {related.map(r => (
             <a href={`/articles/${r.slug}`} class="related-card group bg-stone-50 hover:bg-white border border-stone-200 hover:border-stone-300 rounded-2xl p-5 transition-all block">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">{CATEGORIES[r.category]?.shortLabel}</div>
               <div class="serif text-sm sm:text-base font-bold text-slate-900 group-hover:text-amber-800 leading-snug mb-2 transition-colors line-clamp-2">{r.title}</div>
               <div class="text-xs text-stone-500 line-clamp-2 leading-relaxed">{r.excerpt}</div>
               <div class="text-xs text-stone-400 mt-3 flex items-center gap-2">
@@ -857,6 +897,32 @@ const jsonLd = {
               </div>
             </a>
           ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Related research fields -->
+  {relatedCatSlugs.length > 0 && (
+    <section class="border-t border-stone-100 bg-stone-50 py-8 sm:py-10">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">Explore Related Research Fields</h2>
+        <div class="flex flex-wrap gap-3">
+          {relatedCatSlugs.map(slug => {
+            const c = CATEGORIES[slug as import('../../lib/articles').CategorySlug];
+            return c ? (
+              <a href={`/category/${slug}`}
+                 class="group inline-flex items-center gap-2 bg-white border border-stone-200 hover:border-amber-300 hover:bg-amber-50 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:text-slate-900 transition-all">
+                <span>{c.icon}</span>
+                <span>{c.label}</span>
+                <svg class="w-3.5 h-3.5 text-stone-300 group-hover:text-amber-500 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </a>
+            ) : null;
+          })}
+          <a href="/categories"
+             class="inline-flex items-center gap-2 bg-white border border-stone-200 hover:border-slate-400 px-4 py-2.5 rounded-xl text-sm font-medium text-stone-500 hover:text-slate-700 transition-all">
+            All research fields →
+          </a>
         </div>
       </div>
     </section>

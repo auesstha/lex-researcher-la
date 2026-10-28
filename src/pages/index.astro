@@ -408,15 +408,20 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   .book-shine { animation: book-shine 5s 2s ease-in-out infinite; }
 </style>
 
-<Base title="Lex Research — International Law & Legal Research Journal" keywords="international law, legal research journal, world law, river law, comparative law, open access law, Lex Research">
+<Base
+  title="International Law Journal — Free Open-Access Legal Research | Lex Research"
+  description="Lex Research publishes free, peer-reviewed articles on international law, human rights, humanitarian law, arbitration, and comparative legal systems."
+  keywords="international law, legal research journal, world law, river law, comparative law, open access law, human rights law, Lex Research">
 
 <!-- ═══════════════════════════════════════
      PRINCIPLE TICKER — top of page
 ════════════════════════════════════════ -->
 <div class="bg-slate-900 border-b border-slate-800">
   <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-2">
-    <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
+    <h1 class="text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</h1>
     <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0"></span>
+    <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0 hidden sm:inline">Principle</span>
+    <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0 hidden sm:inline"></span>
     <span id="typewriter-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic"></span><span class="typewriter-cursor text-amber-400/60"></span>
   </div>
 </div>
@@ -508,9 +513,9 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
           {CATEGORIES[featured.category]?.icon} {CATEGORIES[featured.category]?.label}
         </span>
 
-        <h1 class="font-serif text-[1.65rem] sm:text-3xl md:text-[2.2rem] font-bold leading-tight mb-4 text-white animate-fade-up-d1">
+        <h2 class="font-serif text-[1.65rem] sm:text-3xl md:text-[2.2rem] font-bold leading-tight mb-4 text-white animate-fade-up-d1">
           {featured.title}
-        </h1>
+        </h2>
 
         <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-5 line-clamp-4 animate-fade-up-d2">
           {featured.excerpt}
@@ -519,7 +524,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
         <!-- byline -->
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-400 mb-6 animate-fade-up-d3">
           <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
-            {featured.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black">{featured.author.charAt(0)}</span>}
+            {featured.author === 'Lamia Akhter' ? <img src="/lamia-akhter.jpg" alt="" class="w-full h-full object-cover object-top" /> : <span class="w-full h-full bg-amber-500 flex items-center justify-center text-slate-900 text-xs font-black">{featured.author.charAt(0)}</span>}
           </div>
           {featured.author === 'Lamia Akhter' ? <a href="/lamia-akhter" class="font-medium text-slate-200 text-sm hover:text-amber-400 transition-colors">{featured.author}</a> : <span class="font-medium text-slate-200 text-sm">{featured.author}</span>}
           {featured.authorTitle && <span class="text-slate-500 text-xs hidden sm:inline">· {featured.authorTitle}</span>}
@@ -717,7 +722,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   <div class="h-px w-full bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
   <div class="max-w-5xl mx-auto px-5 py-20 text-center">
     <div class="text-6xl mb-6">⚖️</div>
-    <h1 class="font-serif text-3xl font-bold mb-2">Lex Research</h1>
+    <h1 class="font-serif text-3xl font-bold mb-2">International Law Journal — Open Access Legal Research</h1>
     <p class="text-amber-400 italic text-sm mb-3">The World Through a Legal Lens</p>
     <p class="text-slate-400 mb-8">Open-access legal scholarship on world law, river law &amp; international law.</p>
     <a href="/admin" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors">
@@ -817,7 +822,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
             <div class="flex items-center gap-2 min-w-0">
               <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-stone-100">
                 {article.author === 'Lamia Akhter'
-                  ? <img src="/lamia-akhter.jpg" alt="Lamia Akhter" class="w-full h-full object-cover object-top" />
+                  ? <img src="/lamia-akhter.jpg" alt="" class="w-full h-full object-cover object-top" />
                   : <span class="w-full h-full bg-slate-800 flex items-center justify-center text-white text-[11px] font-bold">{article.author.charAt(0)}</span>}
               </div>
               <div class="min-w-0 leading-tight">
