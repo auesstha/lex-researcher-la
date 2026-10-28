@@ -6,6 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 
 export default defineConfig({
+  site: 'https://lexresearcher.com',
   output: 'server',
 
   adapter: cloudflare({
