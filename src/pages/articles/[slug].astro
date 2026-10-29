@@ -214,6 +214,21 @@ const cat     = CATEGORIES[article.category];
 const badge   = getBadgeClass(cat?.color);
 const strip   = getStripClass(cat?.color);
 
+// SEO title: keep under 55 chars so full "<title> | Lex Research" stays ≤ 70
+function makeSeoTitle(title: string): string {
+  if (title.length <= 55) return title;
+  // Try to cut at a subtitle separator (colon, em dash, pipe)
+  for (const sep of [': ', ' — ', ' - ', ' | ']) {
+    const idx = title.indexOf(sep);
+    if (idx >= 20 && idx <= 55) return title.slice(0, idx);
+  }
+  // Hard truncate at word boundary
+  const cut = title.slice(0, 52);
+  const lastSpace = cut.lastIndexOf(' ');
+  return cut.slice(0, lastSpace > 20 ? lastSpace : 52) + '…';
+}
+const seoTitle = makeSeoTitle(article.title);
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
@@ -517,7 +532,7 @@ const jsonLd = {
 }
 </style>
 
-<Base title={article.title} description={article.excerpt} keywords={article.tags?.join(', ')}>
+<Base title={seoTitle} description={article.excerpt} keywords={article.tags?.join(', ')}>
 
   <!-- Reading progress bar -->
   <div id="read-progress"></div>
@@ -533,7 +548,7 @@ const jsonLd = {
   <Fragment slot="head">
     <link rel="canonical" href={canonicalURL} />
     <meta property="og:type"        content="article" />
-    <meta property="og:title"       content={`${article.title} — Lex Research`} />
+    <meta property="og:title"       content={`${seoTitle} — Lex Research`} />
     <meta property="og:description" content={article.excerpt} />
     <meta property="og:url"         content={canonicalURL} />
     <meta property="og:site_name"   content="Lex Research" />
@@ -545,7 +560,7 @@ const jsonLd = {
     {ogImage && <meta property="og:image:width" content="1200" />}
     {ogImage && <meta property="og:image:height" content="675" />}
     <meta name="twitter:card"        content="summary_large_image" />
-    <meta name="twitter:title"       content={article.title} />
+    <meta name="twitter:title"       content={seoTitle} />
     <meta name="twitter:description" content={article.excerpt} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
