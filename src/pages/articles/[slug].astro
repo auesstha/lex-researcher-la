@@ -143,28 +143,67 @@ function renderTable(raw: string): string {
   return `<div class="overflow-x-auto -mx-4 sm:mx-0 my-6 sm:my-8"><div class="min-w-[460px] sm:min-w-0 px-4 sm:px-0"><table class="w-full border-collapse bg-white border border-stone-200 rounded-xl overflow-hidden text-sm shadow-sm"><thead class="bg-stone-50"><tr>${th}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 
-type Block = { tag: 'h1' | 'h2' | 'h3' | 'p' | 'table'; html: string; id?: string; faq?: boolean };
+type Block = { tag: 'h1' | 'h2' | 'h3' | 'p' | 'table' | 'raw'; html: string; id?: string; faq?: boolean };
+
+function renderList(block: string, ordered: boolean, faq: boolean): Block[] {
+  const lines = block.split('\n').filter(l => l.trim());
+  const blocks: Block[] = [];
+  let listType: 'ol' | 'ul' | null = null;
+  let listItems = '';
+
+  function flushList() {
+    if (!listItems) return;
+    const tag = listType === 'ol' ? 'ol' : 'ul';
+    const cls = listType === 'ol'
+      ? 'list-decimal list-outside ml-5 sm:ml-6 space-y-2 text-slate-700 text-[15px] sm:text-lg leading-7 para-reveal'
+      : 'list-disc   list-outside ml-5 sm:ml-6 space-y-2 text-slate-700 text-[15px] sm:text-lg leading-7 para-reveal';
+    blocks.push({ tag: 'raw' as const, html: `<${tag} class="${cls}">${listItems}</${tag}>`, faq });
+    listItems = '';
+    listType = null;
+  }
+
+  for (const line of lines) {
+    const olMatch = line.match(/^(\d+)\.\s+([\s\S]+)/);
+    const ulMatch = line.match(/^[-*]\s+([\s\S]+)/);
+    if (olMatch) {
+      if (listType !== 'ol') { flushList(); listType = 'ol'; }
+      listItems += `<li class="mb-1 leading-7 pl-1">${inlineMd(olMatch[2])}</li>`;
+    } else if (ulMatch) {
+      if (listType !== 'ul') { flushList(); listType = 'ul'; }
+      listItems += `<li class="mb-1 leading-7 pl-1">${inlineMd(ulMatch[1])}</li>`;
+    } else {
+      flushList();
+      blocks.push({ tag: 'p' as const, html: inlineMd(line), faq });
+    }
+  }
+  flushList();
+  return blocks;
+}
+
 function parseContent(raw: string): Block[] {
   let inFaq = false;
   return raw
     .split('\n\n')
-    .map(s => s.trim())
-    .filter(Boolean)
-    .map(block => {
+    .flatMap(s => {
+      const block = s.trim();
+      if (!block) return [];
       if (block.startsWith('| ') || block.startsWith('|---')) {
-        return { tag: 'table' as const, html: renderTable(block) };
+        return [{ tag: 'table' as const, html: renderTable(block) }];
       }
-      if (block.startsWith('### ')) return { tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq };
+      if (block.startsWith('### ')) return [{ tag: 'h3' as const, html: inlineMd(block.slice(4).trim()), faq: inFaq }];
       if (block.startsWith('## ')) {
         const text = block.slice(3).trim();
         inFaq = /frequently asked questions|faq/i.test(text);
-        return { tag: 'h2' as const, html: inlineMd(text), id: slugify(text) };
+        return [{ tag: 'h2' as const, html: inlineMd(text), id: slugify(text) }];
       }
       if (block.startsWith('# ')) {
         const text = block.slice(2).trim();
-        return { tag: 'h1' as const, html: inlineMd(text), id: slugify(text) };
+        return [{ tag: 'h1' as const, html: inlineMd(text), id: slugify(text) }];
       }
-      return { tag: 'p' as const, html: inlineMd(block), faq: inFaq };
+      // Detect blocks that contain list items (may start with intro text)
+      const hasListLine = block.split('\n').some(l => /^(\d+\.\s|[-*]\s)/.test(l));
+      if (hasListLine) return renderList(block, false, inFaq);
+      return [{ tag: 'p' as const, html: inlineMd(block), faq: inFaq }];
     });
 }
 
@@ -346,13 +385,30 @@ const jsonLd = {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.55s ease, transform 0.55s ease;
+  /* Fallback: reveal after 0.8s even if IntersectionObserver hasn't fired */
+  animation: para-fallback 0s 0.8s forwards;
+}
+@keyframes para-fallback {
+  to { opacity: 1; transform: translateY(0); }
 }
 .para-reveal.para-visible {
   opacity: 1;
   transform: translateY(0);
+  animation: none;
 }
 .para-reveal-d1 { transition-delay: 0.05s; }
 .para-reveal-d2 { transition-delay: 0.12s; }
+
+/* Mobile: word-wrap for long legal terms, citations, and URLs */
+@media (max-width: 640px) {
+  article p, article li, article h2, article h3 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  article ol, article ul {
+    padding-left: 1.25rem;
+  }
+}
 
 /* Author card entrance */
 @keyframes card-rise {
@@ -654,7 +710,7 @@ const jsonLd = {
         if (block.tag === 'h1') return (
           <h1 id={block.id} class="section-heading serif text-xl sm:text-3xl font-bold text-slate-900 mt-7 sm:mt-10 mb-2 para-reveal" set:html={block.html} />
         );
-        if (block.tag === 'table') return (
+        if (block.tag === 'table' || block.tag === 'raw') return (
           <Fragment set:html={block.html} />
         );
         if (block.tag === 'h3' && block.faq) return null;
@@ -947,7 +1003,7 @@ const jsonLd = {
         paraObs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
   document.querySelectorAll('.para-reveal').forEach(el => paraObs.observe(el));
 
   /* ── Section heading underline ── */
