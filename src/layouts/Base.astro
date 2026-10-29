@@ -7,7 +7,11 @@ interface Props {
   description?: string;
   keywords?: string;
 }
-const { title, description = 'Lex Research — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Research' } = Astro.props;
+const { title, description: rawDescription = 'Lex Research — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Research' } = Astro.props;
+// Google displays ~155 chars; truncate at word boundary to prevent truncated snippets
+const description = rawDescription.length <= 155
+  ? rawDescription
+  : rawDescription.slice(0, 152).replace(/\s+\S*$/, '') + '…';
 const path = Astro.url.pathname;
 
 // Group categories for mobile drawer
