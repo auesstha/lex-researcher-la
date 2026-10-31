@@ -167,27 +167,5 @@
     ],
     "readTime": 18,
     "published": true
-  },
-  {
-    "id": "20",
-    "title": "Principle of Non-Refoulement: What It Means and Why It Matters",
-    "slug": "non-refoulement-principle-refugee-law",
-    "category": "refugee-law",
-    "excerpt": "The principle of non-refoulement prohibits states from returning persons to persecution, torture, or serious harm. This analysis covers its treaty foundations across the 1951 Refugee Convention, CAT, ECHR, and ICCPR, its absolute character under human rights law, the contested exceptions, extraterritorial reach, and the structural enforcement gap that defines contemporary state practice.",
-    "author": "Lamia Akhter",
-    "authorTitle": "International Law Researcher",
-    "publishedAt": "2026-10-26T00:00:00.000Z",
-    "updatedAt": "2026-10-26T00:00:00.000Z",
-    "tags": [
-      "non-refoulement",
-      "refugee law",
-      "1951 Refugee Convention",
-      "CAT Article 3",
-      "ECHR Article 3",
-      "asylum law",
-      "international human rights law"
-    ],
-    "readTime": 20,
-    "published": true
   }
 ]
