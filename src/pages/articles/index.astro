@@ -18,15 +18,30 @@ const authorAvatarMap: Record<string, string> = Object.fromEntries(
 );
 authorAvatarMap['Lamia Akhter'] = authorAvatarMap['Lamia Akhter'] || '/lamia-akhter.jpg';
 
+// ── Search filter ─────────────────────────────────────────────────────────────
+const searchQuery = (Astro.url.searchParams.get('q') ?? '').trim();
+const filtered = searchQuery
+  ? all.filter(a => {
+      const q = searchQuery.toLowerCase();
+      return (
+        a.title.toLowerCase().includes(q) ||
+        (a.abstract ?? '').toLowerCase().includes(q) ||
+        (a.author ?? '').toLowerCase().includes(q) ||
+        (a.category ?? '').toLowerCase().includes(q)
+      );
+    })
+  : all;
+
 // ── Pagination ────────────────────────────────────────────────────────────────
 const PER_PAGE = 10;
-const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
 const rawPage = parseInt(Astro.url.searchParams.get('page') ?? '1', 10);
 const currentPage = Math.min(Math.max(rawPage, 1), totalPages);
-const articles = all.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+const articles = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
 
 function pageUrl(p: number) {
-  return p === 1 ? '/articles' : `/articles?page=${p}`;
+  const base = p === 1 ? '/articles' : `/articles?page=${p}`;
+  return searchQuery ? (p === 1 ? `/articles?q=${encodeURIComponent(searchQuery)}` : `/articles?q=${encodeURIComponent(searchQuery)}&page=${p}`) : base;
 }
 // Show at most 5 page numbers centered around currentPage
 function pageWindow(current: number, total: number): (number | null)[] {
@@ -74,9 +89,26 @@ const BADGE: Record<string, string> = {
     <p class="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">Lex Research · Open-Access Journal</p>
     <h1 class="font-serif text-4xl sm:text-5xl font-bold mb-3 leading-tight">All Articles</h1>
     <h2 class="text-slate-400 text-sm sm:text-base leading-relaxed font-normal">
-      Peer-Reviewed Research Across 16 Legal Fields
-      {totalPages > 1 && <span class="text-slate-500"> · Page {currentPage} of {totalPages}</span>}
+      {searchQuery
+        ? <span>Found <strong class="text-white">{filtered.length}</strong> result{filtered.length !== 1 ? 's' : ''} for "<span class="text-amber-300">{searchQuery}</span>"</span>
+        : <>Peer-Reviewed Research Across 16 Legal Fields{totalPages > 1 && <span class="text-slate-500"> · Page {currentPage} of {totalPages}</span>}</>
+      }
     </h2>
+    <!-- Search bar -->
+    <form action="/articles" method="get" class="mt-6 flex gap-2 max-w-xl">
+      <div class="relative flex-1">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/></svg>
+        <input
+          type="search"
+          name="q"
+          value={searchQuery}
+          placeholder="Search articles, authors, topics…"
+          class="w-full pl-9 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+        />
+      </div>
+      <button type="submit" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm rounded-xl transition-colors flex-shrink-0">Search</button>
+      {searchQuery && <a href="/articles" class="px-3 py-2.5 text-slate-400 hover:text-white text-sm rounded-xl border border-slate-700 hover:border-slate-500 transition-colors flex-shrink-0 flex items-center">Clear</a>}
+    </form>
   </div>
 </section>
 
