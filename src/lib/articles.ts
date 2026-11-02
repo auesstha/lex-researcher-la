@@ -21,6 +21,7 @@ export interface Article {
   title: string;
   slug: string;
   category: CategorySlug;
+  secondaryCategories: CategorySlug[];
   excerpt: string;
   content: string;
   author: string;
@@ -174,20 +175,22 @@ export function getBannerClass(color: string): string {
 }
 
 function rowToArticle(row: Record<string, unknown>): Article {
+  const parseJson = (v: unknown, fallback: unknown[]) => { try { return JSON.parse(String(v ?? '[]')); } catch { return fallback; } };
   return {
-    id:          String(row.id),
-    title:       String(row.title),
-    slug:        String(row.slug),
-    category:    row.category as CategorySlug,
-    excerpt:     String(row.excerpt ?? ''),
-    content:     String(row.content ?? ''),
-    author:      String(row.author),
-    authorTitle: String(row.authorTitle ?? ''),
-    tags:        (() => { const t = String(row.tags ?? '[]'); try { return JSON.parse(t); } catch { return t.split(',').map(s => s.trim()).filter(Boolean); } })(),
-    readTime:    Number(row.readTime ?? 5),
-    published:   Number(row.published) === 1,
-    publishedAt: String(row.publishedAt),
-    updatedAt:   String(row.updatedAt ?? row.publishedAt),
+    id:                   String(row.id),
+    title:                String(row.title),
+    slug:                 String(row.slug),
+    category:             row.category as CategorySlug,
+    secondaryCategories:  parseJson(row.secondary_categories, []) as CategorySlug[],
+    excerpt:              String(row.excerpt ?? ''),
+    content:              String(row.content ?? ''),
+    author:               String(row.author),
+    authorTitle:          String(row.authorTitle ?? ''),
+    tags:                 (() => { const t = String(row.tags ?? '[]'); try { return JSON.parse(t); } catch { return t.split(',').map(s => s.trim()).filter(Boolean); } })(),
+    readTime:             Number(row.readTime ?? 5),
+    published:            Number(row.published) === 1,
+    publishedAt:          String(row.publishedAt),
+    updatedAt:            String(row.updatedAt ?? row.publishedAt),
   };
 }
 
@@ -202,7 +205,7 @@ function getDB(): D1Database {
   return db;
 }
 
-const LIST_COLS = 'id,title,slug,category,excerpt,author,authorTitle,tags,readTime,published,publishedAt,updatedAt';
+const LIST_COLS = 'id,title,slug,category,secondary_categories,excerpt,author,authorTitle,tags,readTime,published,publishedAt,updatedAt';
 
 export async function getArticles(_locals: App.Locals): Promise<Article[]> {
   const { results } = await (getDB()).prepare(`SELECT ${LIST_COLS} FROM articles ORDER BY publishedAt DESC`).all();
@@ -225,7 +228,12 @@ export async function getArticleById(_locals: App.Locals, id: string): Promise<A
 }
 
 export async function getArticlesByCategory(_locals: App.Locals, category: string): Promise<Article[]> {
-  const { results } = await (getDB()).prepare(`SELECT ${LIST_COLS} FROM articles WHERE category=? AND published=1 ORDER BY publishedAt DESC`).bind(category).all();
+  const { results } = await (getDB()).prepare(
+    `SELECT ${LIST_COLS} FROM articles
+     WHERE published=1
+       AND (category=? OR EXISTS (SELECT 1 FROM json_each(secondary_categories) WHERE value=?))
+     ORDER BY publishedAt DESC`
+  ).bind(category, category).all();
   return (results as Record<string, unknown>[]).map(rowToArticle);
 }
 
