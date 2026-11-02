@@ -1501,45 +1501,45 @@ const tocItems = blocks
   }, { threshold: 0.1 });
   document.querySelectorAll('.faq-stagger').forEach(el => faqObs.observe(el));
 
+
+</script>
+
+<script>
   /* ── Share buttons ── */
   (function () {
-    const url   = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    const text  = encodeURIComponent(document.title + ' — Free legal research on Lex Research: ' + window.location.href);
+    var pageUrl  = encodeURIComponent(window.location.href);
+    var shareText = encodeURIComponent(document.title + ' — Free legal research on Lex Research: ' + window.location.href);
 
-    const links: Record<string, string> = {
-      'share-fb':        `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      'share-fb-mobile': `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      'share-wa':        `https://api.whatsapp.com/send?text=${text}`,
-      'share-wa-mobile': `https://api.whatsapp.com/send?text=${text}`,
-      'share-li':        `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      'share-li-mobile': `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    var links = {
+      'share-fb':        'https://www.facebook.com/sharer/sharer.php?u=' + pageUrl,
+      'share-fb-mobile': 'https://www.facebook.com/sharer/sharer.php?u=' + pageUrl,
+      'share-wa':        'https://api.whatsapp.com/send?text=' + shareText,
+      'share-wa-mobile': 'https://api.whatsapp.com/send?text=' + shareText,
+      'share-li':        'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl,
+      'share-li-mobile': 'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl,
     };
 
-    Object.entries(links).forEach(([id, href]) => {
-      const el = document.getElementById(id) as HTMLAnchorElement | null;
-      if (el) el.href = href;
+    Object.keys(links).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute('href', links[id]);
     });
 
-    // Copy link buttons
-    async function copyLink(btnId: string) {
-      const btn = document.getElementById(btnId);
+    function copyLink(btnId) {
+      var btn = document.getElementById(btnId);
       if (!btn) return;
-      btn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          const orig = btn.innerHTML;
-          btn.innerHTML = btn.innerHTML.replace(/Copy Link/, '✓ Copied!');
-          setTimeout(() => { btn.innerHTML = orig; }, 2000);
-        } catch {
-          // fallback: select a temp input
-          const inp = document.createElement('input');
+      btn.addEventListener('click', function () {
+        navigator.clipboard.writeText(window.location.href).then(function () {
+          var orig = btn.innerHTML;
+          btn.innerHTML = btn.innerHTML.replace('Copy Link', '✓ Copied!');
+          setTimeout(function () { btn.innerHTML = orig; }, 2000);
+        }).catch(function () {
+          var inp = document.createElement('input');
           inp.value = window.location.href;
           document.body.appendChild(inp);
           inp.select();
           document.execCommand('copy');
           document.body.removeChild(inp);
-        }
+        });
       });
     }
     copyLink('share-copy');
