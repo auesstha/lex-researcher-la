@@ -342,15 +342,63 @@ const jsonLd = {
 /* Reading progress bar */
 #read-progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
-  background-size: 200% 100%;
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f97316, #f59e0b);
+  background-size: 300% 100%;
   z-index: 9999;
-  transition: width 0.1s linear;
-  animation: progress-shimmer 2s linear infinite;
+  transition: width 0.12s linear;
+  animation: progress-shimmer 3s linear infinite;
 }
+#read-progress::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: 50%;
+  transform: translateY(-50%);
+  width: 8px; height: 8px;
+  background: #fbbf24;
+  border-radius: 50%;
+  box-shadow: 0 0 6px 2px rgba(251,191,36,0.7);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#read-progress.started::after { opacity: 1; }
 @keyframes progress-shimmer {
-  0%   { background-position: 200% center; }
+  0%   { background-position: 100% center; }
   100% { background-position: -200% center; }
+}
+
+/* Floating read-time pill */
+#read-pill {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.25rem;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(15,23,42,0.88);
+  backdrop-filter: blur(8px);
+  color: #f8fafc;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+#read-pill.visible { opacity: 1; transform: translateY(0); }
+#read-pill.done { background: rgba(16,185,129,0.92); border-color: rgba(52,211,153,0.3); }
+#read-pill-arc {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+}
+#read-pill-arc circle {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
 }
 
 /* Article header stagger */
@@ -536,6 +584,21 @@ const jsonLd = {
 
   <!-- Reading progress bar -->
   <div id="read-progress"></div>
+
+  <!-- Floating read-time pill -->
+  <div id="read-pill" aria-hidden="true">
+    <svg id="read-pill-arc" viewBox="0 0 28 28">
+      <!-- track -->
+      <circle cx="14" cy="14" r="11" stroke="rgba(255,255,255,0.12)" />
+      <!-- progress ring -->
+      <circle id="read-pill-ring" cx="14" cy="14" r="11"
+        stroke="#fbbf24"
+        stroke-dasharray="69.1"
+        stroke-dashoffset="69.1"
+        transform="rotate(-90 14 14)" />
+    </svg>
+    <span id="read-pill-label">{article.readTime} min left</span>
+  </div>
 
   <!-- Decorative legal glyph stream — desktop left margin -->
   <div class="glyph-stream font-serif text-slate-400 text-sm font-bold select-none" aria-hidden="true">
@@ -1180,13 +1243,44 @@ const jsonLd = {
   )}
 
 <script>
-  /* ── Reading progress bar ── */
-  const bar = document.getElementById('read-progress');
-  if (bar) {
+  /* ── Reading progress bar + floating pill ── */
+  const bar     = document.getElementById('read-progress');
+  const pill    = document.getElementById('read-pill');
+  const ring    = document.getElementById('read-pill-ring');
+  const pillLbl = document.getElementById('read-pill-label');
+  const CIRCUMFERENCE = 69.1;
+  const READ_MINS = {article.readTime};
+
+  if (bar && pill && ring && pillLbl) {
+    let pillShown = false;
+
     window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-      bar.style.width = Math.min(pct, 100) + '%';
+      const doc   = document.documentElement;
+      const total = doc.scrollHeight - doc.clientHeight;
+      const pct   = total > 0 ? Math.min((doc.scrollTop / total) * 100, 100) : 0;
+
+      // Progress bar
+      bar.style.width = pct + '%';
+      if (pct > 1) bar.classList.add('started'); else bar.classList.remove('started');
+
+      // Circular ring
+      ring.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - pct / 100));
+
+      // Label
+      if (pct >= 99.5) {
+        pillLbl.textContent = 'Finished!';
+        pill.classList.add('done');
+        ring.style.stroke = '#34d399';
+      } else {
+        const minsLeft = Math.max(1, Math.round(READ_MINS * (1 - pct / 100)));
+        pillLbl.textContent = minsLeft + ' min left';
+        pill.classList.remove('done');
+        ring.style.stroke = '#fbbf24';
+      }
+
+      // Show pill after 8% scroll, hide at top
+      if (pct > 8 && !pillShown) { pill.classList.add('visible'); pillShown = true; }
+      if (pct <= 1)               { pill.classList.remove('visible'); pillShown = false; }
     }, { passive: true });
   }
 
