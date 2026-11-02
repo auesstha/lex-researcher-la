@@ -418,16 +418,15 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
       <span id="tw-text" class="text-amber-300/70 text-[11px] font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span id="tw-cursor" class="text-amber-400 text-[11px] font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
     </span>
   </div>
-  <!-- Desktop: two-line layout -->
-  <div class="hidden sm:flex max-w-5xl mx-auto px-4 py-2 flex-col gap-0.5 overflow-hidden">
-    <div class="flex items-center gap-2">
-      <span class="text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
-      <span class="w-px h-3 bg-slate-700 flex-shrink-0"></span>
-      <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
-    </div>
-    <div class="flex items-center gap-0 overflow-hidden">
+  <!-- Desktop: single-line layout -->
+  <div class="hidden sm:flex max-w-5xl mx-auto px-4 py-2.5 items-center gap-2 overflow-hidden">
+    <span class="text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
+    <span class="w-px h-3 bg-slate-700 flex-shrink-0"></span>
+    <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
+    <span class="w-px h-3 bg-slate-700 flex-shrink-0"></span>
+    <span class="min-w-0 flex-1 overflow-hidden flex items-center">
       <span id="tw-text-desktop" class="text-amber-300/70 text-[11px] font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span class="text-amber-400 text-[11px] font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
-    </div>
+    </span>
   </div>
 </div>
 

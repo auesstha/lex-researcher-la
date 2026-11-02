@@ -1,0 +1,182 @@
+---
+import Base from '../layouts/Base.astro';
+const lastUpdated = 'November 2026';
+---
+<Base
+  title="Terms & Conditions — Lex Research"
+  description="Terms and conditions for using Lex Research — the open-access international law journal. Covers content licensing, author submissions, account use, and disclaimers."
+  keywords="terms and conditions, terms of use, Lex Research, legal disclaimer, open access, author submission">
+
+  <!-- Hero -->
+  <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 sm:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+        Legal
+      </div>
+      <h1 class="serif text-4xl sm:text-5xl font-bold mb-4 leading-tight">Terms &amp; Conditions</h1>
+      <p class="text-slate-400 text-sm">Last updated: {lastUpdated}</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+
+    <!-- Intro -->
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6 mb-10 flex gap-4">
+      <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p class="text-sm text-amber-800 leading-relaxed">
+        By accessing or using <strong>lexresearch.org</strong> you agree to these Terms &amp; Conditions. If you do not agree, please do not use this site. These terms apply to all visitors, registered authors, and contributors.
+      </p>
+    </div>
+
+    <div class="space-y-10 text-slate-700">
+
+      <!-- 1 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">1. About Lex Research</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          Lex Research is an open-access academic journal publishing peer-reviewed scholarship in international law, human rights law, humanitarian law, and comparative legal studies. The journal is founded and operated by <a href="/lamia-akhter" class="text-amber-700 hover:text-amber-900 font-medium">Lamia Akhter</a>. All published content is freely available to read without subscription or paywall.
+        </p>
+      </section>
+
+      <!-- 2 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">2. Not Legal Advice</h2>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4 sm:p-5 flex gap-3">
+          <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <p class="text-sm text-red-800 leading-relaxed">
+            <strong>All content published on Lex Research is for academic and informational purposes only.</strong> Nothing on this site constitutes legal advice, and it should not be relied upon as such. Readers requiring legal advice should consult a qualified legal professional in the relevant jurisdiction.
+          </p>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">3. Intellectual Property &amp; Open Access</h2>
+        <div class="space-y-3 text-sm sm:text-base leading-relaxed">
+          <p>All articles published on Lex Research are made available under an <strong class="text-slate-900">open-access model</strong>. Unless otherwise stated, published content may be read, shared, and cited freely for non-commercial academic purposes, provided that:</p>
+          <ul class="list-disc list-inside space-y-1 text-slate-600 ml-2">
+            <li>Full credit is given to the author(s) and Lex Research Journal</li>
+            <li>The original URL or DOI (where assigned) is included in any citation</li>
+            <li>The content is not altered, misrepresented, or used for commercial gain without written permission</li>
+          </ul>
+          <p>The Lex Research name, logo, site design, and all non-article content (including editorial text, layout, and graphics) remain the exclusive intellectual property of Lex Research and may not be reproduced without permission.</p>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">4. Author Submissions</h2>
+        <div class="space-y-3 text-sm sm:text-base leading-relaxed">
+          <p>By submitting an article or research piece to Lex Research, you confirm and agree that:</p>
+          <div class="space-y-2">
+            {[
+              ['Original work', 'The submission is your own original work and has not been published elsewhere, nor is it under review at another publication.'],
+              ['No plagiarism', 'The submission does not plagiarise, infringe, or misappropriate any third-party intellectual property.'],
+              ['Publication licence', 'You grant Lex Research a non-exclusive, royalty-free licence to publish, display, and distribute the work on lexresearch.org and associated platforms.'],
+              ['Author retains rights', 'You retain copyright in your work. Lex Research does not claim ownership of submitted articles.'],
+              ['Accuracy', 'All factual claims, citations, and references are accurate to the best of your knowledge.'],
+              ['Editorial discretion', 'Lex Research reserves the right to accept, reject, edit for style, or withdraw any submission at its sole discretion.'],
+            ].map(([title, desc]) => (
+              <div class="flex gap-3 bg-stone-50 border border-stone-200 rounded-xl p-4">
+                <span class="text-amber-500 font-bold text-sm flex-shrink-0 mt-0.5">—</span>
+                <div>
+                  <span class="font-semibold text-slate-800 text-sm">{title}: </span>
+                  <span class="text-slate-600 text-sm">{desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">5. User Accounts</h2>
+        <div class="space-y-3 text-sm sm:text-base leading-relaxed">
+          <p>Author accounts are available to approved contributors. When you create an account you agree to:</p>
+          <ul class="list-disc list-inside space-y-1 text-slate-600 ml-2">
+            <li>Provide accurate and truthful registration information</li>
+            <li>Keep your password confidential and not share your account</li>
+            <li>Notify us immediately of any unauthorised use of your account</li>
+            <li>Use the account only for legitimate academic publishing purposes</li>
+          </ul>
+          <p>Lex Research reserves the right to suspend or permanently terminate any account that violates these terms, engages in misconduct, or submits fraudulent, plagiarised, or harmful content, without prior notice.</p>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">6. Acceptable Use</h2>
+        <p class="text-sm sm:text-base leading-relaxed mb-3">You agree not to use this site to:</p>
+        <ul class="list-disc list-inside space-y-1 text-slate-600 text-sm sm:text-base ml-2">
+          <li>Attempt to gain unauthorised access to any part of the site or its systems</li>
+          <li>Scrape, harvest, or collect data from the site in bulk without permission</li>
+          <li>Submit malicious code, spam, or fraudulent content</li>
+          <li>Impersonate any person, author, or institution</li>
+          <li>Use the site in any way that violates applicable law</li>
+        </ul>
+      </section>
+
+      <!-- 7 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">7. Peer Review &amp; Editorial Process</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          Lex Research applies a peer-review process to ensure scholarly quality. However, the views and conclusions expressed in any published article are those of the author(s) alone and do not represent the views of Lex Research, its editors, or its founder. Lex Research makes no warranty as to the accuracy, completeness, or fitness for purpose of any published article.
+        </p>
+      </section>
+
+      <!-- 8 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">8. Limitation of Liability</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          To the fullest extent permitted by law, Lex Research and its founder shall not be liable for any direct, indirect, incidental, or consequential loss arising from: use of or inability to use the site; reliance on any content published on the site; or any errors, omissions, or interruptions in the site's availability. The site is provided on an "as is" and "as available" basis.
+        </p>
+      </section>
+
+      <!-- 9 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">9. External Links</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          Articles and pages on this site may contain links to external websites. These links are provided for reference only. Lex Research has no control over external sites and accepts no responsibility for their content, privacy practices, or availability.
+        </p>
+      </section>
+
+      <!-- 10 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">10. Governing Law</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          These terms are governed by and construed in accordance with the laws of Bangladesh. Any disputes arising from the use of this site shall be subject to the exclusive jurisdiction of the courts of Bangladesh, without prejudice to any mandatory consumer protection rights you may hold in your country of residence.
+        </p>
+      </section>
+
+      <!-- 11 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">11. Changes to These Terms</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          We may update these terms at any time. The "last updated" date at the top of this page will reflect any changes. Continued use of the site after changes are posted constitutes your acceptance of the revised terms. We encourage you to review this page periodically.
+        </p>
+      </section>
+
+      <!-- 12 -->
+      <section>
+        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">12. Contact</h2>
+        <p class="text-sm sm:text-base leading-relaxed">
+          For any questions about these terms, please contact:<br/>
+          <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium">info@lexresearch.org</a><br/>
+          Lex Research Journal — <a href="/about" class="text-amber-700 hover:text-amber-900">lexresearch.org/about</a>
+        </p>
+      </section>
+
+    </div>
+
+    <!-- Footer nav -->
+    <div class="mt-14 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <p class="text-xs text-stone-400">© 2026 Lex Research Journal. All rights reserved.</p>
+      <a href="/privacy-policy" class="text-sm font-medium text-amber-700 hover:text-amber-900 transition-colors">
+        ← Privacy Policy
+      </a>
+    </div>
+
+  </div>
+</Base>
