@@ -45,6 +45,14 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <slot name="head" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q73PD1X6S5"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q73PD1X6S5');
+  </script>
   <style>@import "../styles/global.css";</style>
   <style is:global>
     *, *::before, *::after { box-sizing: border-box; }
