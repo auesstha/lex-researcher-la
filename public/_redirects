@@ -1,0 +1,7 @@
+# Force everything to https://www.lexresearch.org (301 Permanent)
+# Handles: http→https, non-www→www, both combined.
+# Cloudflare Pages/Workers evaluates these before the worker runs.
+
+https://lexresearch.org/*     https://www.lexresearch.org/:splat  301
+http://lexresearch.org/*      https://www.lexresearch.org/:splat  301
+http://www.lexresearch.org/*  https://www.lexresearch.org/:splat  301

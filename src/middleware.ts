@@ -1,8 +1,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { runUsersMigration } from './lib/migrate-users';
 
-const CANONICAL_ORIGIN = 'https://www.lexresearch.org';
-const CANONICAL_HOST   = 'www.lexresearch.org';
+const CANONICAL_HOST = 'www.lexresearch.org';
 
 export const onRequest = defineMiddleware(async (ctx, next) => {
   // 301 redirect every non-canonical origin to https://www.lexresearch.org.
