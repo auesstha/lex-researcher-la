@@ -1,188 +1,271 @@
 ---
 import Base from '../layouts/Base.astro';
 const lastUpdated = 'November 2026';
+const effectiveDate = 'November 2026';
 ---
 <Base
-  title="Privacy Policy — Lex Research"
-  description="Lex Research privacy policy: how we collect, use, and protect your personal data, including information about cookies and Google Analytics."
-  keywords="privacy policy, data protection, Lex Research, cookies, GDPR">
+  title="Privacy Policy — Lex Research International Law Journal"
+  description="Privacy Policy of Lex Research — an open-access international law journal. Explains how personal data is collected, processed, and protected in accordance with applicable data protection principles."
+  keywords="privacy policy, data protection, Lex Research, international law journal, cookies, personal data">
 
-  <!-- Hero -->
-  <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-14 sm:py-20">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-      <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
-        Legal
+  <!-- Header -->
+  <div class="bg-slate-900 text-white">
+    <div class="h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-transparent"></div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-widest mb-5">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+        Lex Research · Legal Documentation
       </div>
-      <h1 class="serif text-4xl sm:text-5xl font-bold mb-4 leading-tight">Privacy Policy</h1>
-      <p class="text-slate-400 text-sm">Last updated: {lastUpdated}</p>
+      <h1 class="serif text-3xl sm:text-5xl font-bold mb-4 leading-tight">Privacy Policy</h1>
+      <p class="text-slate-400 text-sm leading-relaxed max-w-2xl">
+        This Privacy Policy governs the collection, use, and protection of personal information by Lex Research International Law Journal in connection with the operation of <strong class="text-slate-300">lexresearch.org</strong>.
+      </p>
+      <div class="flex flex-wrap gap-6 mt-6 text-xs text-slate-500 font-mono">
+        <span>Effective Date: {effectiveDate}</span>
+        <span>·</span>
+        <span>Last Updated: {lastUpdated}</span>
+        <span>·</span>
+        <span>Version 1.0</span>
+      </div>
     </div>
   </div>
 
-  <!-- Content -->
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
 
-    <!-- Intro -->
-    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6 mb-10 flex gap-4">
-      <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <p class="text-sm text-amber-800 leading-relaxed">
-        Lex Research ("we", "us", "our") is committed to protecting your privacy. This policy explains what data we collect when you use <strong>lexresearch.org</strong>, how we use it, and your rights regarding that data.
+    <!-- Document meta panel -->
+    <div class="bg-stone-50 border border-stone-200 rounded-2xl p-5 sm:p-7 mb-12 grid sm:grid-cols-3 gap-4 text-sm">
+      <div class="border-b sm:border-b-0 sm:border-r border-stone-200 pb-4 sm:pb-0 sm:pr-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-1">Issued By</div>
+        <div class="font-semibold text-slate-800">Lex Research Journal</div>
+        <div class="text-slate-500 text-xs mt-0.5">Founded by Lamia Akhter</div>
+      </div>
+      <div class="border-b sm:border-b-0 sm:border-r border-stone-200 pb-4 sm:pb-0 sm:pr-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-1">Applies To</div>
+        <div class="font-semibold text-slate-800">All site visitors</div>
+        <div class="text-slate-500 text-xs mt-0.5">Registered authors · Contributors</div>
+      </div>
+      <div>
+        <div class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-1">Contact</div>
+        <a href="mailto:info@lexresearch.org" class="font-semibold text-amber-700 hover:text-amber-900 transition-colors">info@lexresearch.org</a>
+        <div class="text-slate-500 text-xs mt-0.5">For all privacy enquiries</div>
+      </div>
+    </div>
+
+    <!-- Preamble -->
+    <div class="border-l-4 border-amber-400 pl-5 sm:pl-6 mb-12">
+      <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
+        Lex Research is committed to safeguarding the privacy of individuals who interact with this journal. This Policy is issued in the spirit of transparency and in accordance with generally accepted data protection principles. By accessing or using <strong>lexresearch.org</strong>, you acknowledge that you have read and understood this Privacy Policy.
       </p>
     </div>
 
-    <div class="space-y-10 text-slate-700">
+    <div class="space-y-12">
 
-      <!-- 1 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">1. Who We Are</h2>
-        <p class="text-sm sm:text-base leading-relaxed">
-          Lex Research is an open-access academic journal publishing peer-reviewed research in international law, human rights, humanitarian law, and comparative legal studies. The journal is founded and operated by <a href="/lamia-akhter" class="text-amber-700 hover:text-amber-900 font-medium">Lamia Akhter</a>. For all privacy-related enquiries, contact us at <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium">info@lexresearch.org</a>.
-        </p>
-      </section>
-
-      <!-- 2 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">2. Data We Collect</h2>
-        <div class="space-y-4 text-sm sm:text-base leading-relaxed">
-          <div>
-            <h3 class="font-semibold text-slate-900 mb-1">2.1 Information you give us</h3>
-            <ul class="list-disc list-inside space-y-1 text-slate-600 ml-2">
-              <li>Name and email address when you create an account or contact us</li>
-              <li>Username and password (stored securely, never in plain text)</li>
-              <li>Article content, abstracts, and biographical information submitted for publication</li>
-              <li>Messages sent to us via the contact form or email</li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="font-semibold text-slate-900 mb-1">2.2 Information collected automatically</h3>
-            <ul class="list-disc list-inside space-y-1 text-slate-600 ml-2">
-              <li>Pages visited, time spent, and referring URLs (via Google Analytics)</li>
-              <li>Device type, browser, and approximate geographic location (country/city level)</li>
-              <li>IP address (anonymised by Google Analytics)</li>
-              <li>Session cookies necessary for account login</li>
-            </ul>
-          </div>
+      <!-- Article I -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article I</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Identity of the Data Controller</h2>
         </div>
-      </section>
+        <div class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">1.1</strong> &nbsp;Lex Research International Law Journal ("the Journal", "we", "us", "our") is the data controller responsible for personal data processed through <strong>lexresearch.org</strong>. The Journal is founded and directed by <a href="/lamia-akhter" class="text-amber-700 hover:text-amber-900 font-medium transition-colors">Lamia Akhter</a>.</p>
+          <p><strong class="text-slate-900">1.2</strong> &nbsp;All privacy-related enquiries, access requests, and data-related correspondence shall be directed to: <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium transition-colors">info@lexresearch.org</a>. We endeavour to respond to all enquiries within thirty (30) calendar days.</p>
+        </div>
+      </article>
 
-      <!-- 3 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">3. How We Use Your Data</h2>
-        <div class="overflow-x-auto rounded-xl border border-stone-200">
-          <table class="w-full text-sm">
-            <thead class="bg-stone-50 border-b border-stone-200">
+      <!-- Article II -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article II</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Personal Data We Collect</h2>
+        </div>
+        <div class="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">2.1 &nbsp;Data Provided Directly.</strong> &nbsp;We collect information that you voluntarily provide to us, including:</p>
+          <ul class="space-y-2 ml-6">
+            {[
+              'Full name and email address provided during account registration or editorial correspondence',
+              'Username and securely hashed credentials for author account access',
+              'Manuscript content, abstracts, author biographies, and institutional affiliations submitted for editorial consideration',
+              'Communications transmitted via the contact form or by direct email',
+            ].map(item => (
+              <li class="flex gap-3 text-slate-600">
+                <span class="text-amber-500 font-bold flex-shrink-0 mt-0.5">§</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p><strong class="text-slate-900">2.2 &nbsp;Data Collected Automatically.</strong> &nbsp;When you visit the Journal's website, certain technical data is collected automatically, including:</p>
+          <ul class="space-y-2 ml-6">
+            {[
+              'Pages visited, session duration, and navigation pathways (via Google Analytics)',
+              'Device type, operating system, and browser information',
+              'Approximate geographic location at country and city level',
+              'IP address, processed and anonymised by Google Analytics in accordance with Google\'s data processing terms',
+              'Session identifiers necessary to maintain authenticated account sessions',
+            ].map(item => (
+              <li class="flex gap-3 text-slate-600">
+                <span class="text-amber-500 font-bold flex-shrink-0 mt-0.5">§</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p><strong class="text-slate-900">2.3 &nbsp;Submitted Content — Third-Party Responsibility.</strong> &nbsp;Where content — including manuscripts, articles, abstracts, commentary, or biographical material — is submitted by authors or contributors, such content is provided by those individuals acting in their personal or professional capacity. <strong class="text-slate-900">The Journal does not independently verify the accuracy, originality, or legal compliance of submitted content prior to receipt.</strong> All responsibility for the content of submissions rests exclusively with the submitting author. The Journal's processing of such content for the purpose of editorial review does not constitute endorsement, verification, or adoption of the material.</p>
+        </div>
+      </article>
+
+      <!-- Article III -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article III</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Purposes and Legal Basis for Processing</h2>
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-stone-200 text-sm sm:text-base">
+          <table class="w-full">
+            <thead class="bg-slate-900 text-white">
               <tr>
-                <th class="text-left px-4 py-3 font-semibold text-slate-800">Purpose</th>
-                <th class="text-left px-4 py-3 font-semibold text-slate-800">Legal Basis</th>
+                <th class="text-left px-5 py-3 font-semibold text-xs uppercase tracking-wider">Purpose of Processing</th>
+                <th class="text-left px-5 py-3 font-semibold text-xs uppercase tracking-wider">Legal Basis</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-stone-100">
-              <tr><td class="px-4 py-3 text-slate-700">Managing your author account</td><td class="px-4 py-3 text-slate-500">Contract / legitimate interest</td></tr>
-              <tr><td class="px-4 py-3 text-slate-700">Publishing submitted articles</td><td class="px-4 py-3 text-slate-500">Contract with the author</td></tr>
-              <tr><td class="px-4 py-3 text-slate-700">Responding to contact enquiries</td><td class="px-4 py-3 text-slate-500">Legitimate interest</td></tr>
-              <tr><td class="px-4 py-3 text-slate-700">Analysing site usage to improve content</td><td class="px-4 py-3 text-slate-500">Legitimate interest (Google Analytics)</td></tr>
-              <tr><td class="px-4 py-3 text-slate-700">Security and fraud prevention</td><td class="px-4 py-3 text-slate-500">Legitimate interest</td></tr>
+            <tbody class="divide-y divide-stone-100 text-slate-700">
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Administration of author accounts and editorial workflow</td><td class="px-5 py-3.5 text-slate-500">Performance of contract</td></tr>
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Publication of peer-reviewed scholarship on the Journal's platform</td><td class="px-5 py-3.5 text-slate-500">Performance of contract with the author</td></tr>
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Responding to editorial and general correspondence</td><td class="px-5 py-3.5 text-slate-500">Legitimate interest of the Journal</td></tr>
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Analysis of site usage to improve the quality of the Journal</td><td class="px-5 py-3.5 text-slate-500">Legitimate interest (via Google Analytics)</td></tr>
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Maintenance of website security and integrity</td><td class="px-5 py-3.5 text-slate-500">Legitimate interest of the Journal</td></tr>
+              <tr class="hover:bg-stone-50 transition-colors"><td class="px-5 py-3.5">Compliance with applicable legal obligations</td><td class="px-5 py-3.5 text-slate-500">Legal obligation</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="text-sm text-slate-500 mt-3">We do <strong class="text-slate-700">not</strong> sell, rent, or trade your personal data to any third party.</p>
-      </section>
+        <p class="text-sm text-slate-500 mt-3 pl-1">The Journal does not sell, rent, transfer, or otherwise disclose personal data to third parties for commercial purposes.</p>
+      </article>
 
-      <!-- 4 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">4. Cookies</h2>
-        <div class="space-y-3 text-sm sm:text-base leading-relaxed">
-          <p>We use the following cookies:</p>
-          <div class="space-y-2">
-            <div class="bg-stone-50 border border-stone-200 rounded-xl p-4">
-              <div class="font-semibold text-slate-800 text-sm mb-1">Session cookie</div>
-              <p class="text-slate-500 text-sm">Required to keep you logged in to your author account. Deleted when you sign out or close your browser.</p>
+      <!-- Article IV -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article IV</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Cookies and Tracking Technologies</h2>
+        </div>
+        <div class="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">4.1</strong> &nbsp;The Journal employs the following categories of cookies:</p>
+          <div class="grid sm:grid-cols-2 gap-3 mt-2">
+            <div class="border border-stone-200 rounded-xl p-4 bg-stone-50">
+              <div class="font-semibold text-slate-800 text-sm mb-1">Strictly Necessary Cookies</div>
+              <p class="text-slate-500 text-sm leading-relaxed">Session cookies required to maintain authenticated access for registered authors. These cookies are automatically deleted upon sign-out or browser closure and are essential to the provision of account services.</p>
             </div>
-            <div class="bg-stone-50 border border-stone-200 rounded-xl p-4">
-              <div class="font-semibold text-slate-800 text-sm mb-1">Google Analytics cookies (_ga, _gid, _gat)</div>
-              <p class="text-slate-500 text-sm">Used to measure how visitors interact with the site. Data is aggregated and anonymised. You can opt out via <a href="https://tools.google.com/dlpage/gaoptout" class="text-amber-700 hover:text-amber-900">Google's opt-out tool</a>.</p>
+            <div class="border border-stone-200 rounded-xl p-4 bg-stone-50">
+              <div class="font-semibold text-slate-800 text-sm mb-1">Analytics Cookies (Google Analytics)</div>
+              <p class="text-slate-500 text-sm leading-relaxed">Cookies bearing identifiers <code class="text-xs bg-stone-200 px-1 py-0.5 rounded">_ga</code>, <code class="text-xs bg-stone-200 px-1 py-0.5 rounded">_gid</code>, and <code class="text-xs bg-stone-200 px-1 py-0.5 rounded">_gat</code> are used to collect aggregated, anonymised data regarding visitor behaviour. Visitors may opt out via <a href="https://tools.google.com/dlpage/gaoptout" class="text-amber-700 hover:text-amber-900">Google's browser opt-out add-on</a>.</p>
             </div>
           </div>
-          <p class="text-slate-500 text-sm">We do not use advertising cookies or sell cookie data.</p>
+          <p><strong class="text-slate-900">4.2</strong> &nbsp;The Journal does not deploy advertising cookies, behavioural tracking cookies, or any cookies associated with the sale or transfer of personal data to third parties.</p>
         </div>
-      </section>
+      </article>
 
-      <!-- 5 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">5. Third-Party Services</h2>
-        <ul class="space-y-2 text-sm sm:text-base leading-relaxed text-slate-600">
-          <li class="flex gap-2"><span class="text-amber-500 font-bold flex-shrink-0">—</span><span><strong class="text-slate-800">Google Analytics (Google LLC)</strong> — website usage analytics. Data may be processed in the USA under Google's standard contractual clauses.</span></li>
-          <li class="flex gap-2"><span class="text-amber-500 font-bold flex-shrink-0">—</span><span><strong class="text-slate-800">Cloudflare</strong> — hosting, DNS, and security. Cloudflare processes request data to protect the site from attacks.</span></li>
-          <li class="flex gap-2"><span class="text-amber-500 font-bold flex-shrink-0">—</span><span><strong class="text-slate-800">Google Fonts</strong> — typography. Your browser may send a request to Google's servers when loading fonts.</span></li>
-        </ul>
-      </section>
-
-      <!-- 6 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">6. Data Retention</h2>
-        <ul class="space-y-1 text-sm sm:text-base leading-relaxed text-slate-600 list-disc list-inside ml-2">
-          <li>Account data is retained for as long as your account is active</li>
-          <li>Published articles remain on the site indefinitely as part of the academic record</li>
-          <li>Contact messages are retained for up to 2 years</li>
-          <li>Google Analytics data is retained for 26 months (Google's default)</li>
-        </ul>
-      </section>
-
-      <!-- 7 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">7. Your Rights</h2>
-        <p class="text-sm sm:text-base leading-relaxed mb-3">Depending on your jurisdiction, you may have the right to:</p>
-        <div class="grid sm:grid-cols-2 gap-3">
-          {[
-            ['Access', 'Request a copy of the personal data we hold about you'],
-            ['Correction', 'Ask us to correct inaccurate data'],
-            ['Deletion', 'Request deletion of your account and personal data'],
-            ['Portability', 'Receive your data in a portable format'],
-            ['Objection', 'Object to processing based on legitimate interest'],
-            ['Withdrawal', 'Withdraw consent at any time where processing is consent-based'],
-          ].map(([title, desc]) => (
-            <div class="bg-stone-50 border border-stone-200 rounded-xl p-4">
-              <div class="font-semibold text-slate-800 text-sm mb-0.5">{title}</div>
-              <p class="text-slate-500 text-sm">{desc}</p>
-            </div>
-          ))}
+      <!-- Article V -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article V</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Third-Party Processors and Service Providers</h2>
         </div>
-        <p class="text-sm text-slate-500 mt-4">To exercise any of these rights, email us at <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium">info@lexresearch.org</a>. We will respond within 30 days.</p>
-      </section>
+        <div class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">5.1</strong> &nbsp;The Journal engages the following third-party service providers in connection with the operation of its digital platform. Each provider processes data only to the extent necessary for the specified purpose:</p>
+          <div class="space-y-3 mt-2">
+            {[
+              ['Google LLC (Google Analytics)', 'Website usage analytics and visitor behaviour measurement. Data processed in accordance with Google\'s Data Processing Terms. Standard contractual clauses apply where data is transferred outside the EEA.'],
+              ['Cloudflare, Inc.', 'Content delivery, DNS management, and platform security. Network request data is processed by Cloudflare to ensure availability and protection of the site.'],
+              ['Google LLC (Google Fonts)', 'Web typography services. Font resources may be requested from Google\'s servers, which may result in the processing of your IP address by Google.'],
+            ].map(([name, desc]) => (
+              <div class="flex gap-4 p-4 border border-stone-200 rounded-xl bg-stone-50">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0 mt-2"></span>
+                <div>
+                  <div class="font-semibold text-slate-800 text-sm mb-0.5">{name}</div>
+                  <p class="text-slate-500 text-sm leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p><strong class="text-slate-900">5.2</strong> &nbsp;The Journal does not share personal data with any third party for marketing, advertising, or commercial purposes.</p>
+        </div>
+      </article>
 
-      <!-- 8 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">8. Children's Privacy</h2>
-        <p class="text-sm sm:text-base leading-relaxed">
-          Lex Research is an academic journal intended for adults. We do not knowingly collect data from anyone under the age of 16. If you believe a minor has submitted personal data to us, please contact us and we will delete it promptly.
-        </p>
-      </section>
+      <!-- Article VI -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article VI</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Retention of Personal Data</h2>
+        </div>
+        <div class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">6.1</strong> &nbsp;Personal data is retained only for as long as is necessary to fulfil the purposes for which it was collected, or as required by applicable law. The following indicative retention periods apply:</p>
+          <div class="grid sm:grid-cols-2 gap-3 mt-1">
+            {[
+              ['Author account data', 'Duration of account activity; deleted upon verified account closure request'],
+              ['Published scholarly articles', 'Retained indefinitely as part of the permanent academic record'],
+              ['Editorial correspondence', 'Up to three (3) years from the date of last communication'],
+              ['Google Analytics data', '26 months, in accordance with Google\'s standard retention settings'],
+            ].map(([label, period]) => (
+              <div class="border border-stone-200 rounded-xl p-4">
+                <div class="font-semibold text-slate-800 text-sm mb-1">{label}</div>
+                <p class="text-slate-500 text-sm">{period}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
 
-      <!-- 9 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">9. Changes to This Policy</h2>
-        <p class="text-sm sm:text-base leading-relaxed">
-          We may update this policy from time to time. The "last updated" date at the top of this page will reflect any changes. Continued use of the site after changes constitutes acceptance of the updated policy.
-        </p>
-      </section>
+      <!-- Article VII -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article VII</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Rights of Data Subjects</h2>
+        </div>
+        <div class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">7.1</strong> &nbsp;Subject to applicable data protection law, individuals whose personal data is processed by the Journal may exercise the following rights:</p>
+          <div class="grid sm:grid-cols-2 gap-3 mt-1">
+            {[
+              ['Right of Access', 'To obtain confirmation of whether personal data is processed and, if so, to receive a copy of such data'],
+              ['Right to Rectification', 'To request correction of inaccurate or incomplete personal data held by the Journal'],
+              ['Right to Erasure', 'To request deletion of personal data where processing is no longer justified'],
+              ['Right to Data Portability', 'To receive personal data in a structured, commonly used, machine-readable format'],
+              ['Right to Object', 'To object to processing carried out on the basis of legitimate interests'],
+              ['Right to Withdraw Consent', 'To withdraw consent at any time where processing is based upon consent, without affecting prior processing'],
+            ].map(([title, desc]) => (
+              <div class="bg-stone-50 border border-stone-200 rounded-xl p-4">
+                <div class="font-semibold text-slate-800 text-sm mb-1">{title}</div>
+                <p class="text-stone-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <p class="mt-1"><strong class="text-slate-900">7.2</strong> &nbsp;Requests to exercise any of the above rights should be submitted to <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium transition-colors">info@lexresearch.org</a>. The Journal will respond within thirty (30) calendar days. Where a request cannot be fulfilled in full, the Journal will provide written reasons.</p>
+        </div>
+      </article>
 
-      <!-- 10 -->
-      <section>
-        <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-stone-200">10. Contact</h2>
-        <p class="text-sm sm:text-base leading-relaxed">
-          For any privacy-related questions or requests, please contact:<br/>
-          <a href="mailto:info@lexresearch.org" class="text-amber-700 hover:text-amber-900 font-medium">info@lexresearch.org</a><br/>
-          Lex Research Journal — <a href="/about" class="text-amber-700 hover:text-amber-900">lexresearch.org/about</a>
-        </p>
-      </section>
+      <!-- Article VIII -->
+      <article>
+        <div class="flex items-baseline gap-4 mb-4 pb-3 border-b-2 border-slate-900">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-600 flex-shrink-0">Article VIII</span>
+          <h2 class="serif text-xl sm:text-2xl font-bold text-slate-900">Amendments to This Policy</h2>
+        </div>
+        <div class="space-y-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <p><strong class="text-slate-900">8.1</strong> &nbsp;The Journal reserves the right to amend this Privacy Policy at any time. Amendments will be reflected by an updated version date at the head of this document. Continued use of the Journal's platform following the publication of any amendment constitutes acceptance of the revised Policy.</p>
+          <p><strong class="text-slate-900">8.2</strong> &nbsp;Where amendments are material in nature, the Journal will endeavour to provide reasonable notice to registered users.</p>
+        </div>
+      </article>
 
     </div>
 
-    <!-- Footer nav -->
-    <div class="mt-14 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-3 items-center justify-between">
-      <p class="text-xs text-stone-400">© 2026 Lex Research Journal. All rights reserved.</p>
-      <a href="/terms-and-conditions" class="text-sm font-medium text-amber-700 hover:text-amber-900 transition-colors">
-        Terms &amp; Conditions →
-      </a>
+    <!-- Footer panel -->
+    <div class="mt-14 bg-slate-900 text-white rounded-2xl p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
+        <div>
+          <div class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">Lex Research International Law Journal</div>
+          <p class="text-slate-400 text-sm">For all privacy-related enquiries: <a href="mailto:info@lexresearch.org" class="text-amber-400 hover:text-amber-300 transition-colors font-medium">info@lexresearch.org</a></p>
+          <p class="text-slate-600 text-xs mt-2">© 2026 Lex Research Journal · All rights reserved</p>
+        </div>
+        <a href="/terms-and-conditions" class="flex-shrink-0 inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm px-5 py-2.5 rounded-xl transition-colors">
+          Terms &amp; Conditions
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
 
   </div>
