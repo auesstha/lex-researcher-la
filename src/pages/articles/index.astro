@@ -18,6 +18,28 @@ const authorAvatarMap: Record<string, string> = Object.fromEntries(
 );
 authorAvatarMap['Lamia Akhter'] = authorAvatarMap['Lamia Akhter'] || '/lamia-akhter.jpg';
 
+// ── Pagination ────────────────────────────────────────────────────────────────
+const PER_PAGE = 10;
+const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+const rawPage = parseInt(Astro.url.searchParams.get('page') ?? '1', 10);
+const currentPage = Math.min(Math.max(rawPage, 1), totalPages);
+const articles = all.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
+function pageUrl(p: number) {
+  return p === 1 ? '/articles' : `/articles?page=${p}`;
+}
+// Show at most 5 page numbers centered around currentPage
+function pageWindow(current: number, total: number): (number | null)[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | null)[] = [];
+  pages.push(1);
+  if (current > 3) pages.push(null); // ellipsis
+  for (let p = Math.max(2, current - 1); p <= Math.min(total - 1, current + 1); p++) pages.push(p);
+  if (current < total - 2) pages.push(null); // ellipsis
+  pages.push(total);
+  return pages;
+}
+
 function initials(name: string) {
   return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 }
@@ -53,6 +75,7 @@ const BADGE: Record<string, string> = {
     <h1 class="font-serif text-4xl sm:text-5xl font-bold mb-3 leading-tight">All Articles</h1>
     <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
       {all.length} peer-reviewed article{all.length !== 1 ? 's' : ''} on international &amp; comparative law.
+      {totalPages > 1 && <span class="text-slate-500"> · Page {currentPage} of {totalPages}</span>}
     </p>
   </div>
 </section>
@@ -64,7 +87,7 @@ const BADGE: Record<string, string> = {
       <p class="text-center py-24 text-stone-400 font-serif text-xl">No articles published yet.</p>
     ) : (
       <div class="space-y-4">
-        {all.map((article, i) => {
+        {articles.map((article, i) => {
           const cat = CATEGORIES[article.category];
           const color = cat?.color ?? 'stone';
           const bar = BAR[color] ?? BAR.stone;
@@ -130,6 +153,52 @@ const BADGE: Record<string, string> = {
         })}
       </div>
     )}
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <nav aria-label="Article pagination" class="mt-10 flex items-center justify-between gap-4">
+
+        <!-- Prev -->
+        {currentPage > 1
+          ? <a href={pageUrl(currentPage - 1)} class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 hover:border-amber-400 hover:text-amber-700 transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              Previous
+            </a>
+          : <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              Previous
+            </span>
+        }
+
+        <!-- Page numbers -->
+        <div class="hidden sm:flex items-center gap-1">
+          {pageWindow(currentPage, totalPages).map(p =>
+            p === null
+              ? <span class="px-2 text-stone-300 text-sm select-none">…</span>
+              : p === currentPage
+                ? <span class="w-9 h-9 flex items-center justify-center rounded-xl bg-amber-500 text-slate-900 text-sm font-bold">{p}</span>
+                : <a href={pageUrl(p)} class="w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 bg-white text-sm font-medium text-slate-600 hover:border-amber-400 hover:text-amber-700 transition-all">{p}</a>
+          )}
+        </div>
+
+        <!-- Mobile: page indicator -->
+        <span class="sm:hidden text-xs text-stone-400 font-medium">{currentPage} / {totalPages}</span>
+
+        <!-- Next -->
+        {currentPage < totalPages
+          ? <a href={pageUrl(currentPage + 1)} class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 hover:border-amber-400 hover:text-amber-700 transition-all">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          : <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+        }
+
+      </nav>
+    )}
+
   </div>
 </div>
 
