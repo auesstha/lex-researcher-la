@@ -411,32 +411,38 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
      PRINCIPLE TICKER — top of page
 ════════════════════════════════════════ -->
 <div class="bg-slate-900 border-b border-slate-800">
-  <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-2">
-    <span class="text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
-    <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0"></span>
-    <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0 hidden sm:inline">Principle</span>
-    <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0 hidden sm:inline"></span>
-    <span id="tw-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic"></span><span id="tw-cursor" class="text-amber-400 text-xs font-mono" style="animation: blink 1s step-end infinite;">|</span>
+  <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-2 overflow-hidden">
+    <!-- Static label: hidden on mobile, shown on sm+ -->
+    <span class="hidden sm:inline text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
+    <span class="hidden sm:inline w-px h-3 bg-slate-700 flex-shrink-0"></span>
+    <span class="hidden sm:inline text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
+    <span class="hidden sm:inline w-px h-3 bg-slate-700 flex-shrink-0"></span>
+    <!-- Mobile-only short prefix -->
+    <span class="sm:hidden text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">LR —</span>
+    <!-- Typewriter: takes remaining width, clips overflow -->
+    <span class="min-w-0 flex-1 overflow-hidden flex items-center gap-0">
+      <span id="tw-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span id="tw-cursor" class="text-amber-400 text-xs font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
+    </span>
   </div>
 </div>
 
 <script>
   const phrases = [
-    "Peer-reviewed analysis of international law.",
-    "Human rights scholarship and comparative legal systems.",
-    "Open-access scholarship on treaty law.",
+    "Peer-reviewed international law analysis.",
+    "Human rights scholarship.",
+    "Open-access treaty law research.",
     "State responsibility under international law.",
-    "The jurisprudence of the ICJ.",
-    "Rigorous legal research on humanitarian law.",
-    "Refugee law and international criminal justice.",
-    "Comparative constitutional analysis spanning common law.",
+    "ICJ jurisprudence and world courts.",
+    "Humanitarian law and IHL research.",
+    "Refugee law and criminal justice.",
+    "Comparative constitutional law.",
     "Civil law and mixed legal systems.",
-    "Expert commentary on transboundary water law.",
-    "Environmental treaties and the UN Watercourses Convention.",
-    "Authoritative research on international arbitration.",
+    "Transboundary water law commentary.",
+    "Environmental treaties and UN conventions.",
+    "International arbitration research.",
     "Dispute resolution and trade law.",
-    "Human rights law and IHRL mechanisms.",
-    "Accountability frameworks in international law.",
+    "IHRL mechanisms and human rights law.",
+    "Accountability in international law.",
     "International investment law and ICSID arbitration.",
     "Space law, cyber law, and emerging fields of international regulation.",
     "In-depth research on world law and sovereignty.",
