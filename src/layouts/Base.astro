@@ -45,6 +45,52 @@ const groups = Object.entries(CATEGORY_GROUPS).map(([groupKey, group]) => ({
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <slot name="head" />
+  <!-- JSON-LD: Organization + WebSite (all pages) -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.lexresearch.org/#organization",
+        "name": "Lex Research",
+        "url": "https://www.lexresearch.org",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.lexresearch.org/lex-research-logo.png",
+          "width": 512,
+          "height": 512
+        },
+        "description": "Open-access peer-reviewed scholarship in international law, world law, and comparative legal studies.",
+        "foundingDate": "2026",
+        "founder": {
+          "@type": "Person",
+          "name": "Lamia Akhter",
+          "url": "https://www.lexresearch.org/lamia-akhter"
+        },
+        "sameAs": [
+          "https://www.facebook.com/lamia.a.sumaiya",
+          "https://www.instagram.com/lamia.akhterr/",
+          "https://www.linkedin.com/in/lamia-akhterr"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.lexresearch.org/#website",
+        "url": "https://www.lexresearch.org",
+        "name": "Lex Research",
+        "description": "The World Through a Legal Lens — open-access international legal scholarship",
+        "publisher": { "@id": "https://www.lexresearch.org/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.lexresearch.org/articles?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  })} />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q73PD1X6S5"></script>
   <script is:inline>

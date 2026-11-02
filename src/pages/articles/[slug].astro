@@ -311,7 +311,7 @@ const jsonLd = {
     '@type': 'Person',
     name: article.author,
     jobTitle: article.authorTitle,
-    url: `${siteURL}lamia-akhter`,
+    ...(authorProfileUrl ? { url: `${siteURL.replace(/\/$/, '')}${authorProfileUrl}` } : {}),
   },
   publisher: {
     '@type': 'Organization',
