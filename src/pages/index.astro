@@ -70,13 +70,8 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   }
   .animate-scales { animation: scales-sway 5s ease-in-out infinite; transform-origin: 50% 10px; }
 
-  /* ── 3D card tilt (mouse follow via JS) ── */
-  .tilt-card {
-    transform-style: preserve-3d;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    will-change: transform;
-  }
-  .tilt-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+  /* card hover — subtle lift only */
+  .tilt-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
 
   /* ── Counter number pop ── */
   @keyframes num-pop {
@@ -1037,18 +1032,6 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   );
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  /* ── 3D card tilt on mouse move ── */
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width  - 0.5;
-      const y = (e.clientY - rect.top)  / rect.height - 0.5;
-      card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) scale(1.02)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
 
   /* ── Section heading underline reveal ── */
   const hObs = new IntersectionObserver((entries) => {
