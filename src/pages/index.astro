@@ -227,7 +227,6 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
-  .typewriter-cursor { display: inline-block; width: 2px; height: 0.85em; background: currentColor; vertical-align: middle; margin-left: 1px; animation: blink 0.9s step-end infinite; }
 
   /* ── Stats card shimmer ── */
   @keyframes shimmer {
@@ -417,7 +416,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
     <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0"></span>
     <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0 hidden sm:inline">Principle</span>
     <span class="w-px h-3 bg-slate-700 inline-block flex-shrink-0 hidden sm:inline"></span>
-    <span id="typewriter-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic"></span><span class="typewriter-cursor text-amber-400/60"></span>
+    <span class="text-amber-300/70 text-xs font-mono tracking-wide italic">Free, peer-reviewed analysis of international law, human rights, and comparative legal systems.</span>
   </div>
 </div>
 
@@ -1061,31 +1060,6 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-counter]').forEach(el => countObs.observe(el));
 
-  /* ── Typewriter — cycling legal principles ── */
-  const phrases = [
-    'International humanitarian law explained',
-    'Open-access law journal',
-    'Comparative legal research',
-  ];
-
-  const el = document.getElementById('typewriter-text');
-  if (el) {
-    let pi = 0, ci = 0, deleting = false;
-    const SPEED_TYPE = 55, SPEED_DEL = 28, PAUSE = 2200;
-
-    function tick() {
-      const phrase = phrases[pi];
-      if (!deleting) {
-        el.textContent = phrase.slice(0, ++ci);
-        if (ci === phrase.length) { deleting = true; setTimeout(tick, PAUSE); return; }
-      } else {
-        el.textContent = phrase.slice(0, --ci);
-        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
-      }
-      setTimeout(tick, deleting ? SPEED_DEL : SPEED_TYPE);
-    }
-    setTimeout(tick, 800);
-  }
 </script>
 
 </Base>
