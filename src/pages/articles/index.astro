@@ -160,11 +160,11 @@ const BADGE: Record<string, string> = {
 
         <!-- Prev -->
         {currentPage > 1
-          ? <a href={pageUrl(currentPage - 1)} class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 hover:border-amber-400 hover:text-amber-700 transition-all">
+          ? <a href={pageUrl(currentPage - 1)} class="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 active:border-amber-400 active:text-amber-700 min-h-[48px] transition-all">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
               Previous
             </a>
-          : <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed">
+          : <span class="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed min-h-[48px]">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
               Previous
             </span>
@@ -176,21 +176,24 @@ const BADGE: Record<string, string> = {
             p === null
               ? <span class="px-2 text-stone-300 text-sm select-none">…</span>
               : p === currentPage
-                ? <span class="w-9 h-9 flex items-center justify-center rounded-xl bg-amber-500 text-slate-900 text-sm font-bold">{p}</span>
-                : <a href={pageUrl(p)} class="w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 bg-white text-sm font-medium text-slate-600 hover:border-amber-400 hover:text-amber-700 transition-all">{p}</a>
+                ? <span class="w-11 h-11 flex items-center justify-center rounded-xl bg-amber-500 text-slate-900 text-sm font-bold">{p}</span>
+                : <a href={pageUrl(p)} class="w-11 h-11 flex items-center justify-center rounded-xl border border-stone-200 bg-white text-sm font-medium text-slate-600 hover:border-amber-400 hover:text-amber-700 transition-all">{p}</a>
           )}
         </div>
 
-        <!-- Mobile: page indicator -->
-        <span class="sm:hidden text-xs text-stone-400 font-medium">{currentPage} / {totalPages}</span>
+        <!-- Mobile: page indicator with current/total -->
+        <div class="sm:hidden flex flex-col items-center gap-0.5">
+          <span class="text-sm font-bold text-slate-700">{currentPage} / {totalPages}</span>
+          <span class="text-[10px] text-stone-400 uppercase tracking-wide">Page</span>
+        </div>
 
         <!-- Next -->
         {currentPage < totalPages
-          ? <a href={pageUrl(currentPage + 1)} class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 hover:border-amber-400 hover:text-amber-700 transition-all">
+          ? <a href={pageUrl(currentPage + 1)} class="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-slate-700 active:border-amber-400 active:text-amber-700 min-h-[48px] transition-all">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
-          : <span class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed">
+          : <span class="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-stone-100 bg-stone-50 text-sm font-semibold text-stone-300 cursor-not-allowed min-h-[48px]">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </span>
