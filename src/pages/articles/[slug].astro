@@ -641,13 +641,37 @@ const jsonLd = {
   <!-- Article container -->
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-    <!-- Desktop breadcrumb (also helps Google understand site structure) -->
-    <nav class="hidden sm:flex items-center gap-2 text-sm text-stone-400 mb-8 flex-wrap" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-stone-700 transition-colors">Home</a>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      <a href={`/category/${article.category}`} class="hover:text-stone-700 transition-colors">{cat?.label}</a>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-      <span class="text-stone-600 truncate max-w-xs">{article.title}</span>
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="Breadcrumb" class="mb-6 sm:mb-8">
+      <ol class="flex items-center flex-wrap gap-1 text-xs sm:text-sm">
+        <!-- Home -->
+        <li class="flex items-center gap-1">
+          <a href="/" class="inline-flex items-center gap-1 text-stone-400 hover:text-slate-900 transition-colors font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span class="hidden sm:inline">Home</span>
+          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-stone-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </li>
+        <!-- Articles -->
+        <li class="flex items-center gap-1">
+          <a href="/articles" class="text-stone-400 hover:text-slate-900 transition-colors font-medium">Articles</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-stone-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </li>
+        <!-- Category -->
+        <li class="flex items-center gap-1">
+          <a href={`/category/${article.category}`} class={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full transition-opacity hover:opacity-80 ${badge}`}>
+            <span>{cat?.icon}</span>
+            <span>{cat?.shortLabel}</span>
+          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-stone-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </li>
+        <!-- Current article -->
+        <li>
+          <span class="text-slate-700 font-medium truncate max-w-[160px] sm:max-w-xs inline-block align-bottom" title={article.title}>{article.title}</span>
+        </li>
+      </ol>
     </nav>
 
     <!-- BreadcrumbList JSON-LD for rich results -->
