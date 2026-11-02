@@ -411,17 +411,21 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
      PRINCIPLE TICKER — top of page
 ════════════════════════════════════════ -->
 <div class="bg-slate-900 border-b border-slate-800">
-  <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center gap-2 overflow-hidden">
-    <!-- Static label: hidden on mobile, shown on sm+ -->
-    <span class="hidden sm:inline text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
-    <span class="hidden sm:inline w-px h-3 bg-slate-700 flex-shrink-0"></span>
-    <span class="hidden sm:inline text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
-    <span class="hidden sm:inline w-px h-3 bg-slate-700 flex-shrink-0"></span>
-    <!-- Mobile-only short prefix -->
-    <span class="sm:hidden text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">LR —</span>
-    <!-- Typewriter: takes remaining width, clips overflow -->
+  <!-- Mobile: two-line layout -->
+  <div class="sm:hidden max-w-5xl mx-auto px-4 py-2 flex flex-col gap-0.5 overflow-hidden">
+    <span class="text-slate-300 text-[11px] font-mono tracking-wider uppercase leading-tight">Lex Research — International Law Journal</span>
+    <span class="flex items-center gap-0 overflow-hidden">
+      <span id="tw-text" class="text-amber-300/70 text-[11px] font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span id="tw-cursor" class="text-amber-400 text-[11px] font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
+    </span>
+  </div>
+  <!-- Desktop: single-line layout -->
+  <div class="hidden sm:flex max-w-5xl mx-auto px-4 py-2.5 items-center gap-2 overflow-hidden">
+    <span class="text-slate-300 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Lex Research — International Law Journal</span>
+    <span class="w-px h-3 bg-slate-700 flex-shrink-0"></span>
+    <span class="text-slate-500 text-[11px] font-mono tracking-wider uppercase flex-shrink-0">Principle</span>
+    <span class="w-px h-3 bg-slate-700 flex-shrink-0"></span>
     <span class="min-w-0 flex-1 overflow-hidden flex items-center gap-0">
-      <span id="tw-text" class="text-amber-300/70 text-xs font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span id="tw-cursor" class="text-amber-400 text-xs font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
+      <span id="tw-text-desktop" class="text-amber-300/70 text-xs font-mono tracking-wide italic whitespace-nowrap overflow-hidden"></span><span class="text-amber-400 text-xs font-mono flex-shrink-0" style="animation: blink 1s step-end infinite;">|</span>
     </span>
   </div>
 </div>
@@ -450,13 +454,15 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
   ];
 
   const el = document.getElementById('tw-text')!;
+  const elD = document.getElementById('tw-text-desktop');
+  function setAll(text: string) { el.textContent = text; if (elD) elD.textContent = text; }
   let phraseIdx = 0, charIdx = 0, deleting = false;
 
   function tick() {
     const phrase = phrases[phraseIdx];
     if (!deleting) {
       charIdx++;
-      el.textContent = phrase.slice(0, charIdx);
+      setAll(phrase.slice(0, charIdx));
       if (charIdx === phrase.length) {
         deleting = true;
         setTimeout(tick, 2800);
@@ -465,7 +471,7 @@ const allCategoryEntries = Object.entries(CATEGORIES) as [string, typeof CATEGOR
       setTimeout(tick, 38);
     } else {
       charIdx--;
-      el.textContent = phrase.slice(0, charIdx);
+      setAll(phrase.slice(0, charIdx));
       if (charIdx === 0) {
         deleting = false;
         phraseIdx = (phraseIdx + 1) % phrases.length;
