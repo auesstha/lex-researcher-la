@@ -272,6 +272,17 @@ const relatedCatSlugs = (RELATED_CATS[article.category] ?? []).slice(0, 4);
 const canonicalURL = new URL(`/articles/${article.slug}`, Astro.site ?? Astro.url).href;
 const siteURL      = new URL('/', Astro.site ?? Astro.url).href;
 
+// Build a ≤155-char meta description from the first complete sentence of the excerpt.
+// Falls back to a word-boundary truncation if the first sentence is too long.
+function buildMetaDesc(excerpt: string): string {
+  const clean = excerpt.replace(/\*\*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim();
+  if (clean.length <= 155) return clean;
+  const firstSentenceEnd = clean.search(/(?<=[.!?])\s/);
+  if (firstSentenceEnd > 0 && firstSentenceEnd <= 155) return clean.slice(0, firstSentenceEnd).trim();
+  return clean.slice(0, 152).replace(/\s+\S*$/, '') + '…';
+}
+const metaDesc = buildMetaDesc(article.excerpt);
+
 const heroImage = ARTICLE_IMAGES[article.slug]?.['__hero__'];
 const firstSectionImage = Object.values(ARTICLE_IMAGES[article.slug] ?? {})[0];
 const ogImage = heroImage?.src ?? firstSectionImage?.src ?? null;
@@ -606,7 +617,7 @@ const tocItems = blocks
 }
 </style>
 
-<Base title={seoTitle} description={article.excerpt} keywords={article.tags?.join(', ')}>
+<Base title={seoTitle} description={metaDesc} keywords={article.tags?.join(', ')}>
 
   <!-- Reading progress bar -->
   <div id="read-progress"></div>
@@ -638,7 +649,7 @@ const tocItems = blocks
     <link rel="canonical" href={canonicalURL} />
     <meta property="og:type"        content="article" />
     <meta property="og:title"       content={`${seoTitle} — Lex Research`} />
-    <meta property="og:description" content={article.excerpt} />
+    <meta property="og:description" content={metaDesc} />
     <meta property="og:url"         content={canonicalURL} />
     <meta property="og:site_name"   content="Lex Research" />
     <meta property="article:published_time" content={isoDate(article.publishedAt)} />
@@ -650,7 +661,7 @@ const tocItems = blocks
     {ogImage && <meta property="og:image:height" content="675" />}
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content={seoTitle} />
-    <meta name="twitter:description" content={article.excerpt} />
+    <meta name="twitter:description" content={metaDesc} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

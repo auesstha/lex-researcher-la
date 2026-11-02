@@ -7,11 +7,17 @@ interface Props {
   description?: string;
   keywords?: string;
 }
-const { title, description: rawDescription = 'Lex Research — The World Through a Legal Lens. Open-access scholarship in international law, world law, and river law.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Research' } = Astro.props;
-// Google displays ~155 chars; truncate at word boundary to prevent truncated snippets
-const description = rawDescription.length <= 155
-  ? rawDescription
-  : rawDescription.slice(0, 152).replace(/\s+\S*$/, '') + '…';
+const { title, description: rawDescription = 'Lex Research publishes free, peer-reviewed articles on international law, human rights, IHL, arbitration, and comparative legal systems. Open access, fully cited.', keywords = 'international law, legal research, world law, comparative law, open access, Lex Research' } = Astro.props;
+// Google displays ~155 chars; trim to last complete sentence that fits, else word-boundary truncate
+function trimDesc(s: string): string {
+  if (s.length <= 155) return s;
+  // try to end on a sentence boundary within 155 chars
+  const cut = s.slice(0, 155);
+  const lastSentence = cut.search(/[.!?][^.!?]*$/);
+  if (lastSentence > 80) return s.slice(0, lastSentence + 1).trim();
+  return cut.replace(/\s+\S*$/, '') + '…';
+}
+const description = trimDesc(rawDescription);
 const path = Astro.url.pathname;
 
 // Group categories for mobile drawer
