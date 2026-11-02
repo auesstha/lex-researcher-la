@@ -1232,14 +1232,14 @@ const tocItems = blocks
     </section>
   )}
 
-<script>
+<script define:vars={{ readTime: article.readTime }}>
   /* ── Reading progress bar + floating pill ── */
   const bar     = document.getElementById('read-progress');
   const pill    = document.getElementById('read-pill');
   const ring    = document.getElementById('read-pill-ring');
   const pillLbl = document.getElementById('read-pill-label');
   const CIRCUMFERENCE = 69.1;
-  const READ_MINS = {article.readTime};
+  const READ_MINS = readTime;
 
   if (bar && pill && ring && pillLbl) {
     let pillShown = false;
