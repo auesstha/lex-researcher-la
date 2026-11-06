@@ -6,12 +6,15 @@ export const GET: APIRoute = async ({ locals }) => {
   const base = 'https://www.lexresearch.org';
 
   const staticPages = [
-    { loc: `${base}/`,            priority: '1.0', changefreq: 'daily' },
-    { loc: `${base}/articles/`,   priority: '0.9', changefreq: 'daily' },
-    { loc: `${base}/categories`,  priority: '0.8', changefreq: 'weekly' },
-    { loc: `${base}/about`,       priority: '0.6', changefreq: 'monthly' },
-    { loc: `${base}/contact`,     priority: '0.5', changefreq: 'monthly' },
-    { loc: `${base}/lamia-akhter`,priority: '0.7', changefreq: 'monthly' },
+    { loc: `${base}/`,                    priority: '1.0', changefreq: 'daily' },
+    { loc: `${base}/articles/`,           priority: '0.9', changefreq: 'daily' },
+    { loc: `${base}/categories`,          priority: '0.8', changefreq: 'weekly' },
+    { loc: `${base}/about`,               priority: '0.6', changefreq: 'monthly' },
+    { loc: `${base}/aims-and-scope`,      priority: '0.6', changefreq: 'monthly' },
+    { loc: `${base}/contact`,             priority: '0.5', changefreq: 'monthly' },
+    { loc: `${base}/lamia-akhter`,        priority: '0.7', changefreq: 'monthly' },
+    { loc: `${base}/privacy-policy`,      priority: '0.3', changefreq: 'yearly' },
+    { loc: `${base}/terms-and-conditions`,priority: '0.3', changefreq: 'yearly' },
   ];
 
   const categoryPages = Object.keys(CATEGORIES).map(slug => ({
