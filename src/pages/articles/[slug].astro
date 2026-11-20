@@ -208,6 +208,11 @@ function parseContent(raw: string): Block[] {
         const text = block.slice(2).trim();
         return [{ tag: 'h1' as const, html: inlineMd(text), id: slugify(text) }];
       }
+      if (block.startsWith('> ')) {
+        // Quick Answer / featured-snippet callout box
+        const inner = block.split('\n').map(l => l.replace(/^>\s?/, '')).join(' ');
+        return [{ tag: 'raw' as const, html: `<blockquote class="quick-answer">${inlineMd(inner)}</blockquote>` }];
+      }
       // Detect blocks that contain list items (may start with intro text)
       const hasListLine = block.split('\n').some(l => /^(\d+\.\s|[-*]\s)/.test(l));
       if (hasListLine) return renderList(block, false, inFaq);
@@ -362,6 +367,27 @@ const tocItems = blocks
 /* ══════════════════════════════════════════
    ARTICLE PAGE — BIG ANIMATIONS
 ══════════════════════════════════════════ */
+
+/* ── Quick Answer / Featured-Snippet callout ── */
+.quick-answer {
+  border-left: 3px solid #b45309;
+  background: #fffbeb;
+  padding: 0.9rem 1.2rem;
+  margin: 1.25rem 0 1.75rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: #1c1917;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.quick-answer strong:first-child {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #b45309;
+  margin-bottom: 0.35rem;
+}
 
 /* ── Table of Contents ── */
 .toc-link {
