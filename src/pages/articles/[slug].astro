@@ -119,6 +119,14 @@ const ARTICLE_IMAGES: Record<string, ArticleImages> = {
       alt: 'United States Supreme Court building where certiorari on prediction market preemption is expected',
     },
   },
+  // External Wikimedia Commons image — no locally hosted asset for this article.
+  // CC BY-SA 4.0 · https://commons.wikimedia.org/wiki/File:Sheikh_Hasina_in_2023.jpg
+  'sheikh-hasina-return-bangladesh-ict-death-penalty': {
+    '__hero__': {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Sheikh_Hasina_in_2023.jpg/1200px-Sheikh_Hasina_in_2023.jpg',
+      alt: 'Sheikh Hasina, former Prime Minister of Bangladesh, convicted in absentia by the International Crimes Tribunal in November 2026',
+    },
+  },
 };
 
 const sectionImages: ArticleImages = ARTICLE_IMAGES[article.slug] ?? {};
@@ -672,6 +680,71 @@ const tocItems = blocks
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+    {article.slug === 'sheikh-hasina-return-bangladesh-ict-death-penalty' && (
+      // Dedicated NewsArticle block — pure type (not combined with ScholarlyArticle),
+      // explicit ImageObject dimensions for Discover eligibility, article-specific
+      // about (Person + Event) and mentions for entity understanding.
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        headline: article.title,
+        description: metaDesc,
+        image: {
+          '@type': 'ImageObject',
+          url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Sheikh_Hasina_in_2023.jpg/1200px-Sheikh_Hasina_in_2023.jpg',
+          width: 1200,
+          height: 798,
+          caption: 'Sheikh Hasina, former Prime Minister of Bangladesh (2023)',
+        },
+        datePublished: isoDate(article.publishedAt),
+        dateModified:  isoDate(article.updatedAt, article.publishedAt),
+        author: {
+          '@type': 'Person',
+          name: article.author,
+          jobTitle: article.authorTitle,
+          url: `${siteURL.replace(/\/$/, '')}${authorProfileUrl ?? '/lamia-akhter'}`,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Lex Research',
+          url: siteURL,
+          logo: { '@type': 'ImageObject', url: `${siteURL}favicon.svg` },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': canonicalURL,
+        },
+        articleSection: 'International Criminal Law',
+        about: [
+          {
+            '@type': 'Person',
+            name: 'Sheikh Hasina',
+            description: 'Former Prime Minister of Bangladesh, sentenced to death in absentia by the International Crimes Tribunal on 17 November 2026',
+            sameAs: 'https://en.wikipedia.org/wiki/Sheikh_Hasina',
+          },
+          {
+            '@type': 'Event',
+            name: 'ICT death penalty verdict against Sheikh Hasina',
+            startDate: '2026-11-17',
+            location: {
+              '@type': 'Place',
+              name: 'International Crimes Tribunal, Dhaka, Bangladesh',
+            },
+          },
+        ],
+        mentions: [
+          { '@type': 'Organization', name: 'International Crimes Tribunal (Bangladesh)', sameAs: 'https://en.wikipedia.org/wiki/International_Crimes_Tribunal_(Bangladesh)' },
+          { '@type': 'Country',      name: 'Bangladesh', sameAs: 'https://en.wikipedia.org/wiki/Bangladesh' },
+          { '@type': 'Country',      name: 'India',      sameAs: 'https://en.wikipedia.org/wiki/India' },
+          { '@type': 'Legislation',  name: 'International Crimes (Tribunals) Act 1973' },
+          { '@type': 'Legislation',  name: 'Vienna Convention on Consular Relations, Article 36' },
+          { '@type': 'Legislation',  name: 'International Covenant on Civil and Political Rights, Article 14' },
+          { '@type': 'LegalCase',    name: 'Soering v United Kingdom (1989) 11 EHRR 439' },
+        ],
+        keywords: article.tags.join(', '),
+        isAccessibleForFree: true,
+      })} />
+    )}
   </Fragment>
 
   <!-- Sticky back bar on mobile -->
